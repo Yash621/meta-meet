@@ -7,14 +7,13 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>MetaMeet.io</title>
+        <title>metameet.io</title>
         <link rel="icon" href="/static/images/meta-meet-logo.jpg" />
       </Head>
       <main className={styles.main}>
-         <h1>hello</h1>
+          <h1>hello</h1>
       </main>
       <footer className={styles.footer}>
-       
       </footer>
     </div>
   )

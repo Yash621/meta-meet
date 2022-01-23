@@ -114,6 +114,3 @@
     flex-direction: column;
   }
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
