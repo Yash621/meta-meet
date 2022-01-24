@@ -9,7 +9,6 @@ export default function Home() {
         <title>metameet.io</title>
         <link rel="icon" href="/static/images/meta-meet-logo.jpg" />
       </Head>
-
       <main className={styles.main}>
        <h1 className="text-3xl font-bold underline">meta meet</h1>
       </main>
