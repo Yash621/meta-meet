@@ -1,0 +1,16 @@
+.landingPage {
+  background-color: #100e0c;
+  height: 100%;
+  width: 100%;
+}
+.animation {
+  animation: fadeInUp 5s ease forwards;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+  }
+}
+.logo {
+  margin-left: 500px;
+}
