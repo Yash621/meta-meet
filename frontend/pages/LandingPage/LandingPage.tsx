@@ -6,7 +6,7 @@ import Image from 'next/image'
 function LandingPage() {
   
   return <div className={LandingPageCSS.landingPage}>
-    <Image src={Logo} alt="welcome to meta-meet.io" className={LandingPageCSS.logo} />
+    <Image src={Logo} alt="welcome to meta-meet.io" className={`${LandingPageCSS.logo} ${LandingPageCSS.animation}`} />
     </div>;
 }
 

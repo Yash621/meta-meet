@@ -12,5 +12,6 @@
   }
 }
 .logo {
+  opacity: 0;
   margin-left: 500px;
 }
