@@ -1,0 +1,33 @@
+.navBar {
+  background-image: linear-gradient(to bottom, #696969, transparent);
+  height: 13vh;
+  width: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  padding-left: 2vw;
+}
+.navBarlogo {
+  cursor: pointer;
+  /* background-color: red; */
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loginLogoutContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-left: auto;
+  /* background-color: red; */
+  height: 100%;
+  width: 30%;
+  font-weight: bold;
+  font-size: 1.8em;
+}
+.loginLogoutContainer div {
+  cursor: pointer;
+}

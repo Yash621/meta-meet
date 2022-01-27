@@ -1,21 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import LandingPageCSS from "./LandingPage.module.css";
 import Logo from "../../public/static/images/logo.png";
-import Image from 'next/image'
+import Image from "next/image";
+import NavBar from "../../components/NavBar/NavBar";
 
 function LandingPage() {
-   
-  const [logoAnimation,setLogoAnimation]=useState(false);
+  const [logoAnimation, setLogoAnimation] = useState(false);
   useEffect(() => {
     setTimeout(() => {
-        setLogoAnimation(true);
+      setLogoAnimation(true);
     }, 3000);
-
   }, []);
-  return <div className={LandingPageCSS.landingPage}>
-    {logoAnimation && <div className={LandingPageCSS.landingPageTagline}>  <h1>Bring your Offices and Schools to your homes through metameet.io</h1></div>}
-    <div className={`${!logoAnimation && LandingPageCSS.logo} `} ><Image src={Logo} alt="welcome to meta-meet.io" /></div>
-    </div>;
+  return (
+    <div className={LandingPageCSS.landingPage}>
+      <NavBar />
+      <div className={LandingPageCSS.landingPageContainer}>
+        {logoAnimation && (
+          <div className={LandingPageCSS.landingPageTagline}>
+            <h1>
+              Bring your Offices and Schools to your homes through metameet.io
+            </h1>
+          </div>
+        )}
+        <div className={`${!logoAnimation && LandingPageCSS.logo} `}>
+          <Image src={Logo} alt="welcome to meta-meet.io" />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default LandingPage;
