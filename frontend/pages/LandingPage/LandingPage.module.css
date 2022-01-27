@@ -1,11 +1,15 @@
 .landingPage {
-  background-color: #100e0c;
+  background-color: #100d0b;
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+  padding-left: 5%;
+  /* animation: slide 0.5s forwards; */
 }
-.animation {
-  animation: fadeInUp 5s ease forwards;
-}
+
 @keyframes fadeInUp {
   to {
     opacity: 1;
@@ -13,5 +17,32 @@
 }
 .logo {
   opacity: 0;
-  margin-left: 500px;
+  /* background-color: red; */
+  /* margin-left: 60%; */
+  animation: fadeInUp 5s ease forwards, slide 2s forwards;
+  /* animation-delay: 3s; */
+  /* right: 50vh; */
+  /* margin-left: 500px; */
+  /* margin-right: 100px; */
+}
+@keyframes slide {
+  100% {
+    margin-left: 50%;
+    /* transform: translateX(120%); */
+  }
+}
+.animationCompleted {
+  margin-left: 0%;
+}
+.landingPageTagline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+  animation: fadeInUp 5s ease forwards;
+  width: 40%;
+  font-size: 1.8em;
+  opacity: 0;
+  /* background-color: red; */
 }

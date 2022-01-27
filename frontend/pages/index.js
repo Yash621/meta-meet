@@ -4,7 +4,7 @@ import LandingPage from "./LandingPage/LandingPage.tsx";
 
 export default function Home() {
   return (
-    <div>
+    <div className={styles.container}>
       <Head>
         <title>metameet.io</title>
         <link rel="icon" href="/static/images/logo.png" />
