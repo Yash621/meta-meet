@@ -35,6 +35,7 @@ function Login({ authState }) {
         <div className={LoginCSS.forgotPass}>
           {authState === "Sign In" && <p>Forgot Password?</p>}
           <p>{authState} with Google</p>
+          {authState !== "Sign In" && <p>Already have an account ? Sign In</p>}
         </div>
       </div>
     </div>

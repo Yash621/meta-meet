@@ -9,6 +9,7 @@ import Link from "next/link";
 
 function LandingPage() {
   const [logoAnimation, setLogoAnimation] = useState(false);
+  const [landingPageVisit, setLandingPageVisit] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       setLogoAnimation(true);
