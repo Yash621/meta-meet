@@ -1,8 +1,8 @@
 .landingPage {
-  background-color: #100d0b;
+  background-color: #ffffff;
   height: auto;
   width: 100%;
-  color: #e5e5e3;
+  color: black;
 }
 .landingPageContainer {
   display: flex;
@@ -11,8 +11,8 @@
   margin-top: 13vh;
   height: 87vh;
   width: 100%;
-  background-color: #100d0b;
-  color: #e5e5e3;
+  background-color: #fafcfe;
+  color: black;
   padding-left: 5%;
 }
 @keyframes fadeInUp {
@@ -25,6 +25,11 @@
   margin-left: -30%;
   animation: fadeInUp 5s ease forwards, slide 2.5s forwards;
 }
+.logo img {
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
 @keyframes slide {
   100% {
     margin-left: 50%;
@@ -33,14 +38,53 @@
 .animationCompleted {
   margin-left: 0%;
 }
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 .landingPageTagline {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   height: 60%;
   animation: fadeInUp 5s ease forwards;
   width: 40%;
   font-size: 1.8em;
   opacity: 0;
+  font-family: "Lato";
+  /* background-color: blue; */
+}
+.company {
+  color: #212121;
+  /* background-color: green; */
+  width: 90%;
+  height: 40%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  font-size: 1.8em;
+}
+.companyLogo {
+  background-color: red;
+  width: 25%;
+  height: 50%;
+  display: flex;
+  justify-content: flex-start;
+}
+.companyName {
+  width: 60%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: red; */
+}
+.tagline {
+  width: 90%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 1.2em;
+  color: #828488;
+  padding-top: 30px;
+  /* background-color: red; */
 }

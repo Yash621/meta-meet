@@ -10,11 +10,13 @@ function NavBar() {
         <Image
           src={Logo}
           alt="welcome to meta-meet.io"
-          width={65}
-          height={65}
+          width={80}
+          height={50}
         />
+        <h1>MetaMeet.io</h1>
       </div>
       <div className={NavBarCSS.loginLogoutContainer}>
+        <div>Register</div>
         <div>Login</div>
         <div>Logout</div>
       </div>
