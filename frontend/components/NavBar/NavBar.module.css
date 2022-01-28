@@ -2,7 +2,7 @@
   background-image: linear-gradient(to bottom, #696969, transparent);
   height: 13vh;
   width: 100%;
-  color: white;
+  color: #e5e5e3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,7 +11,6 @@
 }
 .navBarlogo {
   cursor: pointer;
-  /* background-color: red; */
   width: 10%;
   display: flex;
   align-items: center;
@@ -22,7 +21,6 @@
   align-items: center;
   justify-content: space-around;
   margin-left: auto;
-  /* background-color: red; */
   height: 100%;
   width: 30%;
   font-weight: bold;

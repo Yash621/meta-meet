@@ -1,16 +1,15 @@
 .landingPage {
   background-color: #100d0b;
-  height: 100vh;
+  height: auto;
   width: 100%;
   color: #e5e5e3;
-  /* animation: slide 0.5s forwards; */
 }
 .landingPageContainer {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin-top: 5vh;
-  height: 100%;
+  margin-top: 13vh;
+  height: 87vh;
   width: 100%;
   background-color: #100d0b;
   color: #e5e5e3;
@@ -24,18 +23,11 @@
 .logo {
   opacity: 0;
   margin-left: -30%;
-  /* background-color: red; */
-  /* margin-left: 60%; */
   animation: fadeInUp 5s ease forwards, slide 2.5s forwards;
-  /* animation-delay: 3s; */
-  /* right: 50vh; */
-  /* margin-left: 500px; */
-  /* margin-right: 100px; */
 }
 @keyframes slide {
   100% {
     margin-left: 50%;
-    /* transform: translateX(120%); */
   }
 }
 .animationCompleted {
@@ -51,5 +43,4 @@
   width: 40%;
   font-size: 1.8em;
   opacity: 0;
-  /* background-color: red; */
 }
