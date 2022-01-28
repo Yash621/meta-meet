@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/link-passhref */
 import React from "react";
 import NavBarCSS from "./NavBar.module.css";
 import Image from "next/image";
 import Logo from "../../public/static/images/logo.png";
+import Link from "next/link";
 
 function NavBar() {
   return (
@@ -16,8 +18,12 @@ function NavBar() {
         <h1>MetaMeet.io</h1>
       </div>
       <div className={NavBarCSS.loginLogoutContainer}>
-        <div>Register</div>
-        <div>Login</div>
+        <Link href="/auth/register">
+          <div>Register</div>
+        </Link>
+        <Link href="/auth/login">
+          <div>Login</div>
+        </Link>
         <div>Logout</div>
       </div>
     </div>

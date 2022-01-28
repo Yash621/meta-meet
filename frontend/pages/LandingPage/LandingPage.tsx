@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/link-passhref */
 import React, { useEffect, useState } from "react";
 import LandingPageCSS from "./LandingPage.module.css";
 import Logo from "../../public/static/images/landing-page-icon.png";
 import logo from "../../public/static/images/logo.png";
 import Image from "next/image";
 import NavBar from "../../components/NavBar/NavBar";
+import Link from "next/link";
 
 function LandingPage() {
   const [logoAnimation, setLogoAnimation] = useState(false);
@@ -29,7 +31,9 @@ function LandingPage() {
             </div>
             <div className={LandingPageCSS.joinUs}>
               <div>
-                <p>Join us now</p>
+                <Link href="/auth/register">
+                  <p>Join us</p>
+                </Link>
               </div>
             </div>
           </div>
