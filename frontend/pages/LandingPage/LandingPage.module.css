@@ -79,7 +79,7 @@
 }
 .tagline {
   width: 90%;
-  height: 60%;
+  height: 30%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -87,4 +87,24 @@
   color: #828488;
   padding-top: 30px;
   /* background-color: red; */
+}
+.joinUs {
+  /* background-color: blue; */
+  width: 90%;
+  height: 25%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.joinUs div {
+  width: 40%;
+  height: 55%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a73e8;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8em;
 }
