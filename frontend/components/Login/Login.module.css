@@ -34,8 +34,9 @@
   height: 20%;
   border-radius: 5px;
   margin-bottom: 10px;
+  /* background-color: red; */
 }
-.loginOptions div {
+.loginOptionName {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -68,4 +69,18 @@
   font-size: 2em;
   font-weight: 500;
   margin-bottom: 10px;
+}
+.forgotPass {
+  /* background-color: red; */
+  width: 80%;
+  height: 30%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.forgotPass p {
+  cursor: pointer;
+}
+.forgotPass :hover {
+  text-decoration: underline;
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
 import Login from "../../components/Login/Login";
-import Logout from "../../components/Logout/Logout";
 import authCSS from "../auth/auth.module.css";
 
 function LoginRegister() {
@@ -10,7 +9,11 @@ function LoginRegister() {
 
   return (
     <div className={authCSS.auth}>
-      {pid == "login" ? <Login /> : <Logout />}
+      {pid == "login" ? (
+        <Login authState="Sign In" />
+      ) : (
+        <Login authState="Sign Up" />
+      )}
     </div>
   );
 }

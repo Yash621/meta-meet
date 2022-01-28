@@ -29,13 +29,13 @@ function LandingPage() {
             <div className={LandingPageCSS.tagline}>
               Bring your Offices and Schools to your homes through MetaMeet.io
             </div>
-            <div className={LandingPageCSS.joinUs}>
-              <div>
-                <Link href="/auth/register">
+            <Link href="/auth/register">
+              <div className={LandingPageCSS.joinUs}>
+                <div>
                   <p>Join us</p>
-                </Link>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
         )}
         <div className={`${!logoAnimation && LandingPageCSS.logo} `}>
