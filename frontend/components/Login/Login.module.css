@@ -1,0 +1,71 @@
+.login {
+  min-width: 70vh;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: red; */
+  font-family: "Lato";
+  color: #75797d;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.companyName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20%;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  /* background-color: red; */
+}
+.companyName h1 {
+  margin-left: 10px;
+}
+.loginOptions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 20%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.loginOptions div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 80%;
+  height: 50%;
+  font-size: 1.5em;
+  /* background-color: blue; */
+}
+.input {
+  height: 50%;
+  width: 80%;
+  font-size: 1.1em;
+}
+.submitLogin {
+  display: flex;
+  justify-content: center;
+  font-size: 1.3em;
+  font-weight: bold;
+  align-items: center;
+  width: 80%;
+  height: 50%;
+  background-color: #1a73e8;
+  border: none;
+  border-radius: 5px;
+  font-family: "Lato";
+  color: white;
+  cursor: pointer;
+}
+.loginheading {
+  font-size: 2em;
+  font-weight: 500;
+  margin-bottom: 10px;
+}

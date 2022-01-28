@@ -1,0 +1,9 @@
+.auth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fafcfe;
+}
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
