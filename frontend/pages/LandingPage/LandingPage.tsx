@@ -9,10 +9,12 @@ import Link from "next/link";
 
 function LandingPage() {
   const [logoAnimation, setLogoAnimation] = useState(false);
-  const [landingPageVisit, setLandingPageVisit] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
+      console.log(logoAnimation);
       setLogoAnimation(true);
+      localStorage.setItem("render", "true");
     }, 3000);
   }, []);
   return (
