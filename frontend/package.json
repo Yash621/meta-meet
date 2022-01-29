@@ -10,6 +10,7 @@
     "format": "prettier --write \"**/*.{js, jsx}\""
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.7.1",
     "firebase": "^9.6.5",
     "firebase-admin": "^10.0.2",
     "next": "^11.0.0",

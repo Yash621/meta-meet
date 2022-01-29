@@ -12,9 +12,7 @@ function LandingPage() {
 
   useEffect(() => {
     setTimeout(() => {
-      console.log(logoAnimation);
       setLogoAnimation(true);
-      localStorage.setItem("render", "true");
     }, 3000);
   }, []);
   return (
