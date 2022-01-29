@@ -20,12 +20,11 @@ function NavBar() {
       </div>
       <div className={NavBarCSS.loginLogoutContainer}>
         <Link href="/auth/register">
-          <div>Register</div>
+          <div>Sign Up</div>
         </Link>
         <Link href="/auth/login">
-          <div>Login</div>
+          <div>Sign In</div>
         </Link>
-        <div onClick={() => auth.signOut()}>Logout</div>
       </div>
     </div>
   );
