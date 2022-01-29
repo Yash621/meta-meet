@@ -1,8 +1,10 @@
+/* eslint-disable @next/next/link-passhref */
 import React from "react";
 import LoginCSS from "../Login/Login.module.css";
 import Image from "next/image";
 import Logo from "../../public/static/images/logo.png";
 import { auth, provider } from "../../firebase";
+import Link from "next/link";
 
 function Login({ authState }) {
   const signIn = () => {
@@ -40,7 +42,11 @@ function Login({ authState }) {
         <div className={LoginCSS.forgotPass}>
           {authState === "Sign In" && <p>Forgot Password?</p>}
           <p onClick={signIn}>{authState} with Google</p>
-          {authState !== "Sign In" && <p>Already have an account ? Sign In</p>}
+          {authState !== "Sign In" && (
+            <Link href="/auth/login">
+              <p>Already have an account ? Sign In</p>
+            </Link>
+          )}
         </div>
       </div>
     </div>
