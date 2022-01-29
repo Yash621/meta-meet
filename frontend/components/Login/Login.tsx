@@ -1,14 +1,29 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/link-passhref */
-import React from "react";
+import React, { useEffect } from "react";
 import LoginCSS from "../Login/Login.module.css";
 import Image from "next/image";
 import Logo from "../../public/static/images/logo.png";
 import { auth, provider } from "../../firebase";
 import Link from "next/link";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
 
 function Login({ authState }) {
+  const [user] = useAuthState(auth);
+  const router = useRouter();
+
   const signIn = () => {
-    auth.signInWithPopup(provider).catch(alert);
+    try {
+      auth
+        .signInWithPopup(provider)
+        .then(() => {
+          router.push("/chat");
+        })
+        .catch(alert);
+    } catch (err) {
+      alert("Something went wrong");
+    }
   };
 
   return (
@@ -40,7 +55,11 @@ function Login({ authState }) {
       <div className={LoginCSS.loginOptions}>
         <button className={LoginCSS.submitLogin}>{authState}</button>
         <div className={LoginCSS.forgotPass}>
-          {authState === "Sign In" && <p>Forgot Password?</p>}
+          {authState === "Sign In" && (
+            <Link href="/auth/register">
+              <p>Don't have an account? Sign Up</p>
+            </Link>
+          )}
           <p onClick={signIn}>{authState} with Google</p>
           {authState !== "Sign In" && (
             <Link href="/auth/login">

@@ -4,6 +4,7 @@ import NavBarCSS from "./NavBar.module.css";
 import Image from "next/image";
 import Logo from "../../public/static/images/logo.png";
 import Link from "next/link";
+import { auth } from "../../firebase";
 
 function NavBar() {
   return (
@@ -24,7 +25,7 @@ function NavBar() {
         <Link href="/auth/login">
           <div>Login</div>
         </Link>
-        <div>Logout</div>
+        <div onClick={() => auth.signOut()}>Logout</div>
       </div>
     </div>
   );
