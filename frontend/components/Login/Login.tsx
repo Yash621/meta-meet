@@ -14,16 +14,14 @@ function Login({ authState }) {
   const router = useRouter();
 
   const signIn = () => {
-    try {
-      auth
-        .signInWithPopup(provider)
-        .then(() => {
-          router.push("/chat");
-        })
-        .catch(alert);
-    } catch (err) {
-      alert("Something went wrong");
-    }
+    auth
+      .signInWithPopup(provider)
+      .then(() => {
+        router.push("/chat");
+      })
+      .catch((err) => {
+        alert("oops! something went wrong!");
+      });
   };
 
   return (
