@@ -18,7 +18,7 @@ function NavBar() {
         />
         <h1>MetaMeet.io</h1>
       </div>
-      <div className={NavBarCSS.loginLogoutContainer}>
+      <div className={NavBarCSS.signInSignUpContainer}>
         <Link href="/auth/register">
           <div>Sign Up</div>
         </Link>

@@ -1,0 +1,73 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+}
+.contactContainer {
+  width: 30%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: blue;
+}
+.chatContainer {
+  width: 70%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: green;
+}
+.headerContainer {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: yellow;
+}
+.profileAvatarContainer {
+  background-color: red;
+  width: 10%;
+  height: 100%;
+}
+.searchBarContainer {
+  background-color: green;
+  width: 100%;
+  height: 10%;
+}
+.OptionsIconContainer {
+  background-color: yellow;
+  width: 100%;
+  height: 10%;
+}
+.contactListContainer {
+  background-color: red;
+  width: 100%;
+  height: 70%;
+}
+.chat {
+  background-color: blue;
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.chatInputContainer {
+  background-color: pink;
+  width: 100%;
+  height: 10%;
+}
+/* .chatContainer {
+  background-color: red;
+  width: 100%;
+  height: 85%;
+} */

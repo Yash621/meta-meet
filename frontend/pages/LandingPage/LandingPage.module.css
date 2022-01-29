@@ -13,6 +13,7 @@
   width: 100%;
   background-color: #fafcfe;
   color: black;
+  /* background-color: red; */
   padding-left: 5%;
 }
 @keyframes fadeInUp {

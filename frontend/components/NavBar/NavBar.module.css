@@ -2,7 +2,7 @@
   /* background-image: linear-gradient(to bottom, #696969, transparent); */
   background-color: #fafcfe;
   /* background-color: red; */
-  height: 13vh;
+  height: 12vh;
   width: 100%;
   color: #75797d;
   display: flex;
@@ -23,7 +23,7 @@
   /* border: 2px solid black; */
 }
 
-.loginLogoutContainer {
+.signInSignUpContainer {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -34,6 +34,6 @@
   font-size: 1.8em;
   /* background-color: #e5e5e3; */
 }
-.loginLogoutContainer div {
+.signInSignUpContainer div {
   cursor: pointer;
 }
