@@ -6,20 +6,26 @@ import logo from "../../public/static/images/logo.png";
 import Image from "next/image";
 import NavBar from "../../components/NavBar/NavBar";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectlandingPageVisit,
+  setLandingPageVisit,
+} from "../slices/landingSlice";
 
 function LandingPage() {
-  const [logoAnimation, setLogoAnimation] = useState(false);
+  const landingPageVisit = useSelector(selectlandingPageVisit);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTimeout(() => {
-      setLogoAnimation(true);
+      dispatch(setLandingPageVisit(true));
     }, 3000);
   }, []);
   return (
     <div className={LandingPageCSS.landingPage}>
       <NavBar />
       <div className={LandingPageCSS.landingPageContainer}>
-        {logoAnimation && (
+        {landingPageVisit && (
           <div className={LandingPageCSS.landingPageTagline}>
             <div className={LandingPageCSS.company}>
               <div className={LandingPageCSS.companyName}>MetaMeet.io</div>
@@ -39,7 +45,7 @@ function LandingPage() {
             </Link>
           </div>
         )}
-        <div className={`${!logoAnimation && LandingPageCSS.logo} `}>
+        <div className={`${!landingPageVisit && LandingPageCSS.logo} `}>
           <Image src={Logo} alt="welcome to meta-meet.io" />
         </div>
       </div>
