@@ -11,10 +11,15 @@ import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import profilePhoto from "../../public/static/images/profile-photo.jpeg";
 import ChatIcon from "@mui/icons-material/Chat";
+import Head from "next/head";
 
 function index() {
   return (
     <div className={chatPageCSS.container}>
+      <Head>
+        <title>MetaMeet.io</title>
+        <link rel="icon" href="/static/images/logo.png" />
+      </Head>
       <div className={chatPageCSS.contactContainer}>
         <div className={chatPageCSS.headerContainer}>
           <div className={chatPageCSS.profileOverviewContainer}>
