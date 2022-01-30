@@ -13,7 +13,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* border-right: 1px solid white; */
+  /* border-right: 1px solid; */
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   /* background-color: blue; */
 }
@@ -35,6 +35,8 @@
   justify-content: space-between;
   background-color: #1a73e8;
   color: white;
+  border-right: 1px solid #f0f0f0;
+  /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
   /* border: 1px solid black; */
 }
 .profileAvatarContainer {

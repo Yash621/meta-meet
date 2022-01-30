@@ -2,7 +2,7 @@
 import React from "react";
 import chatPageCSS from "./chatPage.module.css";
 import Image from "next/image";
-import graphic from "../../public/static/images/landing-page-icon.png";
+import graphic from "../../public/static/images/chat-page-graphic.jpg";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -66,6 +66,7 @@ function index() {
         <div className={chatPageCSS.chat}>
           <Image src={graphic} />
         </div>
+
         <div className={chatPageCSS.chatInputContainer}>
           <div className={chatPageCSS.chatIconContainer}>
             <AttachFileIcon className={chatPageCSS.chatIcon} />
