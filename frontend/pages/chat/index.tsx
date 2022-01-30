@@ -14,6 +14,9 @@ import ChatIcon from "@mui/icons-material/Chat";
 import Head from "next/head";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import logo from "../../public/static/images/title-logo.png";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
+import KeyboardIcon from "@mui/icons-material/Keyboard";
 
 function index() {
   return (
@@ -23,7 +26,7 @@ function index() {
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
       <div className={chatPageCSS.headerContainer}>
-        <div>
+        <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />
         </div>
         <div className={chatPageCSS.companyNameLogo}>
@@ -31,7 +34,9 @@ function index() {
           MetaMeet.io
         </div>
         <div className={chatPageCSS.inputContainer}>
-          <SearchIcon className={chatPageCSS.chatIcon} />
+          <div className={chatPageCSS.chatIconContainer}>
+            <SearchIcon className={chatPageCSS.chatIcon} />
+          </div>
           <input
             type="text"
             placeholder="Search users or spaces"
@@ -42,7 +47,49 @@ function index() {
           <Image src={profilePhoto} />
         </div>
       </div>
-      <div className={chatPageCSS.chatContainer}></div>
+      <div className={chatPageCSS.chatContainer}>
+        <div className={chatPageCSS.chatOptionsContainer}>
+          <div className={chatPageCSS.chatOptionContainer}>
+            <div className={chatPageCSS.chatOptionHeadContainer}>⯆ Chat</div>
+            <div className={chatPageCSS.chatsSpacesContainer}>
+              <div className={chatPageCSS.nilChatSpacesHeadContainer}>
+                <ChatBubbleOutlineIcon className={chatPageCSS.chatIcon} />
+                <p>No Conversations</p>
+                <div>Find a chat</div>
+              </div>
+            </div>
+          </div>
+          <div className={chatPageCSS.chatOptionContainer}>
+            <div className={chatPageCSS.chatOptionHeadContainer}>⯆ Spaces</div>
+            <div className={chatPageCSS.chatsSpacesContainer}>
+              <div className={chatPageCSS.nilChatSpacesHeadContainer}>
+                <GroupsIcon className={chatPageCSS.chatIcon} />
+                <p>No spaces yet</p>
+                <div> Find a space to join</div>
+              </div>
+            </div>
+          </div>
+          <div className={chatPageCSS.startMeetContainer}>
+            <div className={chatPageCSS.chatOptionMeetHeadContainer}>
+              ⯆ Meet
+            </div>
+            <div className={chatPageCSS.startMeetOptionsContainer}>
+              <div className={chatPageCSS.startMeetOptionContainer}>
+                <VideoCallIcon />
+                <p> New Meeting</p>
+              </div>
+              <div className={chatPageCSS.startMeetOptionContainer}>
+                <KeyboardIcon />
+                <p> Join a Meeting</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={chatPageCSS.serachResultContainer}>
+          <Image src={graphic} />
+          <p> Start a conversation now </p>
+        </div>
+      </div>
     </div>
   );
 }
