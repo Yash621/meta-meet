@@ -40,11 +40,13 @@
   margin-right: 10px;
   width: 50px;
   height: 50px;
-  object-fit: contain;
+  object-fit: cover;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .searchBarContainer {
   background-color: green;
   width: 100%;
@@ -84,12 +86,15 @@
   justify-content: space-between;
 }
 .searchBarIcon {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
+  margin-left: 10px;
+  margin-top: 2px;
+  cursor: pointer;
 }
 .searchBar {
   width: 90%;
-  height: 80%;
+  height: 65%;
   background-color: yellow;
   border: 1px solid black;
   border-radius: 30px;
@@ -104,10 +109,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  font-size: 1.08em;
+}
+.searchBarInput:focus {
+  outline: none;
 }
 .OptionsIcon {
   width: 30px;
   height: 30px;
+  cursor: pointer;
 }
 .OptionsIconContainer div {
   background-color: green;
@@ -123,6 +134,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  font-size: 1.2em;
 }
 .chatIcon {
   width: 30px;
@@ -134,13 +146,30 @@
   height: 70%;
   width: 90%;
   border-radius: 25px;
-  font-size: 1.2em;
+  font-size: 1.1em;
   border: none;
+  padding-left: 15px;
 }
 .chatIconContainer {
   width: 5%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  cursor: pointer;
+  padding-left: 15px;
+  /* background-color: yellow; */
+}
+.chatInput:focus {
+  outline: none;
+}
+.searchBar:first-child {
+  display: flex;
+  align-items: center;
+}
+.searchBarIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -11,6 +11,8 @@ import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import profilePhoto from "../../public/static/images/profile-photo.jpeg";
+import ChatIcon from "@mui/icons-material/Chat";
 
 function index() {
   return (
@@ -18,8 +20,9 @@ function index() {
       <div className={chatPageCSS.contactContainer}>
         <div className={chatPageCSS.headerContainer}>
           <div className={chatPageCSS.profileOverviewContainer}>
-            {" "}
-            <div className={chatPageCSS.profileAvatarContainer}>N</div>
+            <div className={chatPageCSS.profileAvatarContainer}>
+              <Image src={profilePhoto} alt="welcome to meta-meet.io" />
+            </div>
             <div className={chatPageCSS.profileNameContainer}>
               Nitya Patankar
             </div>
@@ -27,10 +30,9 @@ function index() {
         </div>
         <div className={chatPageCSS.searchBarContainer}>
           <div className={chatPageCSS.searchBar}>
-            <div>
+            <div className={chatPageCSS.searchBarIconContainer}>
               <SearchIcon className={chatPageCSS.searchBarIcon} />
             </div>
-
             <input
               type="text"
               placeholder="Search for users or rooms"
@@ -40,7 +42,7 @@ function index() {
         </div>
         <div className={chatPageCSS.OptionsIconContainer}>
           <div>
-            <ChatBubbleIcon className={chatPageCSS.OptionsIcon} />
+            <ChatIcon className={chatPageCSS.OptionsIcon} />
           </div>
           <div>
             <GroupsIcon className={chatPageCSS.OptionsIcon} />
@@ -54,7 +56,9 @@ function index() {
       <div className={chatPageCSS.chatContainer}>
         <div className={chatPageCSS.headerContainer}>
           <div className={chatPageCSS.profileOverviewContainer}>
-            <div className={chatPageCSS.profileAvatarContainer}>N</div>
+            <div className={chatPageCSS.profileAvatarContainer}>
+              <Image src={profilePhoto} alt="welcome to meta-meet.io" />
+            </div>
             <div className={chatPageCSS.profileNameContainer}>
               Nitya Patankar
             </div>
