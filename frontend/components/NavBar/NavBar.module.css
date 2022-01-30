@@ -31,9 +31,22 @@
   height: 100%;
   width: 30%;
   /* font-weight: bold; */
-  font-size: 1.8em;
+  font-size: 1.5em;
   /* background-color: #e5e5e3; */
 }
 .signInSignUpContainer div {
   cursor: pointer;
+  color: #1a73e8;
+  /* background-color: #1a73e8; */
+  border: 2px solid #1a73e8;
+  height: 50%;
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+.signInSignUpContainer div:hover {
+  background-color: #1a73e8;
+  color: white;
 }

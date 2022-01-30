@@ -20,10 +20,10 @@ function NavBar() {
       </div>
       <div className={NavBarCSS.signInSignUpContainer}>
         <Link href="/auth/register">
-          <div>Sign Up</div>
+          <div className={NavBarCSS.authOption}>Sign Up</div>
         </Link>
         <Link href="/auth/login">
-          <div>Sign In</div>
+          <div className={NavBarCSS.authOption}>Sign In</div>
         </Link>
       </div>
     </div>
