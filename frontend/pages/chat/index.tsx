@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import chatPageCSS from "./chatPage.module.css";
 import Image from "next/image";
 import graphic from "../../public/static/images/chat-page-graphic.jpg";
