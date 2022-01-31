@@ -9,6 +9,7 @@ export default function Home() {
         <title>MetaMeet.io</title>
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
+
       <LandingPage />
     </div>
   );

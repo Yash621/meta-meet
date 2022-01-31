@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import chatPageCSS from "./chatPage.module.css";
 import Image from "next/image";
 import graphic from "../../public/static/images/chat-page-graphic.jpg";
@@ -17,14 +18,18 @@ import logo from "../../public/static/images/title-logo.png";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
+import MeetCred from "../../components/MeetCred/MeetCred";
 
 function index() {
+  const [joinMeetingClick, setJoinMeetingClick] = useState(false);
+
   return (
     <div className={chatPageCSS.container}>
       <Head>
         <title>MetaMeet.io</title>
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
+      <MeetCred />
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />
@@ -78,7 +83,10 @@ function index() {
                 <VideoCallIcon />
                 <p> New Meeting</p>
               </div>
-              <div className={chatPageCSS.startMeetOptionContainer}>
+              <div
+                className={chatPageCSS.startMeetOptionContainer}
+                onClick={() => setJoinMeetingClick(true)}
+              >
                 <KeyboardIcon />
                 <p> Join a Meeting</p>
               </div>
