@@ -1,21 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  backwardClick: false,
+  meetCredentialPageShowState: false,
 };
 
 export const meetCredPageSlice = createSlice({
   name: "meetCredPage",
   initialState,
   reducers: {
-    setbackwardClick: (state, action) => {
-      state.backwardClick = action.payload;
+    setmeetCredentialPageShowState: (state, action) => {
+      state.meetCredentialPageShowState = action.payload;
     },
   },
 });
 
-export const { setbackwardClick } = meetCredPageSlice.actions;
+export const { setmeetCredentialPageShowState } = meetCredPageSlice.actions;
 
-export const selectbackwardClick = (state) => state.meetCredPage.backwardClick;
+export const selectmeetCredentialPageShowState = (state) =>
+  state.meetCredPage.meetCredentialPageShowState;
 
 export default meetCredPageSlice.reducer;

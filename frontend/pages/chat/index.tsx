@@ -19,17 +19,25 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import MeetCred from "../../components/MeetCred/MeetCred";
+import {
+  selectmeetCredentialPageShowState,
+  setmeetCredentialPageShowState,
+} from "../../pages/slices/meetCredentialSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function index() {
-  const [joinMeetingClick, setJoinMeetingClick] = useState(false);
-
+  // const [joinMeetingClick, setJoinMeetingClick] = useState(false);
+  const meetCredentialPageShowState = useSelector(
+    selectmeetCredentialPageShowState
+  );
+  const dispatch = useDispatch();
   return (
     <div className={chatPageCSS.container}>
       <Head>
         <title>MetaMeet.io</title>
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
-      <MeetCred />
+      {meetCredentialPageShowState && <MeetCred />}
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />
@@ -85,7 +93,7 @@ function index() {
               </div>
               <div
                 className={chatPageCSS.startMeetOptionContainer}
-                onClick={() => setJoinMeetingClick(true)}
+                onClick={() => dispatch(setmeetCredentialPageShowState(true))}
               >
                 <KeyboardIcon />
                 <p> Join a Meeting</p>
