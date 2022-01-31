@@ -6,10 +6,16 @@ import {
   setmeetCredentialPageShowState,
 } from "../../pages/slices/meetCredentialSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 function MeetCred() {
   const dispatch = useDispatch();
-
+  const router = useRouter();
+  const navigateToCall = () => {
+    const roomid = "hello";
+    const password = "hello";
+    router.push(`/video?roomid=${roomid}&password=${password}`);
+  };
   return (
     <div className={meetCredCSS.container}>
       <div className={meetCredCSS.meetDetailsContainer}></div>
@@ -36,7 +42,14 @@ function MeetCred() {
           placeholder="Enter meeting password"
           className={meetCredCSS.input}
         ></input>
-        <button className={meetCredCSS.joinButton}>Join</button>
+        <button
+          className={meetCredCSS.joinButton}
+          onClick={() => {
+            navigateToCall();
+          }}
+        >
+          Join
+        </button>
       </div>
     </div>
   );
