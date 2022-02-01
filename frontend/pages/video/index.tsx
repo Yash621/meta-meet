@@ -17,7 +17,7 @@ function index() {
     "24e00c42e2b09e64754a98595b9eba3a483deadb5f007daf6f4331a11c561940";
 
   jwt.sign(
-    {S
+    {
       apikey: API_KEY,
       permissions: ["allow_join"], // Permission to join the meeting
     },
