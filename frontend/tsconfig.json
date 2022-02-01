@@ -19,7 +19,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/slices/landingSlice.tsx"
+    "pages/slices/landingSlice.tsx",
+    "pages/video/index.tsx"
   ],
   "exclude": ["node_modules"]
 }

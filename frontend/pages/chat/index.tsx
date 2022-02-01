@@ -24,6 +24,7 @@ import {
   setmeetCredentialPageShowState,
 } from "../../pages/slices/meetCredentialSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useMeeting } from "@videosdk.live/react-sdk";
 
 function index() {
   // const [joinMeetingClick, setJoinMeetingClick] = useState(false);
@@ -31,6 +32,7 @@ function index() {
     selectmeetCredentialPageShowState
   );
   const dispatch = useDispatch();
+
   return (
     <div className={chatPageCSS.container}>
       <Head>
