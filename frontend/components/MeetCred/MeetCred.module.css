@@ -10,8 +10,8 @@
 }
 .meetDetails {
   position: fixed;
-  height: 65%;
-  width: 30%;
+  height: 35%;
+  width: 40%;
   background-color: #fefffe;
   flex-direction: column;
   display: flex;
@@ -20,6 +20,7 @@
   /* opacity: 1; */
   border-radius: 5px;
   z-index: 101;
+  padding-bottom: 5px;
 }
 .meetDetailsContainer {
   display: flex;
@@ -33,23 +34,26 @@
   opacity: 0.62;
 }
 .input {
-  width: 80%;
-  height: 12%;
+  width: 90%;
+  height: 20%;
   font-size: 1.2em;
-  border-bottom: 4px solid #1a73e8;
   font-family: "Lato";
-  border-radius: 5px;
+  /* border-radius: 5px; */
+  /* outline: none; */
   border: none;
   background-color: #f5f4f4;
   padding-left: 15px;
+  border-bottom: 2px solid #202021;
 }
 .input:focus {
   outline: none;
+  border-bottom: 3px solid #1a73e8;
+  background-color: #e3e5e6;
 }
 
 .joinButton {
-  width: 80%;
-  height: 10%;
+  width: 20%;
+  height: 100%;
   font-size: 1.2em;
   font-family: "Lato";
   border-radius: 5px;
@@ -60,23 +64,44 @@
 }
 .meetDetailsheading {
   /* background-color: red; */
-  width: 100%;
-  height: 10%;
-  font-size: 1.5em;
+  width: 92%;
+  height: 20%;
+  font-size: 1.6em;
   font-family: "Lato";
   color: #202021;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   /* padding-left: 30px; */
   /* padding-right: 15%; */
 }
 .clearIcon {
-  position: absolute;
+  /* position: absolute; */
   cursor: pointer;
-  left: 30px;
+  /* left: 30px; */
+  margin-right: 10px;
   font-size: 1.1em;
 }
 .clearIcon:hover {
   color: #1a73e8;
+}
+.buttonContainer {
+  height: 17%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 35px;
+}
+.meetDetailsSubHeading {
+  font-size: 1.2em;
+  font-family: "Lato";
+  color: #7f8286;
+  height: 20%;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* font-weight: 500; */
+  /* background-color: blue; */
 }

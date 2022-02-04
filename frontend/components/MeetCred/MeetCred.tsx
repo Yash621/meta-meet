@@ -7,6 +7,7 @@ import {
 } from "../../pages/slices/meetCredentialSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import IconButton from "@material-ui/core/IconButton";
 
 function MeetCred() {
   const dispatch = useDispatch();
@@ -21,35 +22,33 @@ function MeetCred() {
       <div className={meetCredCSS.meetDetailsContainer}></div>
       <div className={meetCredCSS.meetDetails}>
         <div className={meetCredCSS.meetDetailsheading}>
-          <ClearIcon
-            className={meetCredCSS.clearIcon}
-            onClick={() => dispatch(setmeetCredentialPageShowState(false))}
-          />
-          Enter Meeting Credentials
+          Got a meeting code?
+          <IconButton>
+            {" "}
+            <ClearIcon
+              className={meetCredCSS.clearIcon}
+              onClick={() => dispatch(setmeetCredentialPageShowState(false))}
+            />
+          </IconButton>
+        </div>
+        <div className={meetCredCSS.meetDetailsSubHeading}>
+          To join a meeting, enter the meeting code provided by the organizer
         </div>
         <input
           type="text"
-          placeholder="Enter room id"
+          placeholder="Enter meeting id"
           className={meetCredCSS.input}
         ></input>
-        <input
-          type="text"
-          placeholder="Enter your name"
-          className={meetCredCSS.input}
-        ></input>
-        <input
-          type="text"
-          placeholder="Enter meeting password"
-          className={meetCredCSS.input}
-        ></input>
-        <button
-          className={meetCredCSS.joinButton}
-          onClick={() => {
-            navigateToCall();
-          }}
-        >
-          Join
-        </button>
+        <div className={meetCredCSS.buttonContainer}>
+          <button
+            className={meetCredCSS.joinButton}
+            onClick={() => {
+              navigateToCall();
+            }}
+          >
+            Join
+          </button>
+        </div>
       </div>
     </div>
   );
