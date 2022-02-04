@@ -31,7 +31,16 @@ function index() {
   const meetCredentialPageShowState = useSelector(
     selectmeetCredentialPageShowState
   );
+  const [meetCredProp, setMeetCredProp] = useState("new_meeting");
   const dispatch = useDispatch();
+  const setMeetTypeClickAndmeetCredentialShowState = (meetType) => {
+    if (meetType === "new_meeting") {
+      setMeetCredProp("new_meeting");
+    } else {
+      setMeetCredProp("join_meeting");
+    }
+    dispatch(setmeetCredentialPageShowState(true));
+  };
 
   return (
     <div className={chatPageCSS.container}>
@@ -39,7 +48,7 @@ function index() {
         <title>MetaMeet.io</title>
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
-      {meetCredentialPageShowState && <MeetCred />}
+      {meetCredentialPageShowState && <MeetCred meetType={meetCredProp} />}
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />
@@ -89,13 +98,20 @@ function index() {
               ⯆ Meet
             </div>
             <div className={chatPageCSS.startMeetOptionsContainer}>
-              <div className={chatPageCSS.startMeetOptionContainer}>
+              <div
+                className={chatPageCSS.startMeetOptionContainer}
+                onClick={() =>
+                  setMeetTypeClickAndmeetCredentialShowState("new_meeting")
+                }
+              >
                 <VideoCallIcon />
                 <p> New Meeting</p>
               </div>
               <div
                 className={chatPageCSS.startMeetOptionContainer}
-                onClick={() => dispatch(setmeetCredentialPageShowState(true))}
+                onClick={() =>
+                  setMeetTypeClickAndmeetCredentialShowState("join_meeting")
+                }
               >
                 <KeyboardIcon />
                 <p> Join a Meeting</p>

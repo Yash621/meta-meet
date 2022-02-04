@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import meetCredCSS from "./MeetCred.module.css";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
@@ -8,8 +8,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import IconButton from "@material-ui/core/IconButton";
-
-function MeetCred() {
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+function MeetCred({ meetType }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const navigateToCall = () => {
@@ -17,12 +18,22 @@ function MeetCred() {
     const password = "hello";
     router.push(`/video?roomid=${roomid}&password=${password}`);
   };
+  const [inputCopyState, setInputCopyState] = useState({
+    value: "JYBFnhdubnfc7xjQAAAN",
+    copied: false,
+  });
+
+  useEffect(() => {
+    console.log(meetType);
+  });
   return (
     <div className={meetCredCSS.container}>
       <div className={meetCredCSS.meetDetailsContainer}></div>
       <div className={meetCredCSS.meetDetails}>
         <div className={meetCredCSS.meetDetailsheading}>
-          Got a meeting code?
+          {meetType === "new_meeting"
+            ? "Invite more people to meeting"
+            : "Got a meeting code?"}
           <IconButton>
             {" "}
             <ClearIcon
@@ -32,13 +43,32 @@ function MeetCred() {
           </IconButton>
         </div>
         <div className={meetCredCSS.meetDetailsSubHeading}>
-          To join a meeting, enter the meeting code provided by the organizer
+          {meetType === "new_meeting"
+            ? "Copy this code and share it with people you want to meet with"
+            : "To join a meeting, enter the meeting code provided by the organizer"}
         </div>
-        <input
-          type="text"
-          placeholder="Enter meeting id"
-          className={meetCredCSS.input}
-        ></input>
+        {meetType !== "new_meeting" ? (
+          <input
+            type="text"
+            placeholder="Enter meeting id"
+            className={meetCredCSS.input}
+          ></input>
+        ) : (
+          <div className={meetCredCSS.meetIdContainer}>
+            JYBFnhdubnfc7xjQAAAN
+            <CopyToClipboard
+              text={inputCopyState.value}
+              onCopy={() =>
+                setInputCopyState({ value: inputCopyState.value, copied: true })
+              }
+            >
+              <IconButton>
+                <ContentCopyIcon />
+              </IconButton>
+            </CopyToClipboard>
+          </div>
+        )}
+
         <div className={meetCredCSS.buttonContainer}>
           <button
             className={meetCredCSS.joinButton}
@@ -46,7 +76,7 @@ function MeetCred() {
               navigateToCall();
             }}
           >
-            Join
+            {meetType === "new_meeting" ? "Start now" : "Join"}
           </button>
         </div>
       </div>
