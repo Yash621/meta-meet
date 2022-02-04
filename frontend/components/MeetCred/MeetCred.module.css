@@ -64,7 +64,7 @@
 }
 .meetDetailsheading {
   /* background-color: red; */
-  width: 92%;
+  width: 90%;
   height: 20%;
   font-size: 1.6em;
   font-family: "Lato";
@@ -79,19 +79,20 @@
   /* position: absolute; */
   cursor: pointer;
   /* left: 30px; */
-  margin-right: 10px;
+  /* margin-right: 10px; */
   font-size: 1.1em;
 }
 .clearIcon:hover {
   color: #1a73e8;
 }
 .buttonContainer {
-  height: 17%;
-  width: 100%;
+  height: 16%;
+  width: 90%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: 35px;
+  /* padding-right: 35px; */
+  /* background-color: red; */
 }
 .meetDetailsSubHeading {
   font-size: 1.2em;
@@ -102,6 +103,4 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* font-weight: 500; */
-  /* background-color: blue; */
 }
