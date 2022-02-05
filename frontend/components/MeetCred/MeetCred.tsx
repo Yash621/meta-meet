@@ -59,6 +59,7 @@ function MeetCred({ meetType }) {
             type="text"
             placeholder="Enter meeting id"
             className={meetCredCSS.input}
+            required
           ></input>
         ) : (
           <div className={meetCredCSS.meetIdContainer}>
@@ -75,7 +76,6 @@ function MeetCred({ meetType }) {
             </CopyToClipboard>
           </div>
         )}
-
         <div className={meetCredCSS.buttonContainer}>
           <button
             className={meetCredCSS.joinButton}

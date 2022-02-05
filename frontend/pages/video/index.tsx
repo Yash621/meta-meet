@@ -142,7 +142,9 @@ function index() {
             </div>
             <div
               className={videoPageCSS.iconButtonContainer}
-              style={{ backgroundColor: "#EB4334" }}
+              style={{
+                backgroundColor: "#EB4334",
+              }}
             >
               <IconButton>
                 <CallEndIcon className={videoPageCSS.iconButton} />
