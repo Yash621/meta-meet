@@ -10,12 +10,20 @@ import { useRouter } from "next/router";
 import IconButton from "@material-ui/core/IconButton";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import io from "socket.io-client";
+
 function MeetCred({ meetType }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const navigateToCall = () => {
     const roomid = "hello";
     const password = "hello";
+    const socket = io.connect("http://localhost:5000", {
+      transports: ["websocket"],
+    });
+    socket.on("me", (id) => {
+      console.log(id + "hello sir");
+    });
     router.push(`/video?roomid=${roomid}&password=${password}`);
   };
   const [inputCopyState, setInputCopyState] = useState({
@@ -35,7 +43,6 @@ function MeetCred({ meetType }) {
             ? "Invite more people to meeting"
             : "Got a meeting code?"}
           <IconButton>
-            {" "}
             <ClearIcon
               className={meetCredCSS.clearIcon}
               onClick={() => dispatch(setmeetCredentialPageShowState(false))}

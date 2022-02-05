@@ -109,10 +109,9 @@
   height: 20%;
   font-size: 1.2em;
   font-family: "Lato";
-  /* border-radius: 5px; */
-  /* outline: none; */
   border: none;
   background-color: #f5f4f4;
+  /* background-color: red; */
   padding-left: 15px;
   display: flex;
   align-items: center;

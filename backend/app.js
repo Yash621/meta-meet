@@ -12,8 +12,10 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
+  socket.join(socket.id, () => {
+    console.log(socket.rooms);
+  });
   socket.emit("me", socket.id);
-
   socket.on("disconnect", () => {
     socket.broadcast.emit("callEnded");
   });
