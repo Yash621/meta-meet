@@ -12,12 +12,11 @@
   width: 100%;
   height: 90%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 .myVideo {
-  width: 80%;
+  width: 60%;
   height: 95%;
   object-fit: cover;
 }
@@ -50,4 +49,10 @@
   justify-content: CENTER;
   align-items: center;
   background-color: #212024;
+}
+.participantVideo {
+  width: 40%;
+  height: 95%;
+  object-fit: cover;
+  background-color: red;
 }

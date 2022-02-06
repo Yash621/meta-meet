@@ -25,6 +25,11 @@ import {
 } from "../../pages/slices/meetCredentialSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useMeeting } from "@videosdk.live/react-sdk";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:5000", {
+  transports: ["websocket"],
+});
 
 function index() {
   // const [joinMeetingClick, setJoinMeetingClick] = useState(false);
@@ -32,10 +37,19 @@ function index() {
     selectmeetCredentialPageShowState
   );
   const [meetCredProp, setMeetCredProp] = useState("new_meeting");
+  const [meetingId, setMeetingId] = useState("");
+
+  useEffect(() => {
+    socket.on("me", (id) => {
+      setMeetingId(id);
+    });
+  }, []);
+
   const dispatch = useDispatch();
   const setMeetTypeClickAndmeetCredentialShowState = (meetType) => {
     if (meetType === "new_meeting") {
       setMeetCredProp("new_meeting");
+      socket.emit("addToMeeting", meetingId);
     } else {
       setMeetCredProp("join_meeting");
     }
@@ -48,7 +62,13 @@ function index() {
         <title>MetaMeet.io</title>
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
-      {meetCredentialPageShowState && <MeetCred meetType={meetCredProp} />}
+      {meetCredentialPageShowState && (
+        <MeetCred
+          meetType={meetCredProp}
+          meetingId={meetingId}
+          socket={socket}
+        />
+      )}
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />

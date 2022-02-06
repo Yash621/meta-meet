@@ -11,25 +11,39 @@ import IconButton from "@material-ui/core/IconButton";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import io from "socket.io-client";
+import Peer from "simple-peer";
+import { route } from "next/dist/server/router";
+import { setSocket } from "../../pages/slices/videoSlice";
 
-function MeetCred({ meetType }) {
+function MeetCred({ meetType, meetingId, socket }) {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [meetingRoomId, setMeetingRoomId] = useState("");
+
   const navigateToCall = () => {
-    const roomid = "hello";
-    const password = "hello";
-    const socket = io.connect("http://localhost:5000", {
-      transports: ["websocket"],
-    });
-    socket.on("me", (id) => {
-      console.log(id + "hello sir");
-    });
-    router.push(`/video?roomid=${roomid}&password=${password}`);
+    dispatch(setSocket(socket));
+    if (meetType === "new_meeting") {
+      router.push(`/video?host=true&id=${meetingId}`);
+    } else {
+      setMeetingRoomId(document.getElementsByTagName("input")[0].value);
+      router.push(
+        `/video?host=false&id=${meetingId}&meetingId=${meetingRoomId}`
+      );
+      // const peer = new Peer({
+      //       initiator: false,
+      //       trickle: false,
+      //       stream: stream,
+      //     });
+      //     peer.on("signal", (data) => {
+      //       socket.emit("joinMeeting", {
+      //         host: id,
+      //         signalData: data,
+      //         from: me,
+      //         name: name,
+      //       });
+      //     });
+    }
   };
-  const [inputCopyState, setInputCopyState] = useState({
-    value: "JYBFnhdubnfc7xjQAAAN",
-    copied: false,
-  });
 
   useEffect(() => {
     console.log(meetType);
@@ -60,16 +74,12 @@ function MeetCred({ meetType }) {
             placeholder="Enter meeting id"
             className={meetCredCSS.input}
             required
+            id="meetingRoomId"
           ></input>
         ) : (
           <div className={meetCredCSS.meetIdContainer}>
-            JYBFnhdubnfc7xjQAAAN
-            <CopyToClipboard
-              text={inputCopyState.value}
-              onCopy={() =>
-                setInputCopyState({ value: inputCopyState.value, copied: true })
-              }
-            >
+            {meetingId}
+            <CopyToClipboard text={meetingId}>
               <IconButton>
                 <ContentCopyIcon />
               </IconButton>
