@@ -16,21 +16,24 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     socket.broadcast.emit("callEnded");
   });
-  socket.on("addToMeeting", (meetingId) => {
-    socket.join(meetingId);
-    console.log("hello");
-  });
+
   socket.on("joinMeeting", (userData) => {
     // console.log(io.sockets.adapter.rooms[meetingId].sockets);
+    console.log("joinMeeting");
     socket.join(userData.host);
-    io.to(data.host).emit("newJoin", {
+    console.log(userData.host);
+    io.to(userData.host).emit("newJoin", {
       signal: userData.signalData,
+      userId: userData.userId,
     });
   });
-  socket.on("callUser", (data) => {});
-
-  socket.on("answerCall", (data) => {
-    io.to(data.to).emit("callAccepted", data.signal);
+  socket.on("acceptCall", (data) => {
+    console.log("acceptcall");
+    console.log(data.userId + "userId");
+    console.log(data.signalData + "signalData");
+    io.to(data.userId).emit("callAccepted", {
+      signal: data.signalData,
+    });
   });
 });
 

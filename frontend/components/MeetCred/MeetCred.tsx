@@ -27,7 +27,9 @@ function MeetCred({ meetType, meetingId, socket }) {
     } else {
       setMeetingRoomId(document.getElementsByTagName("input")[0].value);
       router.push(
-        `/video?host=false&id=${meetingId}&meetingId=${meetingRoomId}`
+        `/video?host=false&id=${meetingId}&meetingId=${
+          document.getElementsByTagName("input")[0].value
+        }`
       );
       // const peer = new Peer({
       //       initiator: false,

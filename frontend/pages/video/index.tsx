@@ -28,9 +28,9 @@ function index() {
   const myVideo = useRef(null);
   const userVideo = useRef(null);
   const router = useRouter();
-  const { host, id, meetingRoomId } = router.query;
+  const { host, id, meetingId } = router.query;
   const socket = useSelector(selectSocket);
-
+  const [videoData, setVideoData] = useState(null);
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
@@ -38,6 +38,7 @@ function index() {
         setStream(stream);
         myVideo.current.srcObject = stream;
       });
+
     if (host === "false") {
       const peer = new Peer({
         initiator: true,
@@ -48,13 +49,38 @@ function index() {
         socket.emit("joinMeeting", {
           userId: id,
           signalData: userData,
-          host: meetingRoomId,
+          host: meetingId,
         });
       });
+      socket.on("callAccepted", (data) => {
+        console.log("call accepted");
+        peer.signal(data.signal);
+      });
       peer.on("stream", (stream) => {
+        console.log("jadoo");
         userVideo.current.srcObject = stream;
       });
-      peer.signal();
+    } else {
+      const peer = new Peer({
+        initiator: false,
+        trickle: false,
+        stream: stream,
+      });
+      peer.on("signal", (data) => {
+        setVideoData(data);
+      });
+      socket.on("newJoin", (data) => {
+        const userId = data.userId;
+        socket.emit("acceptCall", {
+          signalData: stream,
+          userId: userId,
+        });
+        peer.signal(data.signal);
+      });
+      peer.on("stream", (stream) => {
+        console.log("jadoo");
+        userVideo.current.srcObject = stream;
+      });
     }
 
     // socket.on("newJoin", (data) => {
