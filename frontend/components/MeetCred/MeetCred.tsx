@@ -15,35 +15,21 @@ import Peer from "simple-peer";
 import { route } from "next/dist/server/router";
 import { setSocket } from "../../pages/slices/videoSlice";
 
-function MeetCred({ meetType, meetingId, socket }) {
+function MeetCred({ meetType, meetingId }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [meetingRoomId, setMeetingRoomId] = useState("");
 
   const navigateToCall = () => {
-    dispatch(setSocket(socket));
     if (meetType === "new_meeting") {
       router.push(`/video?host=true&id=${meetingId}`);
     } else {
       setMeetingRoomId(document.getElementsByTagName("input")[0].value);
       router.push(
-        `/video?host=false&id=${meetingId}&meetingId=${
+        `/video?host=false&meetingId=${
           document.getElementsByTagName("input")[0].value
         }`
       );
-      // const peer = new Peer({
-      //       initiator: false,
-      //       trickle: false,
-      //       stream: stream,
-      //     });
-      //     peer.on("signal", (data) => {
-      //       socket.emit("joinMeeting", {
-      //         host: id,
-      //         signalData: data,
-      //         from: me,
-      //         name: name,
-      //       });
-      //     });
     }
   };
 

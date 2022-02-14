@@ -26,10 +26,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useMeeting } from "@videosdk.live/react-sdk";
 import io from "socket.io-client";
-
-const socket = io.connect("http://localhost:5000", {
-  transports: ["websocket"],
-});
+import { uid } from "../../utils/uid";
+import { useRouter } from "next/router";
+// const socket = io.connect("http://localhost:5000", {
+//   transports: ["websocket"],
+// });
 
 function index() {
   // const [joinMeetingClick, setJoinMeetingClick] = useState(false);
@@ -38,22 +39,22 @@ function index() {
   );
   const [meetCredProp, setMeetCredProp] = useState("new_meeting");
   const [meetingId, setMeetingId] = useState("");
-
+  const router = useRouter();
   useEffect(() => {
-    socket.on("me", (id) => {
-      setMeetingId(id);
-    });
+    // socket.on("me", (id) => {
+    setMeetingId(uid());
+    // });
   }, []);
 
   const dispatch = useDispatch();
   const setMeetTypeClickAndmeetCredentialShowState = (meetType) => {
     if (meetType === "new_meeting") {
       setMeetCredProp("new_meeting");
-      socket.emit("addToMeeting", meetingId);
+      router.push(`/video?host=true`);
     } else {
       setMeetCredProp("join_meeting");
+      dispatch(setmeetCredentialPageShowState(true));
     }
-    dispatch(setmeetCredentialPageShowState(true));
   };
 
   return (
@@ -63,11 +64,7 @@ function index() {
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
       {meetCredentialPageShowState && (
-        <MeetCred
-          meetType={meetCredProp}
-          meetingId={meetingId}
-          socket={socket}
-        />
+        <MeetCred meetType={meetCredProp} meetingId={meetingId} />
       )}
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
@@ -134,7 +131,7 @@ function index() {
                 }
               >
                 <KeyboardIcon />
-                <p> Join a Meeting</p>
+                <p>Join a Meeting</p>
               </div>
             </div>
           </div>

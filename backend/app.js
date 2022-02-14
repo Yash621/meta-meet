@@ -13,26 +13,25 @@ const io = require("socket.io")(server, {
 
 io.on("connection", (socket) => {
   socket.emit("me", socket.id);
-  socket.on("disconnect", () => {
-    socket.broadcast.emit("callEnded");
-  });
-
-  socket.on("joinMeeting", (userData) => {
+  // socket.on("disconnect", () => {
+  //   socket.broadcast.emit("callEnded");
+  // });
+  socket.on("joinMeeting", (data) => {
     // console.log(io.sockets.adapter.rooms[meetingId].sockets);
     console.log("joinMeeting");
-    socket.join(userData.host);
-    console.log(userData.host);
-    io.to(userData.host).emit("newJoin", {
-      signal: userData.signalData,
-      userId: userData.userId,
+    socket.join(data.host);
+    console.log(data.host);
+    socket.to(data.host).emit("newJoin", {
+      signal: data.signal,
+      guestId: data.id,
     });
   });
   socket.on("acceptCall", (data) => {
     console.log("acceptcall");
-    console.log(data.userId + "userId");
-    console.log(data.signalData + "signalData");
-    io.to(data.userId).emit("callAccepted", {
-      signal: data.signalData,
+    console.log(data.guestId + "guestId");
+    console.log(data.signal + "signalData");
+    socket.to(data.guestId).emit("callAccepted", {
+      signal: data.signal,
     });
   });
 });

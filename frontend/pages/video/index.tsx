@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useRef, useState } from "react";
 // import { Jutsu } from "react-jutsu";
+import { setStreamStatus, selectStream } from "../slices/videoSlice";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import videoPageCSS from "./videoPage.module.css";
@@ -13,7 +14,7 @@ import Button from "@material-ui/core/Button";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import PhoneIcon from "@material-ui/icons/Phone";
 import IconButton from "@material-ui/core/IconButton";
-
+import ClearIcon from "@mui/icons-material/Clear";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import PresentToAllIcon from "@mui/icons-material/PresentToAll";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
@@ -21,38 +22,70 @@ import CallEndIcon from "@mui/icons-material/CallEnd";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import MicIcon from "@mui/icons-material/Mic";
 import { selectSocket } from "../../pages/slices/videoSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { selectMainUserId, setMainUserId } from "../../pages/slices/videoSlice";
+
+const socket = io.connect("http://localhost:5000", {
+  transports: ["websocket"],
+});
 
 function index() {
   const [stream, setStream] = useState(null);
   const myVideo = useRef(null);
   const userVideo = useRef(null);
   const router = useRouter();
-  const { host, id, meetingId } = router.query;
-  const socket = useSelector(selectSocket);
+  const { host, meetingId } = router.query;
   const [videoData, setVideoData] = useState(null);
+  const [newJoin, setNewJoin] = useState(false);
+  const [guestId, setGuestId] = useState(null);
+  const streamStatus = useSelector(selectStream);
+  const dispatch = useDispatch();
+  const connectionRef = useRef();
+  const [socketId, setSocketId] = useState(null);
+  const [meetCredShow, setMeetCredShow] = useState(false);
+  var ide = null;
   useEffect(() => {
+    socket.on("me", (id) => {
+      console.log(id + " meid");
+      ide = id;
+      setSocketId(id);
+      console.log(ide + "ide");
+    });
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream);
         myVideo.current.srcObject = stream;
       });
-
+    socket.on("newJoin", (data) => {
+      setNewJoin(true);
+      console.log(data.guestId + "userid");
+      setGuestId(data.guestId);
+      // console.log(data.signal);
+      setVideoData(data.signal);
+    });
+    if (host === "true") {
+      setTimeout(() => {
+        setMeetCredShow(true);
+      }, 1200);
+    }
     if (host === "false") {
       const peer = new Peer({
         initiator: true,
         trickle: false,
         stream: stream,
       });
-      peer.on("signal", (userData) => {
+      peer.on("signal", (data) => {
+        console.log(ide);
         socket.emit("joinMeeting", {
-          userId: id,
-          signalData: userData,
+          id: ide,
+          signal: data,
           host: meetingId,
         });
       });
       socket.on("callAccepted", (data) => {
+        console.log(connectionRef);
         console.log("call accepted");
         peer.signal(data.signal);
       });
@@ -60,45 +93,77 @@ function index() {
         console.log("jadoo");
         userVideo.current.srcObject = stream;
       });
-    } else {
-      const peer = new Peer({
-        initiator: false,
-        trickle: false,
-        stream: stream,
-      });
-      peer.on("signal", (data) => {
-        setVideoData(data);
-      });
-      socket.on("newJoin", (data) => {
-        const userId = data.userId;
-        socket.emit("acceptCall", {
-          signalData: stream,
-          userId: userId,
-        });
-        peer.signal(data.signal);
-      });
-      peer.on("stream", (stream) => {
-        console.log("jadoo");
-        userVideo.current.srcObject = stream;
-      });
+      connectionRef.current = peer;
     }
-
-    // socket.on("newJoin", (data) => {
-    //   setCaller(data.from);
-    //   setName(data.name);
-    //   setCallerSignal(data.signal);
-    // });
-    // if (host !== "true") {
-    //   socket.emit("joinMeeting", me);
-    // }
   }, []);
-
+  const acceptCall = () => {
+    setNewJoin(false);
+    console.log(newJoin);
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream: stream,
+    });
+    peer.on("signal", (data) => {
+      console.log(connectionRef);
+      socket.emit("acceptCall", {
+        signal: data,
+        guestId: guestId,
+      });
+    });
+    peer.on("stream", (stream) => {
+      userVideo.current.srcObject = stream;
+    });
+    peer.signal(videoData);
+    connectionRef.current = peer;
+  };
   return (
     <div>
       <Head>
         <title>MetaMeet.io</title>
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
+      {newJoin && (
+        <div className={videoPageCSS.notifier}>
+          <div className={videoPageCSS.notifierText}>
+            Someone wants to join this call
+            <p>As the host you can decide to accept or deny the request</p>
+          </div>
+          <div className={videoPageCSS.notifierButtons}>
+            <button
+              className={videoPageCSS.notifierButton}
+              onClick={() => acceptCall()}
+            >
+              Accept entry
+            </button>
+            <button className={videoPageCSS.notifierButton}>Deny entry</button>
+          </div>
+        </div>
+      )}
+      {meetCredShow && (
+        <div className={videoPageCSS.meetDetails}>
+          <div className={videoPageCSS.meetDetailsheading}>
+            Invite more people to meeting
+            <IconButton>
+              <ClearIcon
+                className={videoPageCSS.clearIcon}
+                onClick={() => setMeetCredShow(false)}
+              />
+            </IconButton>
+          </div>
+          <div className={videoPageCSS.meetDetailsSubHeading}>
+            To join a meeting, enter the meeting code provided by the organizer
+          </div>
+          <div className={videoPageCSS.meetIdContainer}>
+            {socketId}
+            <CopyToClipboard text={socketId}>
+              <IconButton>
+                <ContentCopyIcon />
+              </IconButton>
+            </CopyToClipboard>
+          </div>
+        </div>
+      )}
       <div className={videoPageCSS.container}>
         <div className={videoPageCSS.videoContainer}>
           <video
