@@ -173,3 +173,9 @@
   padding-right: 5px;
   color: #282a2c;
 }
+#dummy {
+  /* background-color: red; */
+  position: fixed;
+  /* height: 20px; */
+  /* width: 10px; */
+}

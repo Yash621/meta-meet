@@ -62,7 +62,6 @@ function index() {
       setNewJoin(true);
       console.log(data.guestId + "userid");
       setGuestId(data.guestId);
-      // console.log(data.signal);
       setVideoData(data.signal);
     });
     if (host === "true") {
@@ -71,31 +70,38 @@ function index() {
       }, 1200);
     }
     if (host === "false") {
-      const peer = new Peer({
-        initiator: true,
-        trickle: false,
-        stream: stream,
-      });
-      peer.on("signal", (data) => {
-        console.log(ide);
-        socket.emit("joinMeeting", {
-          id: ide,
-          signal: data,
-          host: meetingId,
-        });
-      });
-      socket.on("callAccepted", (data) => {
-        console.log(connectionRef);
-        console.log("call accepted");
-        peer.signal(data.signal);
-      });
-      peer.on("stream", (stream) => {
-        console.log("jadoo");
-        userVideo.current.srcObject = stream;
-      });
-      connectionRef.current = peer;
+      setTimeout(() => {
+        document.getElementById(videoPageCSS.dummy).click();
+      }, 800);
     }
   }, []);
+
+  const callUser = () => {
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: stream,
+    });
+    peer.on("signal", (data) => {
+      console.log(data);
+      socket.emit("joinMeeting", {
+        id: socketId,
+        signal: data,
+        host: meetingId,
+      });
+    });
+    socket.on("callAccepted", (data) => {
+      console.log(connectionRef);
+      console.log("call accepted");
+      console.log(data.signal + " yobro1234");
+      peer.signal(data.signal);
+    });
+    peer.on("stream", (stream) => {
+      console.log("jadoo");
+      userVideo.current.srcObject = stream;
+    });
+    connectionRef.current = peer;
+  };
   const acceptCall = () => {
     setNewJoin(false);
     console.log(newJoin);
@@ -104,17 +110,20 @@ function index() {
       trickle: false,
       stream: stream,
     });
+    console.log("hello");
     peer.on("signal", (data) => {
-      console.log(connectionRef);
+      console.log(data + "yobro12345");
       socket.emit("acceptCall", {
         signal: data,
         guestId: guestId,
       });
     });
+    peer.signal(videoData);
     peer.on("stream", (stream) => {
+      console.log("yo123");
       userVideo.current.srcObject = stream;
     });
-    peer.signal(videoData);
+    // console.log(videoData + "     yo123");
     connectionRef.current = peer;
   };
   return (
@@ -123,6 +132,7 @@ function index() {
         <title>MetaMeet.io</title>
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
+      <div id={videoPageCSS.dummy} onClick={() => callUser()}></div>
       {newJoin && (
         <div className={videoPageCSS.notifier}>
           <div className={videoPageCSS.notifierText}>

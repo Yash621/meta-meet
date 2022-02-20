@@ -19,8 +19,9 @@ io.on("connection", (socket) => {
   socket.on("joinMeeting", (data) => {
     // console.log(io.sockets.adapter.rooms[meetingId].sockets);
     console.log("joinMeeting");
-    socket.join(data.host);
-    console.log(data.host);
+    // socket.join(data.host);
+    // console.log(data.host);
+    console.log("hello123");
     socket.to(data.host).emit("newJoin", {
       signal: data.signal,
       guestId: data.id,
