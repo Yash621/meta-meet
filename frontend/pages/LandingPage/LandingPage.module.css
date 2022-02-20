@@ -61,21 +61,23 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
   font-size: 1.8em;
 }
 .companyLogo {
-  background-color: red;
+  /* background-color: red; */
   width: 25%;
   height: 50%;
   display: flex;
   justify-content: flex-start;
 }
 .companyName {
-  width: 60%;
+  width: 50%;
   height: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* margin-left: -30px; */
   /* background-color: red; */
 }
 .tagline {

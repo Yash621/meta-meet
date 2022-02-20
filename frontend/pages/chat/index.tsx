@@ -33,7 +33,6 @@ import { useRouter } from "next/router";
 // });
 
 function index() {
-  // const [joinMeetingClick, setJoinMeetingClick] = useState(false);
   const meetCredentialPageShowState = useSelector(
     selectmeetCredentialPageShowState
   );
@@ -41,10 +40,9 @@ function index() {
   const [meetingId, setMeetingId] = useState("");
   const router = useRouter();
   const [searchBarHighlight, setSearchBarHighlight] = useState(false);
+
   useEffect(() => {
-    // socket.on("me", (id) => {
     setMeetingId(uid());
-    // });
   }, []);
 
   const dispatch = useDispatch();
