@@ -40,6 +40,7 @@ function index() {
   const [meetCredProp, setMeetCredProp] = useState("new_meeting");
   const [meetingId, setMeetingId] = useState("");
   const router = useRouter();
+  const [searchBarHighlight, setSearchBarHighlight] = useState(false);
   useEffect(() => {
     // socket.on("me", (id) => {
     setMeetingId(uid());
@@ -55,6 +56,13 @@ function index() {
       setMeetCredProp("join_meeting");
       dispatch(setmeetCredentialPageShowState(true));
     }
+  };
+
+  const focusSearchBar = () => {
+    setSearchBarHighlight(!searchBarHighlight);
+    !searchBarHighlight
+      ? document.getElementById("search-bar").focus()
+      : document.getElementById("search-bar").blur();
   };
 
   return (
@@ -74,14 +82,19 @@ function index() {
           <Image src={logo} />
           MetaMeet.io
         </div>
-        <div className={chatPageCSS.inputContainer}>
+        <div
+          className={`${chatPageCSS.inputContainer} ${
+            searchBarHighlight && chatPageCSS.highlight
+          }`}
+        >
           <div className={chatPageCSS.chatIconContainer}>
             <SearchIcon className={chatPageCSS.chatIcon} />
           </div>
           <input
             type="text"
             placeholder="Search users or spaces"
-            className={chatPageCSS.input}
+            className={`${chatPageCSS.input} `}
+            id="search-bar"
           ></input>
         </div>
         <div className={chatPageCSS.profileAvatarContainer}>
@@ -96,7 +109,7 @@ function index() {
               <div className={chatPageCSS.nilChatSpacesHeadContainer}>
                 <ChatBubbleOutlineIcon className={chatPageCSS.chatIcon} />
                 <p>No Conversations</p>
-                <div>Find a chat</div>
+                <div onClick={() => focusSearchBar()}>Find a chat</div>
               </div>
             </div>
           </div>
@@ -106,7 +119,7 @@ function index() {
               <div className={chatPageCSS.nilChatSpacesHeadContainer}>
                 <GroupsIcon className={chatPageCSS.chatIcon} />
                 <p>No spaces yet</p>
-                <div> Find a space to join</div>
+                <div onClick={() => focusSearchBar()}>Find a space to join</div>
               </div>
             </div>
           </div>
