@@ -78,7 +78,15 @@ function index() {
       }, 800);
     }
   }, []);
-
+  const shareScreen = async () => {
+    var displayMediaStreamConstraints = {
+      video: true,
+    };
+    var stream = await navigator.mediaDevices.getDisplayMedia(
+      displayMediaStreamConstraints
+    );
+    myVideo.current.srcObject = stream;
+  };
   const callUser = () => {
     const peer = new Peer({
       initiator: true,
@@ -185,6 +193,7 @@ function index() {
             ref={myVideo}
             autoPlay
             className={videoPageCSS.myVideo}
+            id="my-video"
           />
           <div className={videoPageCSS.participantVideo}>
             <video
@@ -222,7 +231,10 @@ function index() {
                 )}
               </IconButton>
             </div>
-            <div className={videoPageCSS.iconButtonContainer}>
+            <div
+              className={videoPageCSS.iconButtonContainer}
+              onClick={() => shareScreen()}
+            >
               <IconButton>
                 <PresentToAllIcon className={videoPageCSS.iconButton} />
               </IconButton>
