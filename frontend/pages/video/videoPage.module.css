@@ -17,9 +17,10 @@
   align-items: center;
 }
 .myVideo {
-  width: 60%;
-  height: 55%;
+  width: 70%;
+  height: 95%;
   object-fit: cover;
+  border-radius: 5px 0 0 5px;
 }
 .videoOptionsSubContainer {
   /* position: absolute; */
@@ -52,8 +53,9 @@
   background-color: #212024;
 }
 .participantVideo {
-  width: 50%;
+  width: 28%;
   height: 95%;
+  border-radius: 0 5px 5px 0;
   object-fit: cover;
   background-color: blue;
 }
@@ -110,8 +112,8 @@
 }
 .meetDetails {
   position: fixed;
-  height: 30%;
-  width: 40%;
+  height: 30vh;
+  width: 35%;
   background-color: #fefffe;
   flex-direction: column;
   display: flex;

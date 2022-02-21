@@ -44,6 +44,9 @@ function index() {
   const connectionRef = useRef();
   const [socketId, setSocketId] = useState(null);
   const [meetCredShow, setMeetCredShow] = useState(false);
+  const [micIconState, setMicIconState] = useState(true);
+  const [camIconState, setCamIconState] = useState(true);
+
   var ide = null;
   useEffect(() => {
     socket.on("me", (id) => {
@@ -195,14 +198,28 @@ function index() {
         </div>
         <div className={videoPageCSS.videoOptionsContainer}>
           <div className={videoPageCSS.videoOptionsSubContainer}>
-            <div className={videoPageCSS.iconButtonContainer}>
+            <div
+              className={videoPageCSS.iconButtonContainer}
+              onClick={() => setMicIconState(!micIconState)}
+            >
               <IconButton>
-                <MicIcon className={videoPageCSS.iconButton} />
+                {micIconState ? (
+                  <MicIcon className={videoPageCSS.iconButton} />
+                ) : (
+                  <MicOffIcon className={videoPageCSS.iconButton} />
+                )}
               </IconButton>
             </div>
-            <div className={videoPageCSS.iconButtonContainer}>
+            <div
+              className={videoPageCSS.iconButtonContainer}
+              onClick={() => setCamIconState(!camIconState)}
+            >
               <IconButton>
-                <VideocamIcon className={videoPageCSS.iconButton} />
+                {camIconState ? (
+                  <VideocamIcon className={videoPageCSS.iconButton} />
+                ) : (
+                  <VideocamOffIcon className={videoPageCSS.iconButton} />
+                )}
               </IconButton>
             </div>
             <div className={videoPageCSS.iconButtonContainer}>
