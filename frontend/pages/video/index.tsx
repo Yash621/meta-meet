@@ -143,12 +143,6 @@ function index() {
     stream.getTracks().find((track) => track.kind === "video").enabled = !stream
       .getTracks()
       .find((track) => track.kind === "video").enabled;
-    // if (stream.getTracks().find((track) => track.kind === "video").enabled) {
-    //   myVideo.current = document.getElementsByClassName(
-    //     videoPageCSS.myVideo
-    //   )[0];
-    //   myVideo.current.srcObject = stream;
-    // }
     if (stream.getTracks().find((track) => track.kind === "video").enabled) {
       setTimeout(() => {
         myVideo.current = document.getElementsByClassName(
@@ -160,6 +154,15 @@ function index() {
         );
       }, 10);
     }
+  };
+  const adjustMicIconState = () => {
+    setMicIconState(!micIconState);
+    console.log(
+      stream.getTracks().find((track) => track.kind === "audio").enabled
+    );
+    stream.getTracks().find((track) => track.kind === "audio").enabled = !stream
+      .getTracks()
+      .find((track) => track.kind === "audio").enabled;
   };
   return (
     <div>
@@ -239,7 +242,7 @@ function index() {
           <div className={videoPageCSS.videoOptionsSubContainer}>
             <div
               className={videoPageCSS.iconButtonContainer}
-              onClick={() => setMicIconState(!micIconState)}
+              onClick={() => adjustMicIconState()}
             >
               <IconButton>
                 {micIconState ? (
