@@ -40,7 +40,6 @@ function index() {
   const [meetingId, setMeetingId] = useState("");
   const router = useRouter();
   const [searchBarHighlight, setSearchBarHighlight] = useState(false);
-
   useEffect(() => {
     setMeetingId(uid());
   }, []);

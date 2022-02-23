@@ -25,7 +25,7 @@ import { selectSocket } from "../../pages/slices/videoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { selectMainUserId, setMainUserId } from "../../pages/slices/videoSlice";
-
+import { setmeetCredentialPageShowState } from "../slices/meetCredentialSlice";
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
 });
@@ -47,6 +47,7 @@ function index() {
   const [micIconState, setMicIconState] = useState(true);
   const [camIconState, setCamIconState] = useState(true);
   const [globalPeer, setGlobalPeer] = useState(null);
+
   var ide = null;
   useEffect(() => {
     socket.on("me", (id) => {
@@ -157,14 +158,21 @@ function index() {
   };
   const adjustMicIconState = () => {
     setMicIconState(!micIconState);
-    console.log(
-      stream.getTracks().find((track) => track.kind === "audio").enabled
-    );
     stream.getTracks().find((track) => track.kind === "audio").enabled = !stream
       .getTracks()
       .find((track) => track.kind === "audio").enabled;
   };
-  const endCall = () => {};
+  const endCall = () => {
+    dispatch(setmeetCredentialPageShowState(false));
+    stream
+      .getTracks()
+      .find((track) => track.kind === "video")
+      .stop();
+    if (connectionRef.current) {
+      connectionRef.current.destroy();
+    }
+    router.push("/chat");
+  };
   return (
     <div>
       <Head>
@@ -219,6 +227,7 @@ function index() {
             <video
               playsInline
               ref={myVideo}
+              muted
               autoPlay
               className={videoPageCSS.myVideo}
               id="my-video"
@@ -276,6 +285,7 @@ function index() {
               style={{
                 backgroundColor: "#EB4334",
               }}
+              onClick={() => endCall()}
             >
               <IconButton>
                 <CallEndIcon className={videoPageCSS.iconButton} />
