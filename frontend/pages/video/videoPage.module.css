@@ -181,3 +181,23 @@
   /* height: 20px; */
   /* width: 10px; */
 }
+.userProfileContainer {
+  width: 71%;
+  height: 95%;
+  object-fit: cover;
+  border-radius: 5px 0 0 5px;
+  /* background-color: red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.userProfile {
+  width: 28vh;
+  background-color: green;
+  height: 28vh;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 6em;
+}

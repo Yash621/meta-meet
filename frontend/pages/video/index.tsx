@@ -46,7 +46,7 @@ function index() {
   const [meetCredShow, setMeetCredShow] = useState(false);
   const [micIconState, setMicIconState] = useState(true);
   const [camIconState, setCamIconState] = useState(true);
-
+  const [globalPeer, setGlobalPeer] = useState(null);
   var ide = null;
   useEffect(() => {
     socket.on("me", (id) => {
@@ -121,6 +121,7 @@ function index() {
       trickle: false,
       stream: stream,
     });
+    setGlobalPeer(peer);
     console.log("hello");
     peer.on("signal", (data) => {
       console.log(data + "yobro12345");
@@ -136,6 +137,29 @@ function index() {
     });
     // console.log(videoData + "     yo123");
     connectionRef.current = peer;
+  };
+  const adjustCamIconState = () => {
+    setCamIconState(!camIconState);
+    stream.getTracks().find((track) => track.kind === "video").enabled = !stream
+      .getTracks()
+      .find((track) => track.kind === "video").enabled;
+    // if (stream.getTracks().find((track) => track.kind === "video").enabled) {
+    //   myVideo.current = document.getElementsByClassName(
+    //     videoPageCSS.myVideo
+    //   )[0];
+    //   myVideo.current.srcObject = stream;
+    // }
+    if (stream.getTracks().find((track) => track.kind === "video").enabled) {
+      setTimeout(() => {
+        myVideo.current = document.getElementsByClassName(
+          videoPageCSS.myVideo
+        )[0];
+        myVideo.current.srcObject = stream;
+        console.log(
+          document.getElementsByClassName(videoPageCSS.myVideo).length
+        );
+      }, 10);
+    }
   };
   return (
     <div>
@@ -187,14 +211,20 @@ function index() {
       )}
       <div className={videoPageCSS.container}>
         <div className={videoPageCSS.videoContainer}>
-          <video
-            playsInline
-            muted
-            ref={myVideo}
-            autoPlay
-            className={videoPageCSS.myVideo}
-            id="my-video"
-          />
+          {camIconState ? (
+            <video
+              playsInline
+              muted
+              ref={myVideo}
+              autoPlay
+              className={videoPageCSS.myVideo}
+              id="my-video"
+            />
+          ) : (
+            <div className={videoPageCSS.userProfileContainer}>
+              <div className={videoPageCSS.userProfile}>Y</div>
+            </div>
+          )}
           <div className={videoPageCSS.participantVideo}>
             <video
               playsInline
@@ -221,7 +251,7 @@ function index() {
             </div>
             <div
               className={videoPageCSS.iconButtonContainer}
-              onClick={() => setCamIconState(!camIconState)}
+              onClick={() => adjustCamIconState()}
             >
               <IconButton>
                 {camIconState ? (
