@@ -164,6 +164,7 @@ function index() {
       .getTracks()
       .find((track) => track.kind === "audio").enabled;
   };
+  const endCall = () => {};
   return (
     <div>
       <Head>
@@ -217,7 +218,6 @@ function index() {
           {camIconState ? (
             <video
               playsInline
-              muted
               ref={myVideo}
               autoPlay
               className={videoPageCSS.myVideo}
@@ -231,7 +231,6 @@ function index() {
           <div className={videoPageCSS.participantVideo}>
             <video
               playsInline
-              muted
               ref={userVideo}
               autoPlay
               className={videoPageCSS.myVideo}
