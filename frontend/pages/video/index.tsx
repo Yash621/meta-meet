@@ -47,7 +47,7 @@ function index() {
   const [micIconState, setMicIconState] = useState(true);
   const [camIconState, setCamIconState] = useState(true);
   const [globalPeer, setGlobalPeer] = useState(null);
-
+  const [screenStream, setScreenStream] = useState(null);
   var ide = null;
   useEffect(() => {
     socket.on("me", (id) => {
@@ -62,6 +62,7 @@ function index() {
         setStream(stream);
         myVideo.current.srcObject = stream;
       });
+
     socket.on("newJoin", (data) => {
       setNewJoin(true);
       console.log(data.guestId + "userid");
@@ -83,10 +84,33 @@ function index() {
     var displayMediaStreamConstraints = {
       video: true,
     };
-    var stream = await navigator.mediaDevices.getDisplayMedia(
+
+    const screenStream = await navigator.mediaDevices.getDisplayMedia(
       displayMediaStreamConstraints
     );
-    myVideo.current.srcObject = stream;
+    screenStream.getVideoTracks()[0].addEventListener("ended", () => {
+      myVideo.current.srcObject = stream;
+      // stream.getTracks().find((track) => track.kind === "video").enabled = true;
+      // globalPeer.addTrack(stream.getVideoTracks()[0], stream);
+      // globalPeer.addStream(screenStream);
+      // globalPeer.addTrack(screenStream.getVideoTracks()[0], screenStream);
+      globalPeer.replaceTrack(
+        stream.getVideoTracks()[0],
+        stream.getVideoTracks()[0],
+        stream
+      );
+    });
+    // globalPeer.removeTrack(stream.getVideoTracks()[0], stream);
+    // screenStream.getTracks().find((track) => track.kind === "video").enabled =
+    //   true;
+    // globalPeer.addTrack(screenStream.getVideoTracks()[0], screenStream);
+    globalPeer.replaceTrack(
+      stream.getVideoTracks()[0],
+      screenStream.getVideoTracks()[0],
+      stream
+    );
+    // console.log(stream);
+    myVideo.current.srcObject = screenStream;
   };
   const callUser = () => {
     const peer = new Peer({
@@ -94,6 +118,7 @@ function index() {
       trickle: false,
       stream: stream,
     });
+    setGlobalPeer(peer);
     peer.on("signal", (data) => {
       console.log(data);
       socket.emit("joinMeeting", {
