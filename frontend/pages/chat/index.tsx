@@ -40,6 +40,8 @@ function index() {
   const [meetingId, setMeetingId] = useState("");
   const router = useRouter();
   const [searchBarHighlight, setSearchBarHighlight] = useState(false);
+  const [searchBarHighlightType, setSearchBarHighlightType] = useState("");
+
   useEffect(() => {
     setMeetingId(uid());
   }, []);
@@ -55,11 +57,20 @@ function index() {
     }
   };
 
-  const focusSearchBar = () => {
-    setSearchBarHighlight(!searchBarHighlight);
-    !searchBarHighlight
-      ? document.getElementById("search-bar").focus()
-      : document.getElementById("search-bar").blur();
+  const focusSearchBar = (kind) => {
+    if (
+      !(
+        ((kind === "space" && searchBarHighlightType == "chat") ||
+          (kind === "chat" && searchBarHighlightType == "space")) &&
+        searchBarHighlight === true
+      )
+    ) {
+      setSearchBarHighlight(!searchBarHighlight);
+      !searchBarHighlight
+        ? document.getElementById("search-bar").focus()
+        : document.getElementById("search-bar").blur();
+    }
+    setSearchBarHighlightType(kind);
   };
 
   return (
@@ -106,7 +117,7 @@ function index() {
               <div className={chatPageCSS.nilChatSpacesHeadContainer}>
                 <ChatBubbleOutlineIcon className={chatPageCSS.chatIcon} />
                 <p>No Conversations</p>
-                <div onClick={() => focusSearchBar()}>Find a chat</div>
+                <div onClick={() => focusSearchBar("chat")}>Find a chat</div>
               </div>
             </div>
           </div>
@@ -116,7 +127,9 @@ function index() {
               <div className={chatPageCSS.nilChatSpacesHeadContainer}>
                 <GroupsIcon className={chatPageCSS.chatIcon} />
                 <p>No spaces yet</p>
-                <div onClick={() => focusSearchBar()}>Find a space to join</div>
+                <div onClick={() => focusSearchBar("space")}>
+                  Find a space to join
+                </div>
               </div>
             </div>
           </div>
