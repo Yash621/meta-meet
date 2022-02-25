@@ -98,7 +98,12 @@ function index() {
             searchBarHighlight && chatPageCSS.highlight
           }`}
         >
-          <div className={chatPageCSS.chatIconContainer}>
+          <div
+            className={chatPageCSS.chatIconContainer}
+            onClick={() => {
+              document.getElementById("search-bar").focus();
+            }}
+          >
             <SearchIcon className={chatPageCSS.chatIcon} />
           </div>
           <input
@@ -106,6 +111,7 @@ function index() {
             placeholder="Search users or spaces"
             className={`${chatPageCSS.input} `}
             id="search-bar"
+            onFocus={() => setSearchBarHighlight(true)}
           ></input>
         </div>
         <div className={chatPageCSS.profileAvatarContainer}>
