@@ -28,6 +28,8 @@ import { useMeeting } from "@videosdk.live/react-sdk";
 import io from "socket.io-client";
 import { uid } from "../../utils/uid";
 import { useRouter } from "next/router";
+import ChatComp from "../../components/ChatComp/ChatComp";
+import { tabScrollButtonClasses } from "@mui/material";
 // const socket = io.connect("http://localhost:5000", {
 //   transports: ["websocket"],
 // });
@@ -41,6 +43,7 @@ function index() {
   const router = useRouter();
   const [searchBarHighlight, setSearchBarHighlight] = useState(false);
   const [searchBarHighlightType, setSearchBarHighlightType] = useState("");
+  const [chatComp, setChatComp] = useState(tabScrollButtonClasses);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -159,10 +162,16 @@ function index() {
             </div>
           </div>
         </div>
-        <div className={chatPageCSS.serachResultContainer}>
-          <Image src={graphic} />
-          <p> Start a conversation now </p>
-        </div>
+        {chatComp ? (
+          <div className={chatPageCSS.serachResultContainer}>
+            <ChatComp />
+          </div>
+        ) : (
+          <div className={chatPageCSS.serachResultContainer}>
+            <Image src={graphic} />
+            <p> Start a conversation now </p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,9 +7,8 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>MetaMeet.io</title>
-        <link rel="icon" href="/static/images/title-logo.png" />
+        <link rel="icon" href="static/images/title-logo.png" />
       </Head>
-
       <LandingPage />
     </div>
   );
