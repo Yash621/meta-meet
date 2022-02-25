@@ -48,6 +48,8 @@ function index() {
   const [camIconState, setCamIconState] = useState(true);
   const [globalPeer, setGlobalPeer] = useState(null);
   const [screenStream, setScreenStream] = useState(null);
+  const { type } = router.query;
+
   var ide = null;
   useEffect(() => {
     socket.on("me", (id) => {

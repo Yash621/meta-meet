@@ -11,14 +11,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 .headerContainer {
   width: 100%;
-  height: 10.1vh;
+  height: 10vh;
   display: flex;
   justify-content: space-around;
   align-items: center;
   background-color: #fffefe;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 2;
-  margin-top: 1px;
+  /* margin-top: 1px; */
 }
 .slideIcon {
   font-size: 1.8rem;
@@ -95,7 +95,7 @@
 }
 .chatContainer {
   width: 100%;
-  height: 89.9vh;
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,7 +120,7 @@
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   /* background-color: blue; */
 }
-.serachResultContainer {
+.searchResultContainer {
   height: 100%;
   width: 75%;
   display: flex;

@@ -30,6 +30,7 @@ import { uid } from "../../utils/uid";
 import { useRouter } from "next/router";
 import ChatComp from "../../components/ChatComp/ChatComp";
 import { tabScrollButtonClasses } from "@mui/material";
+
 // const socket = io.connect("http://localhost:5000", {
 //   transports: ["websocket"],
 // });
@@ -80,7 +81,7 @@ function index() {
     <div className={chatPageCSS.container}>
       <Head>
         <title>MetaMeet.io</title>
-        <link rel="icon" href="/static/images/title-logo.png" />
+        <link rel="icon" href="/title-logo.png" />
       </Head>
       {meetCredentialPageShowState && (
         <MeetCred meetType={meetCredProp} meetingId={meetingId} />
@@ -169,7 +170,7 @@ function index() {
           </div>
         </div>
         {chatComp ? (
-          <div className={chatPageCSS.serachResultContainer}>
+          <div className={chatPageCSS.searchResultContainer}>
             <ChatComp />
           </div>
         ) : (

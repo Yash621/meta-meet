@@ -9,8 +9,10 @@ import profilePicture from "../../public/static/images/profile-photo.jpeg";
 import Image from "next/image";
 import IconButton from "@material-ui/core/IconButton";
 import chatGraphic from "../../public/static/images/chat-page-graphic.jpg";
+import { useRouter } from "next/router";
 
 function ChatComp() {
+  const router = useRouter();
   return (
     <div className={chatCompCSS.container}>
       <div className={chatCompCSS.profileContainer}>
@@ -27,7 +29,7 @@ function ChatComp() {
             </IconButton>
           </div>
           <div className={chatCompCSS.iconContainer}>
-            <IconButton>
+            <IconButton onClick={() => router.push("./video?type=call")}>
               <VideocamIcon />
             </IconButton>
           </div>
