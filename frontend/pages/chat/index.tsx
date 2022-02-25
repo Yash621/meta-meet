@@ -30,6 +30,8 @@ import { uid } from "../../utils/uid";
 import { useRouter } from "next/router";
 import ChatComp from "../../components/ChatComp/ChatComp";
 import { tabScrollButtonClasses } from "@mui/material";
+import CallComp from "../../components/CallComp/CallComp";
+import { selectCallCompShowState } from "../slices/callSlice";
 
 // const socket = io.connect("http://localhost:5000", {
 //   transports: ["websocket"],
@@ -44,8 +46,8 @@ function index() {
   const router = useRouter();
   const [searchBarHighlight, setSearchBarHighlight] = useState(false);
   const [searchBarHighlightType, setSearchBarHighlightType] = useState("");
-  const [chatComp, setChatComp] = useState(tabScrollButtonClasses);
-
+  const [chatComp, setChatComp] = useState(true);
+  const callComp = useSelector(selectCallCompShowState);
   useEffect(() => {
     setMeetingId(uid());
   }, []);
@@ -86,6 +88,7 @@ function index() {
       {meetCredentialPageShowState && (
         <MeetCred meetType={meetCredProp} meetingId={meetingId} />
       )}
+      {callComp && <CallComp />}
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />
@@ -174,7 +177,7 @@ function index() {
             <ChatComp />
           </div>
         ) : (
-          <div className={chatPageCSS.serachResultContainer}>
+          <div className={chatPageCSS.searchResultContainer}>
             <Image src={graphic} />
             <p> Start a conversation now </p>
           </div>
