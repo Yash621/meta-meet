@@ -16,15 +16,15 @@ function CallComp() {
           Someone is Inviting you for a video Call
         </div>
         <div className={callCompCSS.acceptRejectContainer}>
-          <div className={`${callCompCSS.acceptReject} ${callCompCSS.accept}`}>
-            Accept Call
-            <CallIcon className={callCompCSS.icon} />
-          </div>
           <div
             className={callCompCSS.acceptReject}
             onClick={() => dispatch(setCallCompShowState(false))}
           >
             RejectCall <CallEndIcon className={callCompCSS.icon} />
+          </div>
+          <div className={`${callCompCSS.acceptReject} ${callCompCSS.accept}`}>
+            Accept Call
+            <CallIcon className={callCompCSS.icon} />
           </div>
         </div>
       </div>
