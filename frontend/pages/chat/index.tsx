@@ -56,7 +56,7 @@ function index() {
   const setMeetTypeClickAndmeetCredentialShowState = (meetType) => {
     if (meetType === "new_meeting") {
       setMeetCredProp("new_meeting");
-      router.push(`/video?host=true`);
+      router.push(`/video?host=true&meetingId=${meetingId}`);
     } else {
       setMeetCredProp("join_meeting");
       dispatch(setmeetCredentialPageShowState(true));

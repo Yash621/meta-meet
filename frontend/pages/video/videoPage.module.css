@@ -21,6 +21,7 @@
   height: 95%;
   object-fit: cover;
   border-radius: 5px 0 0 5px;
+  border: 1px solid #fff;
 }
 .videoOptionsSubContainer {
   /* position: absolute; */
@@ -52,13 +53,7 @@
   align-items: center;
   background-color: #212024;
 }
-.participantVideo {
-  width: 28%;
-  height: 95%;
-  border-radius: 0 5px 5px 0;
-  object-fit: cover;
-  background-color: blue;
-}
+
 .notifier {
   background-color: #fffefe;
   width: 30%;
@@ -200,4 +195,24 @@
   justify-content: center;
   align-items: center;
   font-size: 6em;
+}
+.participantsVideo {
+  height: 40vh;
+  width: 100%;
+  object-fit: cover;
+  border: 1px solid white;
+}
+.participantVideoContainer {
+  width: 28%;
+  height: 95%;
+  border-radius: 0 5px 5px 0;
+  object-fit: cover;
+  background-color: blue;
+  overflow-y: scroll;
+  border-bottom: 1px solid white;
+  border-top: 1px solid white;
+}
+#dummyb {
+  background-color: red;
+  position: fixed;
 }

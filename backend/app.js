@@ -12,27 +12,53 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.emit("me", socket.id);
-  // socket.on("disconnect", () => {
-  //   socket.broadcast.emit("callEnded");
-  // });
+  socket.on("createRoom", (data) => {
+    console.log(data.roomId);
+    socket.join(data.roomId);
+    console.log(Object.keys(io.sockets.adapter.rooms[data.roomId].sockets));
+  });
+  socket.emit("me", {
+    id: socket.id,
+  });
+  socket.on("meetingData", (data) => {
+    console.log(data.roomId);
+    socket.emit("Participants", {
+      Participants: Object.keys(io.sockets.adapter.rooms[data.roomId].sockets),
+    });
+  });
   socket.on("joinMeeting", (data) => {
-    // console.log(io.sockets.adapter.rooms[meetingId].sockets);
-    console.log("joinMeeting");
-    // socket.join(data.host);
-    // console.log(data.host);
-    console.log("hello123");
-    socket.to(data.host).emit("newJoin", {
+    console.log(data.host);
+    socket.broadcast.to(data.host).emit("newJoin", {
       signal: data.signal,
       guestId: data.id,
     });
+    // socket.broadcast.to(data.host).emit("helloworld", {
+    //   message: "hello my name is yash",
+    // });
+    // console.log("hello my name is yash");
+    // Object.keys(io.sockets.adapter.rooms[data.host].sockets).forEach(
+    //   (socketId) => {
+    //     console.log(socketId);
+    //     socket.to(socketId).emit("newJoin", {
+    //       signal: data.signal,
+    //       guestId: data.id,
+    //     });
+    //   }
+    // );
+    console.log(data.roomId + " hello bro");
+    if (
+      !Object.keys(io.sockets.adapter.rooms[data.roomId].sockets).includes(
+        data.id
+      )
+    ) {
+      console.log("hello bro  " + data.id);
+      socket.join(data.roomId);
+    }
   });
   socket.on("acceptCall", (data) => {
-    console.log("acceptcall");
-    console.log(data.guestId + "guestId");
-    console.log(data.signal + "signalData");
-    socket.to(data.guestId).emit("callAccepted", {
+    socket.broadcast.to(data.guestId).emit("callAccepted", {
       signal: data.signal,
+      id: data.id,
     });
   });
 });

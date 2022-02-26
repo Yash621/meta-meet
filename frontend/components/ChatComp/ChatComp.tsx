@@ -10,9 +10,19 @@ import Image from "next/image";
 import IconButton from "@material-ui/core/IconButton";
 import chatGraphic from "../../public/static/images/chat-page-graphic.jpg";
 import { useRouter } from "next/router";
+import {
+  setCallCompShowState,
+  setCallCompShowStateType,
+} from "../../pages/slices/callSlice";
+import { useDispatch } from "react-redux";
 
 function ChatComp() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const setCallCompState = (callType: string) => {
+    dispatch(setCallCompShowState(true));
+    dispatch(setCallCompShowStateType(callType));
+  };
   return (
     <div className={chatCompCSS.container}>
       <div className={chatCompCSS.profileContainer}>
@@ -24,12 +34,12 @@ function ChatComp() {
         </div>
         <div className={chatCompCSS.contact}>
           <div className={chatCompCSS.iconContainer}>
-            <IconButton>
+            <IconButton onClick={() => setCallCompState("voice call")}>
               <CallIcon />
             </IconButton>
           </div>
           <div className={chatCompCSS.iconContainer}>
-            <IconButton onClick={() => router.push("./video?type=call")}>
+            <IconButton onClick={() => setCallCompState("video call")}>
               <VideocamIcon />
             </IconButton>
           </div>

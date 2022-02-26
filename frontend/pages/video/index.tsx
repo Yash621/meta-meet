@@ -26,6 +26,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { selectMainUserId, setMainUserId } from "../../pages/slices/videoSlice";
 import { setmeetCredentialPageShowState } from "../slices/meetCredentialSlice";
+import { uid } from "../../utils/uid";
+
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
 });
@@ -36,7 +38,7 @@ function index() {
   const userVideo = useRef(null);
   const router = useRouter();
   const { host, meetingId } = router.query;
-  const [videoData, setVideoData] = useState(null);
+  const [videoData, setVideoData] = useState([]);
   const [newJoin, setNewJoin] = useState(false);
   const [guestId, setGuestId] = useState(null);
   const streamStatus = useSelector(selectStream);
@@ -47,65 +49,105 @@ function index() {
   const [micIconState, setMicIconState] = useState(true);
   const [camIconState, setCamIconState] = useState(true);
   const [globalPeer, setGlobalPeer] = useState(null);
-  const [screenStream, setScreenStream] = useState(null);
-  const { type } = router.query;
+  const [Participants, setParticipants] = useState(null);
+  const [participantIde, setParticipantIde] = useState(null);
 
   var ide = null;
+  const callAllParticipants = (participantId) => {
+    setParticipantIde(participantId);
+    document.getElementById(videoPageCSS.dummy).click();
+    console.log("I love you nitya");
+  };
+
   useEffect(() => {
-    socket.on("me", (id) => {
-      console.log(id + " meid");
-      ide = id;
-      setSocketId(id);
+    socket.on("helloworld", (data) => {
+      console.log(data.message);
+    });
+    socket.on("me", (data) => {
+      console.log(data.id + " meid");
+      ide = data.id;
+      setSocketId(data.id);
       console.log(ide + "ide");
     });
+    socket.on("Participants", (data) => {
+      setParticipants(data.Participants);
+      setTimeout(() => {
+        console.log(data.Participants);
+        var dum = 0;
+        const interval = window.setInterval(() => {
+          if (dum < data.Participants.length) {
+            callAllParticipants(data.Participants[dum]);
+            console.log(dum);
+            dum++;
+          }
+          if (dum === data.Participants.length) {
+            clearInterval(interval);
+          }
+        }, 12000);
+      }, 800);
+    });
+    if (host === "false") {
+      socket.emit("meetingData", { roomId: meetingId });
+    }
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream);
         myVideo.current.srcObject = stream;
       });
-
     socket.on("newJoin", (data) => {
-      setNewJoin(true);
       console.log(data.guestId + "userid");
       setGuestId(data.guestId);
-      setVideoData(data.signal);
-    });
-    if (host === "true") {
+      var localVideoData = videoData;
+      localVideoData.push(data.signal);
+      setVideoData(localVideoData);
       setTimeout(() => {
+        console.log("click");
+        document.getElementById(videoPageCSS.dummyb).click();
+      }, 800);
+    });
+
+    if (host === "true") {
+      dispatch(setMainUserId(uid()));
+      setTimeout(() => {
+        console.log(meetingId);
         setMeetCredShow(true);
+        console.log(ide + " ide is the best");
+        socket.emit("createRoom", { roomId: meetingId });
       }, 1200);
     }
-    if (host === "false") {
-      setTimeout(() => {
-        document.getElementById(videoPageCSS.dummy).click();
-      }, 800);
-    }
+    // if (host === "false") {
+    //   setTimeout(() => {
+    //     console.log(Participants);
+
+    //     document.getElementById(videoPageCSS.dummy).click();
+    //   }, 800);
+    // }
   }, []);
+  const createVideoElement = () => {
+    const video = document.createElement("video");
+    video.playsInline = true;
+    video.autoplay = true;
+    video.className = videoPageCSS.participantsVideo;
+    document.getElementById("participants-video").appendChild(video);
+    return video;
+  };
   const shareScreen = async () => {
     var displayMediaStreamConstraints = {
       video: true,
     };
-
     const screenStream = await navigator.mediaDevices.getDisplayMedia(
       displayMediaStreamConstraints
     );
     screenStream.getVideoTracks()[0].addEventListener("ended", () => {
       myVideo.current.srcObject = stream;
-      // stream.getTracks().find((track) => track.kind === "video").enabled = true;
-      // globalPeer.addTrack(stream.getVideoTracks()[0], stream);
-      // globalPeer.addStream(screenStream);
-      // globalPeer.addTrack(screenStream.getVideoTracks()[0], screenStream);
       globalPeer.replaceTrack(
         stream.getVideoTracks()[0],
         stream.getVideoTracks()[0],
         stream
       );
     });
-    // globalPeer.removeTrack(stream.getVideoTracks()[0], stream);
-    // screenStream.getTracks().find((track) => track.kind === "video").enabled =
-    //   true;
-    // globalPeer.addTrack(screenStream.getVideoTracks()[0], screenStream);
+
     globalPeer.replaceTrack(
       stream.getVideoTracks()[0],
       screenStream.getVideoTracks()[0],
@@ -115,6 +157,7 @@ function index() {
     myVideo.current.srcObject = screenStream;
   };
   const callUser = () => {
+    console.log(participantIde);
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -123,27 +166,33 @@ function index() {
     setGlobalPeer(peer);
     peer.on("signal", (data) => {
       console.log(data);
+      console.log(meetingId);
       socket.emit("joinMeeting", {
         id: socketId,
         signal: data,
-        host: meetingId,
+        host: participantIde,
+        roomId: meetingId,
+        // type: "host",
       });
     });
     socket.on("callAccepted", (data) => {
-      console.log(connectionRef);
+      console.log("connectionRef");
+      console.log(data.id + "  yobrohowareyou");
       console.log("call accepted");
       console.log(data.signal + " yobro1234");
       peer.signal(data.signal);
+      console.log("my name is yash");
     });
     peer.on("stream", (stream) => {
       console.log("jadoo");
-      userVideo.current.srcObject = stream;
+      const video = createVideoElement();
+      video.srcObject = stream;
+      console.log("hello world");
+      // userVideo.current.srcObject = stream;
     });
     connectionRef.current = peer;
   };
-  const acceptCall = () => {
-    setNewJoin(false);
-    console.log(newJoin);
+  const acceptCall = (guestId, videoData) => {
     const peer = new Peer({
       initiator: false,
       trickle: false,
@@ -156,14 +205,21 @@ function index() {
       socket.emit("acceptCall", {
         signal: data,
         guestId: guestId,
+        id: socketId,
       });
     });
-    peer.signal(videoData);
+    console.log(videoData.length);
+    // socket.emit("newJoine", {
+    //   data: videoData,
+    //   guestId: guestId,
+    //   roomId: socketId,
+    // });
+    peer.signal(videoData[videoData.length - 1]);
     peer.on("stream", (stream) => {
       console.log("yo123");
-      userVideo.current.srcObject = stream;
+      const video = createVideoElement();
+      video.srcObject = stream;
     });
-    // console.log(videoData + "     yo123");
     connectionRef.current = peer;
   };
   const adjustCamIconState = () => {
@@ -200,6 +256,11 @@ function index() {
     }
     router.push("/chat");
   };
+  const acceptUserCall = (guestId, videoData) => {
+    console.log(guestId + "guestid");
+    console.log(videoData + "videoData");
+    acceptCall(guestId, videoData);
+  };
   return (
     <div>
       <Head>
@@ -207,6 +268,10 @@ function index() {
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
       <div id={videoPageCSS.dummy} onClick={() => callUser()}></div>
+      <div
+        id={videoPageCSS.dummyb}
+        onClick={() => acceptUserCall(guestId, videoData)}
+      ></div>
       {newJoin && (
         <div className={videoPageCSS.notifier}>
           <div className={videoPageCSS.notifierText}>
@@ -216,7 +281,7 @@ function index() {
           <div className={videoPageCSS.notifierButtons}>
             <button
               className={videoPageCSS.notifierButton}
-              onClick={() => acceptCall()}
+              // onClick={() => acceptCall()}
             >
               Accept entry
             </button>
@@ -239,8 +304,8 @@ function index() {
             To join a meeting, enter the meeting code provided by the organizer
           </div>
           <div className={videoPageCSS.meetIdContainer}>
-            {socketId}
-            <CopyToClipboard text={socketId}>
+            {meetingId}
+            <CopyToClipboard text={meetingId}>
               <IconButton>
                 <ContentCopyIcon />
               </IconButton>
@@ -264,13 +329,11 @@ function index() {
               <div className={videoPageCSS.userProfile}>Y</div>
             </div>
           )}
-          <div className={videoPageCSS.participantVideo}>
-            <video
-              playsInline
-              ref={userVideo}
-              autoPlay
-              className={videoPageCSS.myVideo}
-            />
+          <div
+            className={videoPageCSS.participantVideoContainer}
+            id="participants-video"
+          >
+            {/* yo */}
           </div>
         </div>
         <div className={videoPageCSS.videoOptionsContainer}>
