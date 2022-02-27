@@ -12,6 +12,12 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
+  socket.on("endCall", (data) => {
+    socket.leave(data.meetingId);
+    io.to(data.meetingId).emit("leftCall", {
+      id: data.id,
+    });
+  });
   socket.on("createRoom", (data) => {
     console.log(data.roomId);
     socket.join(data.roomId);
@@ -33,19 +39,6 @@ io.on("connection", (socket) => {
       guestId: data.id,
       peer: data.peer,
     });
-    // socket.broadcast.to(data.host).emit("helloworld", {
-    //   message: "hello my name is yash",
-    // });
-    // console.log("hello my name is yash");
-    // Object.keys(io.sockets.adapter.rooms[data.host].sockets).forEach(
-    //   (socketId) => {
-    //     console.log(socketId);
-    //     socket.to(socketId).emit("newJoin", {
-    //       signal: data.signal,
-    //       guestId: data.id,
-    //     });
-    //   }
-    // );
     console.log(data.roomId + " hello bro");
     if (
       !Object.keys(io.sockets.adapter.rooms[data.roomId].sockets).includes(

@@ -77,6 +77,14 @@ function index() {
     socket.on("helloworld", (data) => {
       console.log(data.message);
     });
+    socket.on("leftCall", (data) => {
+      console.log(document.getElementById(data.id));
+      console.log(document.getElementById("participants-video"));
+      document
+        .getElementById("participants-video")
+        .removeChild(document.getElementById(data.id));
+      console.log("element removed  " + data.id);
+    });
     socket.on("me", (data) => {
       console.log(data.id + " meid");
       ide = data.id;
@@ -153,11 +161,12 @@ function index() {
     });
   }, []);
 
-  const createVideoElement = () => {
+  const createVideoElement = (guestId) => {
     const video = document.createElement("video");
     video.playsInline = true;
     video.autoplay = true;
     video.className = videoPageCSS.participantsVideo;
+    video.id = guestId;
     document.getElementById("participants-video").appendChild(video);
     return video;
   };
@@ -215,7 +224,7 @@ function index() {
 
     peer.on("stream", (stream) => {
       console.log("jadoo");
-      const video = createVideoElement();
+      const video = createVideoElement(participantIde);
       video.srcObject = stream;
       console.log("hello world");
     });
@@ -247,7 +256,7 @@ function index() {
     peer.signal(videoData[videoData.length - 1]);
     peer.on("stream", (stream) => {
       console.log("yo123");
-      const video = createVideoElement();
+      const video = createVideoElement(guestId);
       video.srcObject = stream;
     });
     connectionRef.current = peer;
@@ -277,6 +286,7 @@ function index() {
   };
   const endCall = () => {
     dispatch(setmeetCredentialPageShowState(false));
+    socket.emit("endCall", { id: socketId, meetingId: meetingId });
     stream
       .getTracks()
       .find((track) => track.kind === "video")
@@ -294,6 +304,7 @@ function index() {
   const setPeerSignal = (globalPeer, peerData) => {
     globalPeer.signal(peerData);
   };
+
   const runHandpose = async () => {
     const net = await handpose.load();
     console.log("Handpose model loaded.");
