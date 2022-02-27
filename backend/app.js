@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
     socket.broadcast.to(data.host).emit("newJoin", {
       signal: data.signal,
       guestId: data.id,
+      peer: data.peer,
     });
     // socket.broadcast.to(data.host).emit("helloworld", {
     //   message: "hello my name is yash",
@@ -56,9 +57,11 @@ io.on("connection", (socket) => {
     }
   });
   socket.on("acceptCall", (data) => {
+    console.log(data.id + " call accepted");
     socket.broadcast.to(data.guestId).emit("callAccepted", {
       signal: data.signal,
       id: data.id,
+      peer: data.peer,
     });
   });
 });

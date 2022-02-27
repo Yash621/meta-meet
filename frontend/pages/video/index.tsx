@@ -24,7 +24,12 @@ import MicIcon from "@mui/icons-material/Mic";
 import { selectSocket } from "../../pages/slices/videoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { selectMainUserId, setMainUserId } from "../../pages/slices/videoSlice";
+import {
+  selectMainUserId,
+  setMainUserId,
+  selectGlobalStatePeer,
+  setGlobalStatePeer,
+} from "../../pages/slices/videoSlice";
 import { setmeetCredentialPageShowState } from "../slices/meetCredentialSlice";
 import { uid } from "../../utils/uid";
 
@@ -51,8 +56,14 @@ function index() {
   const [globalPeer, setGlobalPeer] = useState(null);
   const [Participants, setParticipants] = useState(null);
   const [participantIde, setParticipantIde] = useState(null);
-
+  const [joinedParticipantsVideo, setJoinedParticipantsVideo] = useState([]);
+  const callerPeer = useRef(null);
   var ide = null;
+  const [tPeer, setTpeer] = useState(null);
+  const idRef = useRef(null);
+  const [peerData, setPeerData] = useState(null);
+  // const globalStatePeer = useSelector(selectGlobalStatePeer);
+
   const callAllParticipants = (participantId) => {
     setParticipantIde(participantId);
     document.getElementById(videoPageCSS.dummy).click();
@@ -66,6 +77,7 @@ function index() {
     socket.on("me", (data) => {
       console.log(data.id + " meid");
       ide = data.id;
+      idRef.current = data.id;
       setSocketId(data.id);
       console.log(ide + "ide");
     });
@@ -77,6 +89,7 @@ function index() {
         const interval = window.setInterval(() => {
           if (dum < data.Participants.length) {
             callAllParticipants(data.Participants[dum]);
+
             console.log(dum);
             dum++;
           }
@@ -98,6 +111,7 @@ function index() {
     socket.on("newJoin", (data) => {
       console.log(data.guestId + "userid");
       setGuestId(data.guestId);
+      setTpeer(data.peer);
       var localVideoData = videoData;
       localVideoData.push(data.signal);
       setVideoData(localVideoData);
@@ -116,14 +130,27 @@ function index() {
         socket.emit("createRoom", { roomId: meetingId });
       }, 1200);
     }
-    // if (host === "false") {
-    //   setTimeout(() => {
-    //     console.log(Participants);
 
-    //     document.getElementById(videoPageCSS.dummy).click();
-    //   }, 800);
-    // }
+    socket.on("callAccepted", (data) => {
+      var localVideoData = joinedParticipantsVideo;
+      localVideoData.push(data.signal);
+      setJoinedParticipantsVideo(localVideoData);
+      console.log("connectionRef");
+      console.log(data.id + "  yobrohowareyou");
+      console.log("call accepted");
+      console.log(data.signal + " yobro1234");
+      console.log(joinedParticipantsVideo.length - 1);
+      console.log(joinedParticipantsVideo);
+      setPeerData(data.signal);
+      setTimeout(() => {
+        console.log("click yash");
+        document.getElementById("peer-click").click();
+      }, 800);
+      // peer.signal(joinedParticipantsVideo[joinedParticipantsVideo.length - 1]);
+      console.log("my name is yash");
+    });
   }, []);
+
   const createVideoElement = () => {
     const video = document.createElement("video");
     video.playsInline = true;
@@ -156,14 +183,16 @@ function index() {
     // console.log(stream);
     myVideo.current.srcObject = screenStream;
   };
-  const callUser = () => {
-    console.log(participantIde);
+  const callUser = (pid) => {
+    console.log(participantIde + "participantIde to be called");
     const peer = new Peer({
       initiator: true,
       trickle: false,
       stream: stream,
     });
     setGlobalPeer(peer);
+    callerPeer.current = peer;
+
     peer.on("signal", (data) => {
       console.log(data);
       console.log(meetingId);
@@ -172,17 +201,25 @@ function index() {
         signal: data,
         host: participantIde,
         roomId: meetingId,
+        peer: peer,
         // type: "host",
       });
     });
-    socket.on("callAccepted", (data) => {
-      console.log("connectionRef");
-      console.log(data.id + "  yobrohowareyou");
-      console.log("call accepted");
-      console.log(data.signal + " yobro1234");
-      peer.signal(data.signal);
-      console.log("my name is yash");
-    });
+
+    // socket.on("callAccepted", (data) => {
+    //   var localVideoData = joinedParticipantsVideo;
+    //   localVideoData.push(data.signal);
+    //   setJoinedParticipantsVideo(localVideoData);
+    //   console.log("connectionRef");
+    //   console.log(data.id + "  yobrohowareyou");
+    //   console.log("call accepted");
+    //   console.log(data.signal + " yobro1234");
+    //   console.log(joinedParticipantsVideo.length - 1);
+    //   console.log(joinedParticipantsVideo);
+    //   peer.signal(joinedParticipantsVideo[joinedParticipantsVideo.length - 1]);
+    //   console.log("my name is yash");
+    // });
+
     peer.on("stream", (stream) => {
       console.log("jadoo");
       const video = createVideoElement();
@@ -192,6 +229,7 @@ function index() {
     });
     connectionRef.current = peer;
   };
+
   const acceptCall = (guestId, videoData) => {
     const peer = new Peer({
       initiator: false,
@@ -206,6 +244,7 @@ function index() {
         signal: data,
         guestId: guestId,
         id: socketId,
+        peer: tPeer,
       });
     });
     console.log(videoData.length);
@@ -261,13 +300,21 @@ function index() {
     console.log(videoData + "videoData");
     acceptCall(guestId, videoData);
   };
+  const setPeerSignal = (globalPeer, peerData) => {
+    globalPeer.signal(peerData);
+  };
+
   return (
     <div>
       <Head>
         <title>MetaMeet.io</title>
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
-      <div id={videoPageCSS.dummy} onClick={() => callUser()}></div>
+      <div id={videoPageCSS.dummy} onClick={() => callUser(null)}></div>
+      <div
+        id="peer-click"
+        onClick={() => setPeerSignal(globalPeer, peerData)}
+      ></div>
       <div
         id={videoPageCSS.dummyb}
         onClick={() => acceptUserCall(guestId, videoData)}
