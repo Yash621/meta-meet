@@ -182,6 +182,7 @@
   object-fit: cover;
   border-radius: 5px 0 0 5px;
   /* background-color: red; */
+  border: 1px solid #fff;
   display: flex;
   align-items: center;
   justify-content: center;
