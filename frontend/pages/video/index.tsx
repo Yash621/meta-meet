@@ -89,14 +89,13 @@ function index() {
         const interval = window.setInterval(() => {
           if (dum < data.Participants.length) {
             callAllParticipants(data.Participants[dum]);
-
             console.log(dum);
             dum++;
           }
           if (dum === data.Participants.length) {
             clearInterval(interval);
           }
-        }, 12000);
+        }, 8000);
       }, 800);
     });
     if (host === "false") {
@@ -202,30 +201,14 @@ function index() {
         host: participantIde,
         roomId: meetingId,
         peer: peer,
-        // type: "host",
       });
     });
-
-    // socket.on("callAccepted", (data) => {
-    //   var localVideoData = joinedParticipantsVideo;
-    //   localVideoData.push(data.signal);
-    //   setJoinedParticipantsVideo(localVideoData);
-    //   console.log("connectionRef");
-    //   console.log(data.id + "  yobrohowareyou");
-    //   console.log("call accepted");
-    //   console.log(data.signal + " yobro1234");
-    //   console.log(joinedParticipantsVideo.length - 1);
-    //   console.log(joinedParticipantsVideo);
-    //   peer.signal(joinedParticipantsVideo[joinedParticipantsVideo.length - 1]);
-    //   console.log("my name is yash");
-    // });
 
     peer.on("stream", (stream) => {
       console.log("jadoo");
       const video = createVideoElement();
       video.srcObject = stream;
       console.log("hello world");
-      // userVideo.current.srcObject = stream;
     });
     connectionRef.current = peer;
   };
@@ -248,11 +231,6 @@ function index() {
       });
     });
     console.log(videoData.length);
-    // socket.emit("newJoine", {
-    //   data: videoData,
-    //   guestId: guestId,
-    //   roomId: socketId,
-    // });
     peer.signal(videoData[videoData.length - 1]);
     peer.on("stream", (stream) => {
       console.log("yo123");
