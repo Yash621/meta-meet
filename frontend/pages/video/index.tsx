@@ -32,6 +32,9 @@ import {
 } from "../../pages/slices/videoSlice";
 import { setmeetCredentialPageShowState } from "../slices/meetCredentialSlice";
 import { uid } from "../../utils/uid";
+import { drawHand } from "../../utils/detectionUtils";
+import * as tf from "@tensorflow/tfjs";
+import * as handpose from "@tensorflow-models/handpose";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -53,7 +56,7 @@ function index() {
   const [meetCredShow, setMeetCredShow] = useState(false);
   const [micIconState, setMicIconState] = useState(true);
   const [camIconState, setCamIconState] = useState(true);
-  const [globalPeer, setGlobalPeer] = useState(null);
+  const [globalPeer, setGlobalPeer] = useState([]);
   const [Participants, setParticipants] = useState(null);
   const [participantIde, setParticipantIde] = useState(null);
   const [joinedParticipantsVideo, setJoinedParticipantsVideo] = useState([]);
@@ -167,18 +170,22 @@ function index() {
     );
     screenStream.getVideoTracks()[0].addEventListener("ended", () => {
       myVideo.current.srcObject = stream;
-      globalPeer.replaceTrack(
+      globalPeer.forEach((peer) => {
+        peer.replaceTrack(
+          stream.getVideoTracks()[0],
+          stream.getVideoTracks()[0],
+          stream
+        );
+      });
+    });
+
+    globalPeer.forEach((peer) => {
+      peer.replaceTrack(
         stream.getVideoTracks()[0],
-        stream.getVideoTracks()[0],
+        screenStream.getVideoTracks()[0],
         stream
       );
     });
-
-    globalPeer.replaceTrack(
-      stream.getVideoTracks()[0],
-      screenStream.getVideoTracks()[0],
-      stream
-    );
     // console.log(stream);
     myVideo.current.srcObject = screenStream;
   };
@@ -189,7 +196,9 @@ function index() {
       trickle: false,
       stream: stream,
     });
-    setGlobalPeer(peer);
+    var peerArr = globalPeer;
+    peerArr.push(peer);
+    setGlobalPeer(peerArr);
     callerPeer.current = peer;
 
     peer.on("signal", (data) => {
@@ -219,7 +228,11 @@ function index() {
       trickle: false,
       stream: stream,
     });
-    setGlobalPeer(peer);
+
+    var peerArr = globalPeer;
+    peerArr.push(peer);
+    setGlobalPeer(peerArr);
+
     console.log("hello");
     peer.on("signal", (data) => {
       console.log(data + "yobro12345");
@@ -268,9 +281,9 @@ function index() {
       .getTracks()
       .find((track) => track.kind === "video")
       .stop();
-    if (connectionRef.current) {
-      connectionRef.current.destroy();
-    }
+    globalPeer.forEach((peer) => {
+      peer.destroy();
+    });
     router.push("/chat");
   };
   const acceptUserCall = (guestId, videoData) => {
@@ -281,6 +294,44 @@ function index() {
   const setPeerSignal = (globalPeer, peerData) => {
     globalPeer.signal(peerData);
   };
+  const runHandpose = async () => {
+    const net = await handpose.load();
+    console.log("Handpose model loaded.");
+    //  Loop and detect hands
+    setInterval(() => {
+      // detect(net);
+    }, 100);
+  };
+
+  // const detect = async (net) => {
+  //   // Check data is available
+  //   if (
+  //     typeof myVideo.current !== "undefined" &&
+  //     myVideo.current !== null &&
+  //     myVideo.current.video.readyState === 4
+  //   ) {
+  //     // Get Video Properties
+  //     const video = myVideo.current.srcObject;
+  //     const videoWidth = webcamRef.current.video.videoWidth;
+  //     const videoHeight = webcamRef.current.video.videoHeight;
+
+  //     // Set video width
+  //     webcamRef.current.video.width = videoWidth;
+  //     webcamRef.current.video.height = videoHeight;
+
+  //     // Set canvas height and width
+  //     canvasRef.current.width = videoWidth;
+  //     canvasRef.current.height = videoHeight;
+
+  //     // Make Detections
+  //     const hand = await net.estimateHands(video);
+  //     console.log(hand);
+
+  //     // Draw mesh
+  //     const ctx = canvasRef.current.getContext("2d");
+  //     drawHand(hand, ctx);
+  //   }
+  // };
 
   return (
     <div>
@@ -291,7 +342,9 @@ function index() {
       <div id={videoPageCSS.dummy} onClick={() => callUser(null)}></div>
       <div
         id="peer-click"
-        onClick={() => setPeerSignal(globalPeer, peerData)}
+        onClick={() =>
+          setPeerSignal(globalPeer[globalPeer.length - 1], peerData)
+        }
       ></div>
       <div
         id={videoPageCSS.dummyb}

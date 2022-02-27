@@ -19,6 +19,8 @@
     "@mui/material": "^5.3.1",
     "@next-auth/firebase-adapter": "^0.1.2-pr.183-76202b42.8",
     "@reduxjs/toolkit": "^1.7.1",
+    "@tensorflow-models/handpose": "^0.0.7",
+    "@tensorflow/tfjs": "^3.13.0",
     "@videosdk.live/react-sdk": "^0.1.18",
     "apollo-cache-inmemory": "^1.1.9",
     "apollo-client": "^2.2.5",
