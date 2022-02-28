@@ -34,7 +34,13 @@ import { setmeetCredentialPageShowState } from "../slices/meetCredentialSlice";
 import { uid } from "../../utils/uid";
 import { drawHand } from "../../utils/detectionUtils";
 import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs-backend-webgl";
 import * as handpose from "@tensorflow-models/handpose";
+import * as fp from "fingerpose";
+import victory from "../../public/static/images/victory.png";
+import thumbs_up from "../../public/static/images/thumbs_up.png";
+import Webcam from "react-webcam";
+import Image from "next/image";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -65,6 +71,11 @@ function index() {
   const [tPeer, setTpeer] = useState(null);
   const idRef = useRef(null);
   const [peerData, setPeerData] = useState(null);
+  const canvasRef = useRef(null);
+  const images = { thumbs_up: thumbs_up, victory: victory };
+  const [emoji, setEmoji] = useState(null);
+  const webcamRef = useRef(null);
+  const [shareScreenState, setShareScreenState] = useState(false);
   // const globalStatePeer = useSelector(selectGlobalStatePeer);
 
   const callAllParticipants = (participantId) => {
@@ -116,7 +127,7 @@ function index() {
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream);
-        myVideo.current.srcObject = stream;
+        // myVideo.current.srcObject = stream;
       });
     socket.on("newJoin", (data) => {
       console.log(data.guestId + "userid");
@@ -159,6 +170,8 @@ function index() {
       // peer.signal(joinedParticipantsVideo[joinedParticipantsVideo.length - 1]);
       console.log("my name is yash");
     });
+
+    runHandpose();
   }, []);
 
   const createVideoElement = (guestId) => {
@@ -179,6 +192,7 @@ function index() {
     );
     screenStream.getVideoTracks()[0].addEventListener("ended", () => {
       myVideo.current.srcObject = stream;
+      setShareScreenState(false);
       globalPeer.forEach((peer) => {
         peer.replaceTrack(
           stream.getVideoTracks()[0],
@@ -196,6 +210,8 @@ function index() {
       );
     });
     // console.log(stream);
+    setEmoji(null);
+    setShareScreenState(true);
     myVideo.current.srcObject = screenStream;
   };
   const callUser = (pid) => {
@@ -310,40 +326,79 @@ function index() {
     console.log("Handpose model loaded.");
     //  Loop and detect hands
     setInterval(() => {
-      // detect(net);
+      detect(net);
     }, 100);
   };
 
-  // const detect = async (net) => {
-  //   // Check data is available
-  //   if (
-  //     typeof myVideo.current !== "undefined" &&
-  //     myVideo.current !== null &&
-  //     myVideo.current.video.readyState === 4
-  //   ) {
-  //     // Get Video Properties
-  //     const video = myVideo.current.srcObject;
-  //     const videoWidth = webcamRef.current.video.videoWidth;
-  //     const videoHeight = webcamRef.current.video.videoHeight;
+  const detect = async (net) => {
+    // Check data is available
+    if (
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      // Get Video Properties
+      const video = webcamRef.current.video;
+      const videoWidth = webcamRef.current.video.videoWidth;
+      const videoHeight = webcamRef.current.video.videoHeight;
 
-  //     // Set video width
-  //     webcamRef.current.video.width = videoWidth;
-  //     webcamRef.current.video.height = videoHeight;
+      // Set video width
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
 
-  //     // Set canvas height and width
-  //     canvasRef.current.width = videoWidth;
-  //     canvasRef.current.height = videoHeight;
+      // Set canvas height and width
+      canvasRef.current.width = videoWidth;
+      canvasRef.current.height = videoHeight;
 
-  //     // Make Detections
-  //     const hand = await net.estimateHands(video);
-  //     console.log(hand);
+      // Make Detections
+      const hand = await net.estimateHands(video);
+      // console.log(hand);
 
-  //     // Draw mesh
-  //     const ctx = canvasRef.current.getContext("2d");
-  //     drawHand(hand, ctx);
-  //   }
-  // };
+      if (hand.length > 0) {
+        const GE = new fp.GestureEstimator([
+          fp.Gestures.VictoryGesture,
+          fp.Gestures.ThumbsUpGesture,
+        ]);
+        const gesture = await GE.estimate(hand[0].landmarks, 4);
+        if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
+          // console.log(gesture.gestures + "I am the best");
+          // console.log(gesture.gestures[0]);
+          const confidence = gesture.gestures.map(
+            (prediction) => prediction.score
+          );
+          console.log(confidence + "I am the best");
+          const maxConfidence = confidence.indexOf(
+            Math.max.apply(null, confidence)
+          );
+          // console.log(maxConfidence + "I am the best");
+          console.log(gesture.gestures[maxConfidence].name + "  I am the best");
+          if (gesture.gestures[maxConfidence].name === "victory") {
+            console.log("hello ji");
+            document.getElementById("mute").click();
+          }
+          if (gesture.gestures[maxConfidence].name === "thumbs_up") {
+            document.getElementById("unmute").click();
+          }
+          setEmoji(gesture.gestures[maxConfidence].name);
+          console.log(emoji);
+        }
+      }
 
+      // Draw mesh
+      const ctx = canvasRef.current.getContext("2d");
+      drawHand(hand, ctx);
+    }
+  };
+  const mute = () => {
+    console.log("hello ji");
+    setMicIconState(false);
+    stream.getTracks().find((track) => track.kind === "audio").enabled = false;
+  };
+  const unMute = () => {
+    console.log("hello ji");
+    setMicIconState(true);
+    stream.getTracks().find((track) => track.kind === "audio").enabled = true;
+  };
   return (
     <div>
       <Head>
@@ -351,6 +406,8 @@ function index() {
         <link rel="icon" href="/static/images/title-logo.png" />
       </Head>
       <div id={videoPageCSS.dummy} onClick={() => callUser(null)}></div>
+      <div id="mute" onClick={() => mute()}></div>
+      <div id="unmute" onClick={() => unMute()}></div>
       <div
         id="peer-click"
         onClick={() =>
@@ -402,22 +459,59 @@ function index() {
           </div>
         </div>
       )}
+      {/* NEW STUFF */}
+      {emoji && (
+        <div className={videoPageCSS.handSignContainer}>
+          <Image src={images[emoji]} alt="" className={videoPageCSS.handSign} />
+        </div>
+      )}
+
+      {/* NEW STUFF */}
       <div className={videoPageCSS.container}>
         <div className={videoPageCSS.videoContainer}>
           {camIconState ? (
-            <video
-              playsInline
-              ref={myVideo}
-              muted
-              autoPlay
-              className={videoPageCSS.myVideo}
-              id="my-video"
-            />
+            <div className={videoPageCSS.myVideoContainer}>
+              {!shareScreenState && (
+                <Webcam
+                  ref={webcamRef}
+                  audio={false}
+                  id="my-video"
+                  className={videoPageCSS.myVideo}
+                />
+              )}
+              {shareScreenState && (
+                <video
+                  playsInline
+                  ref={myVideo}
+                  muted
+                  autoPlay
+                  className={videoPageCSS.myVideo}
+                  id="my-video"
+                />
+              )}
+            </div>
           ) : (
             <div className={videoPageCSS.userProfileContainer}>
               <div className={videoPageCSS.userProfile}>Y</div>
             </div>
           )}
+
+          {/* canvas */}
+          <canvas
+            ref={canvasRef}
+            style={{
+              position: "absolute",
+              marginLeft: "auto",
+              marginRight: "auto",
+              left: 0,
+              right: 0,
+              textAlign: "center",
+              zIndex: 9,
+              width: 640,
+              height: 480,
+            }}
+          />
+
           <div
             className={videoPageCSS.participantVideoContainer}
             id="participants-video"
@@ -430,6 +524,7 @@ function index() {
             <div
               className={videoPageCSS.iconButtonContainer}
               onClick={() => adjustMicIconState()}
+              id="mic"
             >
               <IconButton>
                 {micIconState ? (

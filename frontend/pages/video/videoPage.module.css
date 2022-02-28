@@ -16,9 +16,17 @@
   justify-content: center;
   align-items: center;
 }
-.myVideo {
+.myVideoContainer {
   width: 71%;
   height: 95%;
+  object-fit: cover;
+  border-radius: 5px 0 0 5px;
+  border: 1px solid #fff;
+  object-fit: contain;
+}
+.myVideo {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 5px 0 0 5px;
   border: 1px solid #fff;
@@ -216,4 +224,18 @@
 #dummyb {
   background-color: red;
   position: fixed;
+}
+.handSignContainer {
+  position: fixed;
+  height: 5vh;
+  /* background-color: red; */
+  object-fit: contain;
+  width: 5vh;
+  margin-left: 67vw;
+  margin-top: 5vh;
+}
+.handSign {
+  position: fixed;
+  height: 5vh;
+  width: 5vh;
 }
