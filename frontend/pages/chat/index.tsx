@@ -46,7 +46,7 @@ function index() {
   const router = useRouter();
   const [searchBarHighlight, setSearchBarHighlight] = useState(false);
   const [searchBarHighlightType, setSearchBarHighlightType] = useState("");
-  const [chatComp, setChatComp] = useState(true);
+  const [chatComp, setChatComp] = useState(false);
   const callComp = useSelector(selectCallCompShowState);
   useEffect(() => {
     setMeetingId(uid());
@@ -177,7 +177,10 @@ function index() {
             <ChatComp />
           </div>
         ) : (
-          <div className={chatPageCSS.searchResultContainer}>
+          <div
+            className={chatPageCSS.searchResultContainer}
+            onClick={() => setSearchBarHighlight(false)}
+          >
             <Image src={graphic} />
             <p> Start a conversation now </p>
           </div>

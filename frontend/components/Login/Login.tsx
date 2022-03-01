@@ -39,6 +39,7 @@ function Login({ authState }) {
       <div className={`${LoginCSS.loginOptions}`}>
         <div className={LoginCSS.loginOptionName}>Email</div>
         <input
+          type="text"
           className={LoginCSS.input}
           placeholder="Enter your email"
         ></input>
@@ -46,6 +47,7 @@ function Login({ authState }) {
       <div className={LoginCSS.loginOptions}>
         <div className={LoginCSS.loginOptionName}>Password</div>
         <input
+          type="password"
           className={LoginCSS.input}
           placeholder="Enter your password"
         ></input>
