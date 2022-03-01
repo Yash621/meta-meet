@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useContext, useEffect, useState } from "react";
@@ -19,6 +20,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import MeetCred from "../../components/MeetCred/MeetCred";
+import { auth } from "../../firebase";
 import {
   selectmeetCredentialPageShowState,
   setmeetCredentialPageShowState,
@@ -48,8 +50,10 @@ function index() {
   const [searchBarHighlightType, setSearchBarHighlightType] = useState("");
   const [chatComp, setChatComp] = useState(false);
   const callComp = useSelector(selectCallCompShowState);
+
   useEffect(() => {
     setMeetingId(uid());
+    console.log(auth.currentUser.photoURL);
   }, []);
 
   const dispatch = useDispatch();
@@ -118,9 +122,13 @@ function index() {
             onFocus={() => setSearchBarHighlight(true)}
           ></input>
         </div>
-        <div className={chatPageCSS.profileAvatarContainer}>
-          <Image src={profilePhoto} />
-        </div>
+        {/* <div className={chatPageCSS.profileAvatarContainer}> */}
+        <img
+          src={auth.currentUser.photoURL.toString()}
+          alt="profile-photo"
+          className={chatPageCSS.profileAvatarContainer}
+        />
+        {/* </div> */}
       </div>
       <div className={chatPageCSS.chatContainer}>
         <div className={chatPageCSS.chatOptionsContainer}>

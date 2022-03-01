@@ -69,9 +69,10 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  object-fit: contain;
+  object-fit: cover;
   overflow: hidden;
   cursor: pointer;
+  border: 1px solid #f1f3f4;
 }
 .inputContainer {
   width: 60%;
