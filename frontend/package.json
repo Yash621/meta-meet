@@ -30,6 +30,7 @@
     "apollo-link-schema": "^1.0.6",
     "apollo-link-ws": "^1.0.7",
     "apollo-utilities": "^1.0.10",
+    "axios": "^0.26.0",
     "classnames": "^2.2.5",
     "fingerpose": "^0.1.0",
     "firebase": "^8.6.7",

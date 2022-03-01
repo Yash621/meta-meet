@@ -9,6 +9,14 @@ const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
 const userRoutes = require("./routes/user");
+var cors = require("cors");
+app.use(cors());
+app.use(express.json());
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  next();
+});
 
 const io = require("socket.io")(server, {
   cors: {
