@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useRef, useState } from "react";
 // import { Jutsu } from "react-jutsu";
@@ -41,6 +42,7 @@ import victory from "../../public/static/images/victory.png";
 import thumbs_up from "../../public/static/images/thumbs_up.png";
 import Webcam from "react-webcam";
 import Image from "next/image";
+import { auth } from "../../firebase";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -492,10 +494,13 @@ function index() {
             </div>
           ) : (
             <div className={videoPageCSS.userProfileContainer}>
-              <div className={videoPageCSS.userProfile}>Y</div>
+              <img
+                src={auth.currentUser.photoURL.toString()}
+                alt=""
+                className={videoPageCSS.userProfile}
+              />
             </div>
           )}
-
           {/* canvas */}
           <canvas
             ref={canvasRef}
@@ -511,7 +516,6 @@ function index() {
               height: 480,
             }}
           />
-
           <div
             className={videoPageCSS.participantVideoContainer}
             id="participants-video"

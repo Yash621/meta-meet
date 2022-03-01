@@ -1,8 +1,14 @@
 const express = require("express");
 const http = require("http");
 const app = express();
-
+require("dotenv").config();
 const server = http.createServer(app);
+const mongoose = require("mongoose");
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
+const db = mongoose.connection;
+db.on("error", (error) => console.error(error));
+db.once("open", () => console.log("Connected to Database"));
+const userRoutes = require("./routes/user");
 
 const io = require("socket.io")(server, {
   cors: {
@@ -10,6 +16,8 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
+
+app.use("/users", userRoutes);
 
 io.on("connection", (socket) => {
   socket.on("endCall", (data) => {
