@@ -34,6 +34,8 @@ import ChatComp from "../../components/ChatComp/ChatComp";
 import { tabScrollButtonClasses } from "@mui/material";
 import CallComp from "../../components/CallComp/CallComp";
 import { selectCallCompShowState } from "../slices/callSlice";
+import { selectAcessToken, selectAuthMethod } from "../slices/landingSlice";
+import defaultProfilePhoto from "../../public/static/images/default-profile-photo.png";
 
 // const socket = io.connect("http://localhost:5000", {
 //   transports: ["websocket"],
@@ -50,10 +52,15 @@ function index() {
   const [searchBarHighlightType, setSearchBarHighlightType] = useState("");
   const [chatComp, setChatComp] = useState(false);
   const callComp = useSelector(selectCallCompShowState);
+  const accessToken = useSelector(selectAcessToken);
+  const { authMethod } = router.query;
+  const [photoUrl, setPhotoUrl] = useState(null);
 
   useEffect(() => {
     setMeetingId(uid());
-    console.log(auth.currentUser.photoURL);
+    if (authMethod === "google") {
+      setPhotoUrl(auth.currentUser.photoURL.toString());
+    }
   }, []);
 
   const dispatch = useDispatch();
@@ -122,12 +129,24 @@ function index() {
             onFocus={() => setSearchBarHighlight(true)}
           ></input>
         </div>
-        {/* <div className={chatPageCSS.profileAvatarContainer}> */}
-        <img
-          src={auth.currentUser.photoURL.toString()}
-          alt="profile-photo"
-          className={chatPageCSS.profileAvatarContainer}
-        />
+
+        {authMethod === "google" && (
+          <img
+            src={photoUrl}
+            alt="profile-photo"
+            className={chatPageCSS.profileAvatarContainer}
+          />
+        )}
+        {authMethod !== "google" && (
+          <div
+            className={`${chatPageCSS.profileAvatarContainer} ${chatPageCSS.animatedAvatar}`}
+          >
+            <Image src={defaultProfilePhoto} />
+          </div>
+        )}
+
+        {/* )} */}
+
         {/* </div> */}
       </div>
       <div className={chatPageCSS.chatContainer}>

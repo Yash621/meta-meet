@@ -9,16 +9,19 @@ import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setAccessToken, setAuthMethod } from "../../pages/slices/landingSlice";
 
 function Login({ authState }) {
   const [user] = useAuthState(auth);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const signIn = () => {
     auth
       .signInWithPopup(provider)
       .then(() => {
-        router.push("/chat");
+        router.push("/chat?authMethod=google");
       })
       .catch((err) => {
         alert("oops! something went wrong!");
@@ -29,24 +32,55 @@ function Login({ authState }) {
     const url = "http://localhost:5000";
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const data = {
-      email: email,
-      password: password,
-    };
-    axios({
-      method: "post",
-      url: `${url}/users/create`,
-      headers: { "content-type": "application/json" },
-      data: data,
-    })
-      .then(function (response) {
-        //handle success
-        console.log(response);
+    if (authState === "Sign In") {
+      const data = {
+        email: email,
+        password: password,
+      };
+      axios({
+        method: "post",
+        url: `${url}/users/login`,
+        data: data,
+        headers: { "content-type": "application/json" },
       })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
+        .then(function (response) {
+          //handle success
+          console.log("hello");
+          if (response.data.message === "authenticated") {
+            dispatch(setAccessToken(response.data.accessToken));
+            dispatch(setAuthMethod("inputCredentials"));
+            router.push("/chat?id=" + response.data.userId);
+          } else {
+            alert("Invalid Credentials");
+          }
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+    } else {
+      const data = {
+        email: email,
+        password: password,
+      };
+      axios({
+        method: "post",
+        url: `${url}/users/register`,
+        headers: { "content-type": "application/json" },
+        data: data,
+      })
+        .then(function (response) {
+          if (response.data.message === "User already exists") {
+            alert("User already exists! please try a different email");
+          } else {
+            router.push("/chat?id=" + response.data.userId);
+            dispatch(setAuthMethod("inputCredentials"));
+          }
+        })
+        .catch(function (response) {
+          //handle error
+        });
+    }
   };
 
   return (

@@ -72,7 +72,10 @@
   object-fit: cover;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid #f1f3f4;
+  border: 2px solid #f1f3f4;
+}
+.animatedAvatar {
+  border: 2px solid black;
 }
 .inputContainer {
   width: 60%;
