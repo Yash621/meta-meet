@@ -95,3 +95,8 @@
 .forgotPass :hover {
   text-decoration: underline;
 }
+.warnings {
+  color: red;
+  /* background-color: red; */
+  width: 80%;
+}

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/link-passhref */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import LoginCSS from "../Login/Login.module.css";
 import Image from "next/image";
 import Logo from "../../public/static/images/logo.png";
@@ -16,6 +16,8 @@ function Login({ authState }) {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [emailAlreadyExists, setEmailAlreadyExists] = useState(false);
+  const [incorrectPassword, setIncorrectPassword] = useState(false);
 
   const signIn = () => {
     auth
@@ -28,7 +30,7 @@ function Login({ authState }) {
       });
   };
 
-  const createUser = () => {
+  const authUser = () => {
     const url = "http://localhost:5000";
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -51,7 +53,7 @@ function Login({ authState }) {
             dispatch(setAuthMethod("inputCredentials"));
             router.push("/chat?id=" + response.data.userId);
           } else {
-            alert("Invalid Credentials");
+            setIncorrectPassword(true);
           }
         })
         .catch(function (response) {
@@ -71,7 +73,7 @@ function Login({ authState }) {
       })
         .then(function (response) {
           if (response.data.message === "User already exists") {
-            alert("User already exists! please try a different email");
+            setEmailAlreadyExists(true);
           } else {
             router.push("/chat?id=" + response.data.userId);
             dispatch(setAuthMethod("inputCredentials"));
@@ -81,6 +83,10 @@ function Login({ authState }) {
           //handle error
         });
     }
+  };
+  const refreshStates = () => {
+    setEmailAlreadyExists(false);
+    setIncorrectPassword(false);
   };
 
   return (
@@ -97,6 +103,12 @@ function Login({ authState }) {
       <div className={LoginCSS.loginheading}>{authState}</div>
       <div className={`${LoginCSS.loginOptions}`}>
         <div className={LoginCSS.loginOptionName}>Email</div>
+        {emailAlreadyExists && (
+          <div className={LoginCSS.warnings}>
+            <p>Email already exists, please try a different email</p>
+          </div>
+        )}
+
         <input
           type="text"
           className={LoginCSS.input}
@@ -106,6 +118,11 @@ function Login({ authState }) {
       </div>
       <div className={LoginCSS.loginOptions}>
         <div className={LoginCSS.loginOptionName}>Password</div>
+        {incorrectPassword && (
+          <div className={LoginCSS.warnings}>
+            <p>Incorrect Password, Please try again</p>
+          </div>
+        )}
         <input
           type="password"
           className={LoginCSS.input}
@@ -114,19 +131,23 @@ function Login({ authState }) {
         ></input>
       </div>
       <div className={LoginCSS.loginOptions}>
-        <button className={LoginCSS.submitLogin} onClick={() => createUser()}>
+        <button className={LoginCSS.submitLogin} onClick={() => authUser()}>
           {authState}
         </button>
         <div className={LoginCSS.forgotPass}>
           {authState === "Sign In" && (
             <Link href="/auth/register">
-              <p>Don't have an account? Sign Up</p>
+              <p onClick={() => refreshStates()}>
+                Don't have an account? Sign Up
+              </p>
             </Link>
           )}
           <p onClick={signIn}>{authState} with Google</p>
           {authState !== "Sign In" && (
             <Link href="/auth/login">
-              <p>Already have an account ? Sign In</p>
+              <p onClick={() => refreshStates()}>
+                Already have an account ? Sign In
+              </p>
             </Link>
           )}
         </div>

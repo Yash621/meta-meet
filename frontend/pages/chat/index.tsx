@@ -37,10 +37,6 @@ import { selectCallCompShowState } from "../slices/callSlice";
 import { selectAcessToken, selectAuthMethod } from "../slices/landingSlice";
 import defaultProfilePhoto from "../../public/static/images/default-profile-photo.png";
 
-// const socket = io.connect("http://localhost:5000", {
-//   transports: ["websocket"],
-// });
-
 function index() {
   const meetCredentialPageShowState = useSelector(
     selectmeetCredentialPageShowState
@@ -144,10 +140,6 @@ function index() {
             <Image src={defaultProfilePhoto} />
           </div>
         )}
-
-        {/* )} */}
-
-        {/* </div> */}
       </div>
       <div className={chatPageCSS.chatContainer}>
         <div className={chatPageCSS.chatOptionsContainer}>

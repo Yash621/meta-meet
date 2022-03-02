@@ -39,15 +39,12 @@ router.post("/login", async (req, res) => {
     const user = await User.find({ email: req.body.email });
     const validPass = await bcrypt.compare(req.body.password, user[0].password);
     const token = await jwt.sign(req.body, process.env.JWT_SECRET);
-
     if (validPass) {
-      res
-        .status(200)
-        .json({
-          message: "authenticated",
-          userId: user[0]._id,
-          accessToken: token,
-        });
+      res.status(200).json({
+        message: "authenticated",
+        userId: user[0]._id,
+        accessToken: token,
+      });
     } else {
       res.status(200).json({ message: "not authenticated" });
     }
