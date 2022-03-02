@@ -50,6 +50,7 @@ function index() {
   const callComp = useSelector(selectCallCompShowState);
   const accessToken = useSelector(selectAcessToken);
   const { authMethod } = router.query;
+  const authWay = useSelector(selectAuthMethod);
   const [photoUrl, setPhotoUrl] = useState(null);
 
   useEffect(() => {
@@ -95,7 +96,7 @@ function index() {
       {meetCredentialPageShowState && (
         <MeetCred meetType={meetCredProp} meetingId={meetingId} />
       )}
-      {callComp && <CallComp />}
+      {callComp && <CallComp authMethod={authMethod} />}
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />

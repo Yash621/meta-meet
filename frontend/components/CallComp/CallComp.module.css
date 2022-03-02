@@ -23,10 +23,11 @@
   width: 250px;
   height: 250px;
   border-radius: 50%;
-  background-color: green;
-  opacity: 0.6;
+  /* background-color: green; */
+  /* opacity: 0.6; */
   font-size: 5.5em;
 }
+
 .acceptRejectContainer {
   display: flex;
   align-items: center;

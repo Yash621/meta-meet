@@ -43,6 +43,8 @@ import thumbs_up from "../../public/static/images/thumbs_up.png";
 import Webcam from "react-webcam";
 import Image from "next/image";
 import { auth } from "../../firebase";
+import defaultAvatar from "../../public/static/images/default-profile-photo.png";
+import { selectAuthMethod } from "../../pages/slices/landingSlice";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -78,6 +80,8 @@ function index() {
   const [emoji, setEmoji] = useState(null);
   const webcamRef = useRef(null);
   const [shareScreenState, setShareScreenState] = useState(false);
+  const authMethod = useSelector(selectAuthMethod);
+
   // const globalStatePeer = useSelector(selectGlobalStatePeer);
 
   const callAllParticipants = (participantId) => {
@@ -494,11 +498,18 @@ function index() {
             </div>
           ) : (
             <div className={videoPageCSS.userProfileContainer}>
-              <img
-                src={auth.currentUser.photoURL.toString()}
-                alt=""
-                className={videoPageCSS.userProfile}
-              />
+              {authMethod === "inputCredentials" && (
+                <div className={videoPageCSS.userProfile}>
+                  <Image src={defaultAvatar} alt="" />
+                </div>
+              )}
+              {authMethod !== "inputCredentials" && (
+                <img
+                  src={auth.currentUser.photoURL.toString()}
+                  alt=""
+                  className={videoPageCSS.userProfile}
+                />
+              )}
             </div>
           )}
           {/* canvas */}

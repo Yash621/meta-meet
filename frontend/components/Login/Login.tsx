@@ -87,6 +87,8 @@ function Login({ authState }) {
   const refreshStates = () => {
     setEmailAlreadyExists(false);
     setIncorrectPassword(false);
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
   };
 
   return (
