@@ -101,7 +101,7 @@ function index() {
       document.getElementById("search-results-container").innerHTML = "";
     } else {
       await axios
-        .get(`${url}/users/search?filter=${filter}`)
+        .get(`${url}/users/search?filter=${filter}&id=${id}`)
         .then((response) => {
           setFilteredResults(response.data);
           document.getElementById("search-results-container").innerHTML = "";
