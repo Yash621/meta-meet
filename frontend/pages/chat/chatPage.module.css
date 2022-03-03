@@ -124,7 +124,7 @@
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   /* background-color: blue; */
 }
-.searchResultContainer {
+.startAChatContainer {
   height: 100%;
   width: 75%;
   display: flex;
@@ -135,6 +135,11 @@
   font-weight: 500;
   color: #29292d;
   /* background-color: green; */
+}
+.chatComponentContainer {
+  height: 100%;
+  width: 75%;
+  font-size: 1.8em;
 }
 .chatOptionContainer {
   width: 100%;

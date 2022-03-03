@@ -9,6 +9,7 @@ const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
 const userRoutes = require("./routes/user");
+const chatRoutes = require("./routes/chat");
 var cors = require("cors");
 app.use(cors());
 app.use(express.json());
@@ -26,6 +27,7 @@ const io = require("socket.io")(server, {
 });
 
 app.use("/users", userRoutes);
+app.use("/chats", chatRoutes);
 
 io.on("connection", (socket) => {
   socket.on("endCall", (data) => {

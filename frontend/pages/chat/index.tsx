@@ -37,6 +37,7 @@ import { selectCallCompShowState } from "../slices/callSlice";
 import { selectAcessToken, selectAuthMethod } from "../slices/landingSlice";
 import defaultProfilePhoto from "../../public/static/images/default-profile-photo.png";
 import axios from "axios";
+import { ChatItem } from "react-chat-elements";
 
 function index() {
   const meetCredentialPageShowState = useSelector(
@@ -56,6 +57,7 @@ function index() {
   const [logOutShowState, setLogOutShowState] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
   const { id } = router.query;
+  const [userName, setUserName] = useState(null);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -110,6 +112,14 @@ function index() {
               const element = document.createElement("div");
               element.className = chatPageCSS.searchResults;
               element.innerHTML = user.username;
+              element.addEventListener("click", () => {
+                document.getElementById("search-bar").value = "";
+                setSearchBarHighlight(false);
+                setChatComp(true);
+                document.getElementById("search-results-container").innerHTML =
+                  "";
+                setUserName(element.innerHTML);
+              });
               document
                 .getElementById("search-results-container")
                 .appendChild(element);
@@ -256,12 +266,15 @@ function index() {
           </div>
         </div>
         {chatComp ? (
-          <div className={chatPageCSS.searchResultContainer}>
-            <ChatComp />
+          <div
+            className={chatPageCSS.chatComponentContainer}
+            onClick={() => setSearchBarHighlight(false)}
+          >
+            <ChatComp user={userName} id={id} />
           </div>
         ) : (
           <div
-            className={chatPageCSS.searchResultContainer}
+            className={chatPageCSS.startAChatContainer}
             onClick={() => setSearchBarHighlight(false)}
           >
             <Image src={graphic} />

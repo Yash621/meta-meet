@@ -54,10 +54,8 @@ router.post("/login", async (req, res) => {
 });
 router.get("/search", async (req, res) => {
   try {
-    console.log(req.query);
     const users = [];
     const registeredUsers = await User.find({});
-    // console.log(registeredUsers);
     registeredUsers.forEach((user) => {
       if (req.query.id != user.id) {
         if (user.username.includes(req.query.filter)) {
@@ -70,4 +68,5 @@ router.get("/search", async (req, res) => {
     res.status(500).json({ message: "Error getting user" });
   }
 });
+
 module.exports = router;
