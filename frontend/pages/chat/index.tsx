@@ -52,6 +52,7 @@ function index() {
   const { authMethod } = router.query;
   const authWay = useSelector(selectAuthMethod);
   const [photoUrl, setPhotoUrl] = useState(null);
+  const [logOutShowState, setLogOutShowState] = useState(false);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -85,6 +86,9 @@ function index() {
         : document.getElementById("search-bar").blur();
     }
     setSearchBarHighlightType(kind);
+  };
+  const logOut = () => {
+    router.push("/");
   };
 
   return (
@@ -126,19 +130,26 @@ function index() {
             onFocus={() => setSearchBarHighlight(true)}
           ></input>
         </div>
-
         {authMethod === "google" && (
           <img
             src={photoUrl}
             alt="profile-photo"
             className={chatPageCSS.profileAvatarContainer}
+            onClick={() => setLogOutShowState(!logOutShowState)}
           />
         )}
+
         {authMethod !== "google" && (
           <div
             className={`${chatPageCSS.profileAvatarContainer} ${chatPageCSS.animatedAvatar}`}
+            onClick={() => setLogOutShowState(!logOutShowState)}
           >
             <Image src={defaultProfilePhoto} />
+          </div>
+        )}
+        {logOutShowState && (
+          <div className={chatPageCSS.logOutContainer} onClick={() => logOut()}>
+            LogOut
           </div>
         )}
       </div>
@@ -163,6 +174,7 @@ function index() {
                 <div onClick={() => focusSearchBar("space")}>
                   Find a space to join
                 </div>
+                <div>Create Space</div>
               </div>
             </div>
           </div>

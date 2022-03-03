@@ -190,6 +190,7 @@ function index() {
     return video;
   };
   const shareScreen = async () => {
+    setEmoji(null);
     var displayMediaStreamConstraints = {
       video: true,
     };
@@ -284,6 +285,9 @@ function index() {
     connectionRef.current = peer;
   };
   const adjustCamIconState = () => {
+    if (camIconState === true) {
+      setEmoji(null);
+    }
     setCamIconState(!camIconState);
     stream.getTracks().find((track) => track.kind === "video").enabled = !stream
       .getTracks()
@@ -405,6 +409,7 @@ function index() {
     setMicIconState(true);
     stream.getTracks().find((track) => track.kind === "audio").enabled = true;
   };
+
   return (
     <div>
       <Head>

@@ -16,7 +16,7 @@ function Login({ authState }) {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [emailAlreadyExists, setEmailAlreadyExists] = useState(false);
+  const [userNameAlreadyExists, setUserNameAlreadyExists] = useState(false);
   const [incorrectPassword, setIncorrectPassword] = useState(false);
 
   const signIn = () => {
@@ -32,13 +32,13 @@ function Login({ authState }) {
 
   const authUser = () => {
     const url = "http://localhost:5000";
-    const email = document.getElementById("email").value;
+    const userName = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    const data = {
+      username: userName,
+      password: password,
+    };
     if (authState === "Sign In") {
-      const data = {
-        email: email,
-        password: password,
-      };
       axios({
         method: "post",
         url: `${url}/users/login`,
@@ -61,10 +61,6 @@ function Login({ authState }) {
           console.log(response);
         });
     } else {
-      const data = {
-        email: email,
-        password: password,
-      };
       axios({
         method: "post",
         url: `${url}/users/register`,
@@ -73,7 +69,7 @@ function Login({ authState }) {
       })
         .then(function (response) {
           if (response.data.message === "User already exists") {
-            setEmailAlreadyExists(true);
+            setUserNameAlreadyExists(true);
           } else {
             router.push("/chat?id=" + response.data.userId);
             dispatch(setAuthMethod("inputCredentials"));
@@ -85,9 +81,9 @@ function Login({ authState }) {
     }
   };
   const refreshStates = () => {
-    setEmailAlreadyExists(false);
+    setUserNameAlreadyExists(false);
     setIncorrectPassword(false);
-    document.getElementById("email").value = "";
+    document.getElementById("username").value = "";
     document.getElementById("password").value = "";
   };
 
@@ -104,18 +100,17 @@ function Login({ authState }) {
       </div>
       <div className={LoginCSS.loginheading}>{authState}</div>
       <div className={`${LoginCSS.loginOptions}`}>
-        <div className={LoginCSS.loginOptionName}>Email</div>
-        {emailAlreadyExists && (
+        <div className={LoginCSS.loginOptionName}>Username</div>
+        {userNameAlreadyExists && (
           <div className={LoginCSS.warnings}>
-            <p>Email already exists, please try a different email</p>
+            <p>Username already exists, please try a different username</p>
           </div>
         )}
-
         <input
           type="text"
           className={LoginCSS.input}
-          placeholder="Enter your email"
-          id="email"
+          placeholder="Enter your username"
+          id="username"
         ></input>
       </div>
       <div className={LoginCSS.loginOptions}>

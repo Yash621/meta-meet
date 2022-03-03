@@ -198,6 +198,8 @@
 .nilChatSpacesHeadContainer div {
   color: #2077e9;
   cursor: pointer;
+  /* background-color: red; */
+  padding: 5px;
 }
 .startMeetOptionsContainer {
   /* background-color: red; */
@@ -223,5 +225,21 @@
   margin-left: 15px;
 }
 .startMeetOptionContainer:hover {
+  background-color: #e3e5e6;
+}
+.logOutContainer {
+  background-color: #fefefe;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+  position: fixed;
+  height: 5vh;
+  width: 5vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 92vw;
+  margin-top: 11vh;
+  cursor: pointer;
+}
+.logOutContainer:hover {
   background-color: #e3e5e6;
 }

@@ -15,7 +15,7 @@ const authenticateToken = require("../utils/authenticateToken");
 
 router.post("/register", async (req, res) => {
   // console.log(req);
-  const checkUsers = await User.find({ email: req.body.email });
+  const checkUsers = await User.find({ username: req.body.username });
   if (checkUsers.length > 0) {
     res.status(200).json({ message: "User already exists" });
   } else {
@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
     console.log(req.body);
     const encryptedPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
-      email: req.body.email,
+      username: req.body.username,
       password: encryptedPassword,
     });
     try {
@@ -36,7 +36,7 @@ router.post("/register", async (req, res) => {
 });
 router.post("/login", async (req, res) => {
   try {
-    const user = await User.find({ email: req.body.email });
+    const user = await User.find({ username: req.body.username });
     const validPass = await bcrypt.compare(req.body.password, user[0].password);
     const token = await jwt.sign(req.body, process.env.JWT_SECRET);
     if (validPass) {
