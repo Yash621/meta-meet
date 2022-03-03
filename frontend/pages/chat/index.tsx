@@ -55,6 +55,7 @@ function index() {
   const [photoUrl, setPhotoUrl] = useState(null);
   const [logOutShowState, setLogOutShowState] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
+  const { id } = router.query;
 
   useEffect(() => {
     setMeetingId(uid());
@@ -67,7 +68,7 @@ function index() {
   const setMeetTypeClickAndmeetCredentialShowState = (meetType) => {
     if (meetType === "new_meeting") {
       setMeetCredProp("new_meeting");
-      router.push(`/video?host=true&meetingId=${meetingId}`);
+      router.push(`/video?host=true&meetingId=${meetingId}&userId=${id}`);
     } else {
       setMeetCredProp("join_meeting");
       dispatch(setmeetCredentialPageShowState(true));
@@ -135,7 +136,7 @@ function index() {
         <link rel="icon" href="/title-logo.png" />
       </Head>
       {meetCredentialPageShowState && (
-        <MeetCred meetType={meetCredProp} meetingId={meetingId} />
+        <MeetCred meetType={meetCredProp} meetingId={meetingId} userId={id} />
       )}
       {callComp && <CallComp authMethod={authMethod} />}
 

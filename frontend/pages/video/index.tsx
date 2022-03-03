@@ -81,6 +81,7 @@ function index() {
   const webcamRef = useRef(null);
   const [shareScreenState, setShareScreenState] = useState(false);
   const authMethod = useSelector(selectAuthMethod);
+  const { userId } = router.query;
 
   // const globalStatePeer = useSelector(selectGlobalStatePeer);
 
@@ -320,7 +321,7 @@ function index() {
     globalPeer.forEach((peer) => {
       peer.destroy();
     });
-    router.push("/chat");
+    router.push(`/chat?id=${userId}`);
   };
   const acceptUserCall = (guestId, videoData) => {
     console.log(guestId + "guestid");

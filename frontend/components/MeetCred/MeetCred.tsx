@@ -15,7 +15,7 @@ import Peer from "simple-peer";
 import { route } from "next/dist/server/router";
 import { setSocket } from "../../pages/slices/videoSlice";
 
-function MeetCred({ meetType, meetingId }) {
+function MeetCred({ meetType, meetingId, userId }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [meetingRoomId, setMeetingRoomId] = useState("");
@@ -28,7 +28,7 @@ function MeetCred({ meetType, meetingId }) {
       router.push(
         `/video?host=false&meetingId=${
           document.getElementsByTagName("input")[0].value
-        }`
+        }&userId=${userId}`
       );
     }
   };
