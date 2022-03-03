@@ -257,9 +257,11 @@
   margin-left: 23.5vw;
   z-index: 10;
   /* height: auto; */
+  /* background-color: red; */
 }
 .searchResults {
-  height: 5vh;
+  font-size: 1.03em;
+  height: 6vh;
   padding-left: 15px;
   display: flex;
   align-items: center;
