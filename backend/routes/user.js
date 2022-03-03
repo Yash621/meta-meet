@@ -52,4 +52,21 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Error getting user" });
   }
 });
+router.get("/search", async (req, res) => {
+  try {
+    console.log("hello");
+    const users = [];
+    const registeredUsers = await User.find({});
+    console.log(registeredUsers);
+    registeredUsers.forEach((user) => {
+      if (user.username.includes(req.query.filter)) {
+        users.push(user);
+      }
+    });
+
+    res.status(200).json(users);
+  } catch {
+    res.status(500).json({ message: "Error getting user" });
+  }
+});
 module.exports = router;

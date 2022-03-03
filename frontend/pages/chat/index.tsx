@@ -36,6 +36,7 @@ import CallComp from "../../components/CallComp/CallComp";
 import { selectCallCompShowState } from "../slices/callSlice";
 import { selectAcessToken, selectAuthMethod } from "../slices/landingSlice";
 import defaultProfilePhoto from "../../public/static/images/default-profile-photo.png";
+import axios from "axios";
 
 function index() {
   const meetCredentialPageShowState = useSelector(
@@ -53,6 +54,7 @@ function index() {
   const authWay = useSelector(selectAuthMethod);
   const [photoUrl, setPhotoUrl] = useState(null);
   const [logOutShowState, setLogOutShowState] = useState(false);
+  const [filteredResults, setFilteredResults] = useState([]);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -90,6 +92,41 @@ function index() {
   const logOut = () => {
     router.push("/");
   };
+  const filterInput = async (e) => {
+    console.log("helo");
+    const url = "http://localhost:5000";
+    const filter = document.getElementById("search-bar").value;
+    if (filter === "") {
+      document.getElementById("search-results-container").innerHTML = "";
+    } else {
+      await axios
+        .get(`${url}/users/search?filter=${filter}`)
+        .then((response) => {
+          setFilteredResults(response.data);
+          document.getElementById("search-results-container").innerHTML = "";
+          if (response.data.length > 0) {
+            response.data.forEach((user) => {
+              const element = document.createElement("div");
+              element.className = chatPageCSS.searchResults;
+              element.innerHTML = user.username;
+              document
+                .getElementById("search-results-container")
+                .appendChild(element);
+            });
+          } else {
+            const element = document.createElement("div");
+            element.className = chatPageCSS.searchResults;
+            element.innerHTML = "No results found";
+            document.getElementById("search-results-container").innerHTML = "";
+            document
+              .getElementById("search-results-container")
+              .appendChild(element);
+          }
+
+          console.log(filteredResults);
+        });
+    }
+  };
 
   return (
     <div className={chatPageCSS.container}>
@@ -101,6 +138,7 @@ function index() {
         <MeetCred meetType={meetCredProp} meetingId={meetingId} />
       )}
       {callComp && <CallComp authMethod={authMethod} />}
+
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />
@@ -128,8 +166,12 @@ function index() {
             className={`${chatPageCSS.input} `}
             id="search-bar"
             onFocus={() => setSearchBarHighlight(true)}
+            onKeyUp={(e) => {
+              filterInput(e);
+            }}
           ></input>
         </div>
+
         {authMethod === "google" && (
           <img
             src={photoUrl}
@@ -152,6 +194,14 @@ function index() {
             LogOut
           </div>
         )}
+      </div>
+      <div
+        className={chatPageCSS.searchResultsContainer}
+        id="search-results-container"
+      >
+        {/* {filteredResults.map((user) => {
+          <div className={chatPageCSS.searchResults}>{user.username}</div>;
+        })} */}
       </div>
       <div className={chatPageCSS.chatContainer}>
         <div className={chatPageCSS.chatOptionsContainer}>

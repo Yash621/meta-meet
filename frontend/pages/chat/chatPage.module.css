@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   font-family: "Lato";
   flex-direction: column;
@@ -241,5 +241,33 @@
   cursor: pointer;
 }
 .logOutContainer:hover {
+  background-color: #e3e5e6;
+}
+/* .searchResultContainer {
+  position: fixed;
+} */
+.searchResultsContainer {
+  background-color: #fefefe;
+  position: fixed;
+  margin-top: 9vh;
+  border-radius: 5px;
+  /* margin-top: 10vh; */
+  width: 60%;
+  height: auto;
+  margin-left: 23.5vw;
+  z-index: 10;
+  /* height: auto; */
+}
+.searchResults {
+  height: 5vh;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.searchResults:hover {
   background-color: #e3e5e6;
 }
