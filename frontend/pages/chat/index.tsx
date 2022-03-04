@@ -58,7 +58,9 @@ function index() {
   const [filteredResults, setFilteredResults] = useState([]);
   const { id } = router.query;
   const [userName, setUserName] = useState(null);
-  const [chats, setChats] = useState([]);
+  const [sentChats, setSentChats] = useState([]);
+  const [receivedChats, setReceivedChats] = useState([]);
+  const [conversationExists, setConversationExists] = useState(false);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -108,6 +110,18 @@ function index() {
       )
       .then((res) => {
         console.log(res.data);
+        if (
+          res.data.recievedChats.length === 0 &&
+          res.data.sentChats.length === 0
+        ) {
+          setConversationExists(false);
+          setReceivedChats([]);
+          setSentChats([]);
+        } else {
+          setSentChats(res.data.sentChats);
+          setReceivedChats(res.data.recievedChats);
+          setConversationExists(true);
+        }
       });
   };
   const filterInput = async (e) => {
@@ -287,7 +301,13 @@ function index() {
             className={chatPageCSS.chatComponentContainer}
             onClick={() => setSearchBarHighlight(false)}
           >
-            <ChatComp user={userName} id={id} />
+            <ChatComp
+              user={userName}
+              id={id}
+              sentChats={sentChats}
+              receivedChats={receivedChats}
+              conversationExists={conversationExists}
+            />
           </div>
         ) : (
           <div

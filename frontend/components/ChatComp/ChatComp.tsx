@@ -20,13 +20,14 @@ import axios from "axios";
 import { MessageList } from "react-chat-elements";
 import ChatElement from "../ChatElement/ChatElement";
 
-function ChatComp({ user, id }) {
+function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const setCallCompState = (callType: string) => {
     dispatch(setCallCompShowState(true));
     dispatch(setCallCompShowStateType(callType));
   };
+  const [previousChats, setPreviousChats] = useState([]);
   const [sentChat, setSentChat] = useState([
     {
       position: "right",
@@ -35,8 +36,26 @@ function ChatComp({ user, id }) {
       date: new Date(Date.now()),
     },
   ]);
-  const [conversationExist, setConversationExist] = useState(true);
-  useEffect(() => {});
+
+  useEffect(() => {
+    // console.log(receivedChats);
+    // console.log(conversationExists);
+    sentChats.forEach((chat) => {
+      chat.position = "right";
+    });
+    receivedChats.forEach((chat) => {
+      chat.position = "left";
+    });
+    const previousChats = sentChats.concat(receivedChats);
+    previousChats.sort(function (a, b) {
+      var c = new Date(a.time);
+      var d = new Date(b.time);
+      return c - d;
+    });
+    setPreviousChats(previousChats);
+    console.log("hello");
+    // console.log(sentChats.concat(receivedChats));
+  }, [sentChats, receivedChats]);
   const sendChat = (e) => {
     if (e.key === "Enter" && e.target.value !== "") {
       const url = "http://localhost:5000";
@@ -59,6 +78,7 @@ function ChatComp({ user, id }) {
         .catch((err) => {
           console.log(err);
         });
+      conversationExists = true;
       setSentChat([
         ...sentChat,
         {
@@ -68,9 +88,6 @@ function ChatComp({ user, id }) {
           date: new Date(Date.now()),
         },
       ]);
-      if (!conversationExist) {
-        setConversationExist(true);
-      }
     }
   };
   return (
@@ -95,20 +112,20 @@ function ChatComp({ user, id }) {
           </div>
         </div>
       </div>
-      {!conversationExist && (
+      {!conversationExists && (
         <div className={chatCompCSS.chatboxContainer}>
           <Image src={chatGraphic} alt="chat" />
           Start a conversation
         </div>
       )}
-      {conversationExist && (
+      {conversationExists && (
         <div className={chatCompCSS.chatboxContainer}>
-          {sentChat.map((chat, index) => (
+          {previousChats.map((chat, index) => (
             <ChatElement
               key={index}
               position={chat.position}
-              text={chat.text}
-              date={chat.date}
+              text={chat.message}
+              date={chat.time}
             />
           ))}
         </div>

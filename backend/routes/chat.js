@@ -9,6 +9,7 @@ router.post("/add", async (req, res) => {
       readstatus: req.body.readstatus,
       message: req.body.message,
       reciever: req.body.reciever,
+      time: new Date().toLocaleString(),
     });
     const newChat = await chat.save();
     res.status(201).json(newChat);
@@ -27,6 +28,7 @@ router.get("/chat", async (req, res) => {
       sender: req.query.userId,
       reciever: req.query.reciever,
     });
+
     res.status(200).json({ recievedChats, sentChats });
     // console.log(recievedChats);
     // console.log(sentChats);
