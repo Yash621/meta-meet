@@ -58,6 +58,7 @@ function index() {
   const [filteredResults, setFilteredResults] = useState([]);
   const { id } = router.query;
   const [userName, setUserName] = useState(null);
+  const [chats, setChats] = useState([]);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -95,6 +96,20 @@ function index() {
   const logOut = () => {
     router.push("/");
   };
+  const getChats = async (user) => {
+    const url = "http://localhost:5000";
+    const senderId = await axios.get(`${url}/users/id?username=${user}`);
+    const myUsername = await axios.get(`${url}/users/username?id=${id}`);
+    console.log(myUsername.data);
+    console.log(senderId.data);
+    await axios
+      .get(
+        `${url}/chats/chat?userId=${id}&senderId=${senderId.data}&user=${myUsername.data}&reciever=${user}`
+      )
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
   const filterInput = async (e) => {
     console.log("helo");
     const url = "http://localhost:5000";
@@ -112,13 +127,15 @@ function index() {
               const element = document.createElement("div");
               element.className = chatPageCSS.searchResults;
               element.innerHTML = user.username;
-              element.addEventListener("click", () => {
+              element.addEventListener("click", async () => {
                 document.getElementById("search-bar").value = "";
                 setSearchBarHighlight(false);
+                // getChats(element.innerHTML);
                 setChatComp(true);
                 document.getElementById("search-results-container").innerHTML =
                   "";
                 setUserName(element.innerHTML);
+                getChats(element.innerHTML);
               });
               document
                 .getElementById("search-results-container")

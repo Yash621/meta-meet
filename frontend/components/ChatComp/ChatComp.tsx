@@ -38,7 +38,7 @@ function ChatComp({ user, id }) {
   const [conversationExist, setConversationExist] = useState(true);
   useEffect(() => {});
   const sendChat = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && e.target.value !== "") {
       const url = "http://localhost:5000";
       const data = {
         sender: id,
@@ -54,6 +54,7 @@ function ChatComp({ user, id }) {
       })
         .then((res) => {
           console.log(res);
+          document.getElementById("chat-input").value = "";
         })
         .catch((err) => {
           console.log(err);

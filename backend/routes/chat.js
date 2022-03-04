@@ -20,15 +20,16 @@ router.post("/add", async (req, res) => {
 router.get("/chat", async (req, res) => {
   try {
     const recievedChats = await Chat.find({
-      sender: req.params.senderId,
-      reciever: req.params.user,
+      sender: req.query.senderId,
+      reciever: req.query.user,
     });
     const sentChats = await Chat.find({
-      sender: req.params.userId,
-      reciever: req.params.reciever,
+      sender: req.query.userId,
+      reciever: req.query.reciever,
     });
-    console.log(recievedChats);
-    console.log(sentChats);
+    res.status(200).json({ recievedChats, sentChats });
+    // console.log(recievedChats);
+    // console.log(sentChats);
   } catch {
     res.status(500).json({ message: "Error getting chats" });
   }

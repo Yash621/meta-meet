@@ -68,5 +68,23 @@ router.get("/search", async (req, res) => {
     res.status(500).json({ message: "Error getting user" });
   }
 });
+router.get("/id", async (req, res) => {
+  try {
+    const user = await User.find({ username: req.query.username });
+    // console.log(user[0]);
+    res.status(200).json(user[0].id);
+  } catch {
+    res.status(500).json({ message: "Error getting user" });
+  }
+});
+router.get("/username", async (req, res) => {
+  try {
+    const user = await User.findById(req.query.id);
+    // console.log(user);
+    res.status(200).json(user.username);
+  } catch {
+    res.status(500).json({ message: "Error getting user" });
+  }
+});
 
 module.exports = router;
