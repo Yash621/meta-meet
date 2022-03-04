@@ -221,7 +221,7 @@ function index() {
             <div className={chatPageCSS.chatsSpacesContainer}>
               <div className={chatPageCSS.nilChatSpacesHeadContainer}>
                 <ChatBubbleOutlineIcon className={chatPageCSS.chatIcon} />
-                <p>No Conversation</p>
+                <p>No Conversations</p>
                 <div onClick={() => focusSearchBar("chat")}>Find a chat</div>
               </div>
             </div>
