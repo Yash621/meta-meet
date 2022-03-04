@@ -34,7 +34,7 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
   };
   const [previousChats, setPreviousChats] = useState([]);
   const [socketId, setSocketId] = useState("");
-
+  const [chatStarted, setChatStarted] = useState(false);
   useEffect(() => {
     // console.log(receivedChats);
     // console.log(conversationExists);
@@ -101,7 +101,7 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
         time: new Date().toLocaleString(),
         id: id,
       });
-      conversationExists = true;
+      setChatStarted(true);
       setPreviousChats([
         ...previousChats,
         {
@@ -135,13 +135,13 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
           </div>
         </div>
       </div>
-      {!conversationExists && (
-        <div className={chatCompCSS.chatboxContainer}>
+      {!conversationExists && !chatStarted && (
+        <div className={chatCompCSS.emptyChatboxContainer}>
           <Image src={chatGraphic} alt="chat" />
           Start a conversation
         </div>
       )}
-      {conversationExists && (
+      {(conversationExists || chatStarted) && (
         <div className={chatCompCSS.chatboxContainer}>
           {previousChats.map((chat, index) => (
             <ChatElement
@@ -153,7 +153,6 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
           ))}
         </div>
       )}
-
       <div className={chatCompCSS.chatInputContainer}>
         <div className={chatCompCSS.fileAttachContainer}>
           <IconButton>

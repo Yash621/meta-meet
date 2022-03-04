@@ -47,7 +47,6 @@ io.on("connection", (socket) => {
   socket.on("createRoom", (data) => {
     console.log(data.roomId);
     socket.join(data.roomId);
-    console.log(Object.keys(io.sockets.adapter.rooms[data.roomId].sockets));
   });
   socket.emit("me", {
     id: socket.id,
