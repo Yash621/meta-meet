@@ -19,6 +19,11 @@ import defaultAvatar from "../../public/static/images/default-profile-photo.png"
 import axios from "axios";
 import { MessageList } from "react-chat-elements";
 import ChatElement from "../ChatElement/ChatElement";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:5000", {
+  transports: ["websocket"],
+});
 
 function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
   const router = useRouter();
@@ -28,18 +33,15 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
     dispatch(setCallCompShowStateType(callType));
   };
   const [previousChats, setPreviousChats] = useState([]);
-  const [sentChat, setSentChat] = useState([
-    {
-      position: "right",
-      type: "text",
-      text: "hello",
-      date: new Date(Date.now()),
-    },
-  ]);
+  const [socketId, setSocketId] = useState("");
 
   useEffect(() => {
     // console.log(receivedChats);
     // console.log(conversationExists);
+    socket.on("me", (data) => {
+      setSocketId(data.id);
+    });
+    socket.emit("chatJoin", { room: user, id: id });
     sentChats.forEach((chat) => {
       chat.position = "right";
     });
@@ -53,10 +55,23 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
       return c - d;
     });
     setPreviousChats(previousChats);
-    console.log("hello");
+    socket.on("chatMessage", (chat) => {
+      console.log("hello");
+      if (chat.id !== id) {
+        chat.position = "left";
+        setPreviousChats([
+          ...previousChats,
+          {
+            position: "left",
+            message: chat.message,
+            time: chat.time,
+          },
+        ]);
+      }
+    });
     // console.log(sentChats.concat(receivedChats));
   }, [sentChats, receivedChats]);
-  const sendChat = (e) => {
+  const sendChat = async (e) => {
     if (e.key === "Enter" && e.target.value !== "") {
       const url = "http://localhost:5000";
       const data = {
@@ -78,14 +93,22 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
         .catch((err) => {
           console.log(err);
         });
+
+      const senderId = await axios.get(`${url}/users/id?username=${user}`);
+      socket.emit("sendChat", {
+        message: e.target.value,
+        room: senderId.data,
+        time: new Date().toLocaleString(),
+        id: id,
+      });
       conversationExists = true;
-      setSentChat([
-        ...sentChat,
+      setPreviousChats([
+        ...previousChats,
         {
           position: "right",
-          type: "text",
-          text: e.target.value,
-          date: new Date(Date.now()),
+
+          message: e.target.value,
+          time: new Date().toLocaleString(),
         },
       ]);
     }

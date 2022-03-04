@@ -3,7 +3,6 @@ import chatElementCSS from "./ChatElement.module.css";
 
 function ChatElement({ position, text, date }) {
   const getTime = (time) => {
-    // time.slice(0, time.length - 6)
     var n1 = 0;
     var index = 0;
     for (var i = 0; i < time.length; i++) {
@@ -32,7 +31,6 @@ function ChatElement({ position, text, date }) {
       t +
       (time[time.length - 2] == "p" ? "pm" : "am")
     );
-    // return time.slice(0, time.length - 6) + "pm";
   };
   return (
     <div

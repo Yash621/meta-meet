@@ -30,6 +30,14 @@ app.use("/users", userRoutes);
 app.use("/chats", chatRoutes);
 
 io.on("connection", (socket) => {
+  socket.on("chatJoin", (data) => {
+    socket.join(data.room);
+    socket.join(data.id);
+  });
+  socket.on("sendChat", (data) => {
+    io.to(data.room).emit("chatMessage", data);
+  });
+
   socket.on("endCall", (data) => {
     socket.leave(data.meetingId);
     io.to(data.meetingId).emit("leftCall", {
