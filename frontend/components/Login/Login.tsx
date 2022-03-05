@@ -45,7 +45,7 @@ function Login({ authState }) {
         data: data,
         headers: { "content-type": "application/json" },
       })
-        .then(function (response) {
+        .then(async function (response) {
           //handle success
           console.log("hello");
           if (response.data.message === "authenticated") {

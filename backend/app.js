@@ -10,6 +10,7 @@ db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
 const userRoutes = require("./routes/user");
 const chatRoutes = require("./routes/chat");
+const contactRoutes = require("./routes/contact");
 var cors = require("cors");
 app.use(cors());
 app.use(express.json());
@@ -28,6 +29,7 @@ const io = require("socket.io")(server, {
 
 app.use("/users", userRoutes);
 app.use("/chats", chatRoutes);
+app.use("/contacts", contactRoutes);
 
 io.on("connection", (socket) => {
   socket.on("chatJoin", (data) => {
