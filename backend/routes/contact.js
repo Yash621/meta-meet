@@ -5,11 +5,17 @@ const Contact = require("../models/contactSchema");
 router.post("/add", async (req, res) => {
   try {
     console.log("hello");
+    console.log(req.body);
     const contact = new Contact({
       username: req.body.username,
       id: req.body.id,
     });
+    const otherContact = new Contact({
+      username: req.body.myUsername,
+      id: req.body.senderId,
+    });
     const newContact = await contact.save();
+    const newOtherContact = await otherContact.save();
     res.status(201).json(newContact);
   } catch {
     res.status(500).json({ message: "Error creating contact" });

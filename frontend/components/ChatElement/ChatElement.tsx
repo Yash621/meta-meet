@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import chatElementCSS from "./ChatElement.module.css";
 
 function ChatElement({ position, text, date }) {
+  useEffect(() => {
+    console.log(text);
+  }, []);
   const getTime = (time) => {
     var n1 = 0;
     var index = 0;

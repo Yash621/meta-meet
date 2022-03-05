@@ -35,6 +35,7 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
   const [previousChats, setPreviousChats] = useState([]);
   const [socketId, setSocketId] = useState("");
   const [chatStarted, setChatStarted] = useState(false);
+  var dummy = 0;
   useEffect(() => {
     // console.log(receivedChats);
     // console.log(conversationExists);
@@ -103,10 +104,15 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
       });
 
       if (!chatStarted && !conversationExists) {
+        const senderId = await axios.get(`${url}/users/id?username=${user}`);
+        const myUsername = await axios.get(`${url}/users/username?id=${id}`);
         const data = {
           username: user,
           id: id,
+          senderId: senderId.data,
+          myUsername: myUsername.data,
         };
+
         axios({
           method: "post",
           url: `${url}/contacts/add`,
@@ -122,6 +128,7 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
       }
 
       setChatStarted(true);
+
       setPreviousChats([
         ...previousChats,
         {
@@ -155,13 +162,13 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
           </div>
         </div>
       </div>
-      {!conversationExists && !chatStarted && (
+      {previousChats.length === 0 && (
         <div className={chatCompCSS.emptyChatboxContainer}>
           <Image src={chatGraphic} alt="chat" />
           Start a conversation
         </div>
       )}
-      {(conversationExists || chatStarted) && (
+      {previousChats.length !== 0 && (
         <div className={chatCompCSS.chatboxContainer}>
           {previousChats.map((chat, index) => (
             <ChatElement
