@@ -51,6 +51,7 @@ function Login({ authState }) {
           if (response.data.message === "authenticated") {
             dispatch(setAccessToken(response.data.accessToken));
             dispatch(setAuthMethod("inputCredentials"));
+            // await getContacts(response.data.userId);
             router.push("/chat?id=" + response.data.userId);
           } else {
             setIncorrectPassword(true);

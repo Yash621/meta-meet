@@ -101,6 +101,26 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
         time: new Date().toLocaleString(),
         id: id,
       });
+
+      if (!chatStarted && !conversationExists) {
+        const data = {
+          username: user,
+          id: id,
+        };
+        axios({
+          method: "post",
+          url: `${url}/contacts/add`,
+          data: data,
+          headers: { "content-type": "application/json" },
+        })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
       setChatStarted(true);
       setPreviousChats([
         ...previousChats,

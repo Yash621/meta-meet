@@ -1,0 +1,27 @@
+.container {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  /* background-color: red; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #29292d;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.avatarContainer {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+}
+.avatar {
+  object-fit: contain;
+}
+.textContainer {
+  height: 100%;
+  width: 88%;
+  /* background-color: blue; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}

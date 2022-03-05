@@ -38,6 +38,7 @@ import { selectAcessToken, selectAuthMethod } from "../slices/landingSlice";
 import defaultProfilePhoto from "../../public/static/images/default-profile-photo.png";
 import axios from "axios";
 import { ChatItem } from "react-chat-elements";
+import PreChatComp from "../../components/PreChatComp/PreChatComp";
 
 function index() {
   const meetCredentialPageShowState = useSelector(
@@ -61,13 +62,30 @@ function index() {
   const [sentChats, setSentChats] = useState([]);
   const [receivedChats, setReceivedChats] = useState([]);
   const [conversationExists, setConversationExists] = useState(false);
+  const [previousChats, setPreviousChats] = useState([]);
+  const [contactsExist, setContactsExist] = useState(false);
 
   useEffect(() => {
     setMeetingId(uid());
     if (authMethod === "google") {
       setPhotoUrl(auth.currentUser.photoURL.toString());
     }
+    getContacts();
   }, []);
+
+  const getContacts = async () => {
+    const url = "http://localhost:5000";
+    const contacts = await axios.get(`${url}/contacts/contact?id=${id}`);
+    // contacts.data.forEach((contact) => {
+    //   const element = <PreChatComp />;
+    //   document.getElementById("contacts").appendChild(element);
+    // });
+    setPreviousChats(contacts.data);
+    if (contacts.data.length > 0) {
+      setContactsExist(true);
+    }
+    console.log(contacts.data);
+  };
 
   const dispatch = useDispatch();
   const setMeetTypeClickAndmeetCredentialShowState = (meetType) => {
@@ -169,7 +187,11 @@ function index() {
         });
     }
   };
-
+  const displayChat = (user) => {
+    setChatComp(true);
+    setUserName(user);
+    getChats(user);
+  };
   return (
     <div className={chatPageCSS.container}>
       <Head>
@@ -250,11 +272,28 @@ function index() {
           <div className={chatPageCSS.chatOptionContainer}>
             <div className={chatPageCSS.chatOptionHeadContainer}>⯆ Chat</div>
             <div className={chatPageCSS.chatsSpacesContainer}>
-              <div className={chatPageCSS.nilChatSpacesHeadContainer}>
-                <ChatBubbleOutlineIcon className={chatPageCSS.chatIcon} />
-                <p>No Conversations</p>
-                <div onClick={() => focusSearchBar("chat")}>Find a chat</div>
-              </div>
+              {contactsExist && (
+                <div className={chatPageCSS.contactsContainer} id="contacts">
+                  {previousChats.map((chat, index) => {
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => displayChat(chat.username)}
+                        className={chatPageCSS.contact}
+                      >
+                        <PreChatComp username={chat.username} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {!contactsExist && (
+                <div className={chatPageCSS.nilChatSpacesHeadContainer}>
+                  <ChatBubbleOutlineIcon className={chatPageCSS.chatIcon} />
+                  <p>No Conversations</p>
+                  <div onClick={() => focusSearchBar("chat")}>Find a chat</div>
+                </div>
+              )}
             </div>
           </div>
           <div className={chatPageCSS.chatOptionContainer}>
