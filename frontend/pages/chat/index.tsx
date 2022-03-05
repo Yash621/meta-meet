@@ -76,10 +76,6 @@ function index() {
   const getContacts = async () => {
     const url = "http://localhost:5000";
     const contacts = await axios.get(`${url}/contacts/contact?id=${id}`);
-    // contacts.data.forEach((contact) => {
-    //   const element = <PreChatComp />;
-    //   document.getElementById("contacts").appendChild(element);
-    // });
     setPreviousChats(contacts.data);
     if (contacts.data.length > 0) {
       setContactsExist(true);
@@ -168,6 +164,14 @@ function index() {
                   "";
                 setUserName(element.innerHTML);
                 getChats(element.innerHTML);
+                setPreviousChats([
+                  ...previousChats,
+                  {
+                    username: element.innerHTML,
+                  },
+                ]);
+                setContactsExist(true);
+                document.getElementById("search-results-container").click();
               });
               document
                 .getElementById("search-results-container")
