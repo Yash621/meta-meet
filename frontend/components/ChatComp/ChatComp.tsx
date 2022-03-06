@@ -31,7 +31,14 @@ const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
 });
 
-function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
+function ChatComp({
+  user,
+  id,
+  sentChats,
+  receivedChats,
+  conversationExists,
+  groupChat,
+}) {
   const router = useRouter();
   const dispatch = useDispatch();
   const setCallCompState = (callType: string) => {
@@ -43,6 +50,7 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
   const chatCompSpaceName = useSelector(selectChatCompSpaceName);
   const [socketId, setSocketId] = useState("");
   const [chatStarted, setChatStarted] = useState(false);
+  const [previousGroupChat, setPreviousGroupChat] = useState([]);
 
   useEffect(() => {
     // console.log(receivedChats);
@@ -82,70 +90,94 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
   }, [sentChats, receivedChats]);
   const sendChat = async (e) => {
     if (e.key === "Enter" && e.target.value !== "") {
-      const url = "http://localhost:5000";
-      const data = {
-        sender: id,
-        readstatus: "unread",
-        message: e.target.value,
-        reciever: user,
-      };
-      const text = e.target.value;
-      axios({
-        method: "post",
-        url: `${url}/chats/add`,
-        data: data,
-        headers: { "content-type": "application/json" },
-      })
-        .then((res) => {
-          console.log(res);
-          document.getElementById("chat-input").value = "";
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      const senderId = await axios.get(`${url}/users/id?username=${user}`);
-      socket.emit("sendChat", {
-        message: e.target.value,
-        room: senderId.data,
-        time: new Date().toLocaleString(),
-        id: id,
-      });
-
-      if (previousChats.length === 0) {
-        const senderId = await axios.get(`${url}/users/id?username=${user}`);
-        const myUsername = await axios.get(`${url}/users/username?id=${id}`);
+      if (chatCompShowStateType !== "space") {
+        const url = "http://localhost:5000";
         const data = {
-          username: user,
-          id: id,
-          senderId: senderId.data,
-          myUsername: myUsername.data,
+          sender: id,
+          readstatus: "unread",
+          message: e.target.value,
+          reciever: user,
         };
-
+        const text = e.target.value;
         axios({
           method: "post",
-          url: `${url}/contacts/add`,
+          url: `${url}/chats/add`,
           data: data,
           headers: { "content-type": "application/json" },
         })
           .then((res) => {
             console.log(res);
+            document.getElementById("chat-input").value = "";
           })
           .catch((err) => {
             console.log(err);
           });
-      }
 
-      setChatStarted(true);
-      setPreviousChats([
-        ...previousChats,
-        {
-          position: "right",
-          message: text,
+        const senderId = await axios.get(`${url}/users/id?username=${user}`);
+        socket.emit("sendChat", {
+          message: e.target.value,
+          room: senderId.data,
           time: new Date().toLocaleString(),
-        },
-      ]);
-      console.log(text);
+          id: id,
+        });
+
+        if (previousChats.length === 0) {
+          const senderId = await axios.get(`${url}/users/id?username=${user}`);
+          const myUsername = await axios.get(`${url}/users/username?id=${id}`);
+          const data = {
+            username: user,
+            id: id,
+            senderId: senderId.data,
+            myUsername: myUsername.data,
+          };
+
+          axios({
+            method: "post",
+            url: `${url}/contacts/add`,
+            data: data,
+            headers: { "content-type": "application/json" },
+          })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+
+        setChatStarted(true);
+        setPreviousChats([
+          ...previousChats,
+          {
+            position: "right",
+            message: text,
+            time: new Date().toLocaleString(),
+          },
+        ]);
+        console.log(text);
+      } else {
+        // const url = "http://localhost:5000";
+        // const data = {
+        //   sender: id,
+        //   readstatus: "unread",
+        //   message: e.target.value,
+        //   reciever: user,
+        // };
+        // const text = e.target.value;
+        // axios({
+        //   method: "post",
+        //   url: `${url}/chats/add`,
+        //   data: data,
+        //   headers: { "content-type": "application/json" },
+        // })
+        //   .then((res) => {
+        //     console.log(res);
+        //     document.getElementById("chat-input").value = "";
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
+      }
     }
   };
   return (
@@ -158,7 +190,9 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
             </div>
           )}
           {chatCompShowStateType !== "space" && (
-            <div className={chatCompCSS.profileAvatar}>
+            <div
+              className={`${chatCompCSS.profileAvatar} ${chatCompCSS.chatProfileAvatar}`}
+            >
               <Image src={defaultAvatar} alt="profile" />
             </div>
           )}
@@ -193,13 +227,13 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
           )}
         </div>
       </div>
-      {previousChats.length === 0 && (
+      {chatCompShowStateType !== "space" && previousChats.length === 0 && (
         <div className={chatCompCSS.emptyChatboxContainer}>
           <Image src={chatGraphic} alt="chat" />
           Start a conversation
         </div>
       )}
-      {previousChats.length !== 0 && (
+      {chatCompShowStateType !== "space" && previousChats.length !== 0 && (
         <div className={chatCompCSS.chatboxContainer}>
           {previousChats.map((chat, index) => (
             <ChatElement
@@ -211,6 +245,42 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
           ))}
         </div>
       )}
+      {chatCompShowStateType === "space" && previousGroupChat.length === 0 && (
+        <div className={chatCompCSS.emptyChatboxContainer}>
+          <Image src={chatGraphic} alt="chat" />
+          Start a conversation
+        </div>
+      )}
+      {chatCompShowStateType !== "space" && previousGroupChat.length !== 0 && (
+        <div className={chatCompCSS.chatboxContainer}>
+          {previousGroupChat.map((chat, index) => (
+            <ChatElement
+              key={index}
+              position={chat.position}
+              text={chat.message}
+              date={chat.time}
+            />
+          ))}
+        </div>
+      )}
+      {/* {previousChats.length === 0 && (
+        <div className={chatCompCSS.emptyChatboxContainer}>
+          <Image src={chatGraphic} alt="chat" />
+          Start a conversation
+        </div>
+      )} */}
+      {/* {previousChats.length !== 0 && (
+        <div className={chatCompCSS.chatboxContainer}>
+          {previousChats.map((chat, index) => (
+            <ChatElement
+              key={index}
+              position={chat.position}
+              text={chat.message}
+              date={chat.time}
+            />
+          ))}
+        </div>
+      )} */}
       <div className={chatCompCSS.chatInputContainer}>
         <div className={chatCompCSS.fileAttachContainer}>
           <IconButton>

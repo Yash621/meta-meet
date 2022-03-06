@@ -15,6 +15,7 @@ router.post("/add", async (req, res) => {
       const space = new Space({
         spacename: req.body.spacename,
         members: req.body.members,
+        chats: [],
       });
       const existingChatSpaces = await ChatSpaces.find({
         userId: req.body.members[0],

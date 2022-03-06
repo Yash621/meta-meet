@@ -58,9 +58,12 @@
   width: 42px;
   border-radius: 50%;
   /* background-color: black; */
-  border: 1.2px solid black;
+  border: 1.3px solid black;
   object-fit: contain;
   overflow: hidden;
+}
+.chatProfileAvatar {
+  background-color: black;
 }
 .profile {
   height: 100%;

@@ -85,9 +85,13 @@ function index() {
 
   const getSpaces = async () => {
     const url = "http://localhost:5000";
-    const response = await axios.get(`${url}/spaces/getSpaces?userId=${id}`);
-    setJoinedSpaces(response.data.spaces);
-    console.log(response.data.spaces.length + " hello124598");
+    try {
+      const response = await axios.get(`${url}/spaces/getSpaces?userId=${id}`);
+      setJoinedSpaces(response.data.spaces);
+      console.log(response.data.spaces.length + " hello124598");
+    } catch {
+      console.log("error");
+    }
   };
 
   const getContacts = async () => {

@@ -1,5 +1,20 @@
 const mongoose = require("mongoose");
 
+const spaceChat = new mongoose.Schema({
+  senderId: {
+    type: String,
+    required: true,
+  },
+  time: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+    required: true,
+  },
+});
+
 const spaceSchema = new mongoose.Schema({
   spacename: {
     type: String,
@@ -7,6 +22,10 @@ const spaceSchema = new mongoose.Schema({
   },
   members: {
     type: [String],
+    required: true,
+  },
+  chats: {
+    type: [spaceChat],
     required: true,
   },
 });
