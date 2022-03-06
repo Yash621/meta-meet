@@ -43,7 +43,9 @@ import {
   selectChatCompShowState,
   setChatCompShowState,
   setChatCompShowStateType,
+  setChatCompSpaceName,
 } from "../slices/chatSlice";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 function index() {
   const meetCredentialPageShowState = useSelector(
@@ -223,6 +225,7 @@ function index() {
   const displaySpace = (space) => {
     dispatch(setChatCompShowState(true));
     dispatch(setChatCompShowStateType("space"));
+    dispatch(setChatCompSpaceName(space));
   };
   return (
     <div className={chatPageCSS.container}>
@@ -329,7 +332,15 @@ function index() {
             </div>
           </div>
           <div className={chatPageCSS.chatOptionContainer}>
-            <div className={chatPageCSS.chatOptionHeadContainer}>⯆ Spaces</div>
+            <div className={chatPageCSS.chatOptionHeadContainer}>
+              ⯆ Spaces
+              <div
+                className={chatPageCSS.addSpace}
+                onClick={() => displayCreateSpacePage()}
+              >
+                <AddCircleIcon />
+              </div>
+            </div>
             <div className={chatPageCSS.chatsSpacesContainer}>
               {joinedSpaces.length > 0 && (
                 <div
@@ -355,9 +366,6 @@ function index() {
                   <p>No spaces yet</p>
                   <div onClick={() => focusSearchBar("space")}>
                     Find a space to join
-                  </div>
-                  <div onClick={() => displayCreateSpacePage()}>
-                    Create Space
                   </div>
                 </div>
               )}

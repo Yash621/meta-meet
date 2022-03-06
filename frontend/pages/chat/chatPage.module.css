@@ -293,3 +293,11 @@
 .searchResults:hover {
   background-color: #e3e5e6;
 }
+.addSpace {
+  /* background-color: red; */
+  width: 80%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
