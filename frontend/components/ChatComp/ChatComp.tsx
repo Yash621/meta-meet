@@ -81,6 +81,7 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
         message: e.target.value,
         reciever: user,
       };
+      const text = e.target.value;
       axios({
         method: "post",
         url: `${url}/chats/add`,
@@ -103,7 +104,7 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
         id: id,
       });
 
-      if (!chatStarted && !conversationExists) {
+      if (previousChats.length === 0) {
         const senderId = await axios.get(`${url}/users/id?username=${user}`);
         const myUsername = await axios.get(`${url}/users/username?id=${id}`);
         const data = {
@@ -128,16 +129,15 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
       }
 
       setChatStarted(true);
-
       setPreviousChats([
         ...previousChats,
         {
           position: "right",
-
-          message: e.target.value,
+          message: text,
           time: new Date().toLocaleString(),
         },
       ]);
+      console.log(text);
     }
   };
   return (
