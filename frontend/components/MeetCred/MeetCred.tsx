@@ -14,11 +14,18 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import { route } from "next/dist/server/router";
 import { setSocket } from "../../pages/slices/videoSlice";
+import axios from "axios";
+import {
+  setChatCompShowState,
+  setChatCompShowStateType,
+  setChatCompSpaceName,
+} from "../../pages/slices/chatSlice";
 
 function MeetCred({ meetType, meetingId, userId }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [meetingRoomId, setMeetingRoomId] = useState("");
+  const [spaceAlreadyExists, setSpaceAlreadyExists] = useState(false);
 
   const navigateToCall = () => {
     if (meetType === "new_meeting") {
@@ -31,6 +38,35 @@ function MeetCred({ meetType, meetingId, userId }) {
         }&userId=${userId}`
       );
     }
+  };
+  const createSpace = () => {
+    const url = "http://localhost:5000";
+    const spacename = document.getElementById("space-name").value;
+    const data = {
+      spacename: spacename,
+      members: [userId],
+    };
+    axios({
+      method: "post",
+      url: `${url}/spaces/add`,
+      data: data,
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.data.message === "Space already exists") {
+          setSpaceAlreadyExists(true);
+        }
+        if (res.data.message === "Space created") {
+          dispatch(setmeetCredentialPageShowState(false));
+          dispatch(setChatCompShowState(true));
+          dispatch(setChatCompShowStateType("space"));
+          dispatch(setChatCompSpaceName(spacename));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -54,6 +90,12 @@ function MeetCred({ meetType, meetingId, userId }) {
             ? "Give your space a preferred name"
             : "To join a meeting, enter the meeting code provided by the organizer"}
         </div>
+        {spaceAlreadyExists && (
+          <div className={meetCredCSS.warningContainer}>
+            <p>Space name already exists, Enter a different space name</p>
+          </div>
+        )}
+
         {meetType !== "space" ? (
           <input
             type="text"
@@ -68,18 +110,29 @@ function MeetCred({ meetType, meetingId, userId }) {
             placeholder="Enter space name"
             className={meetCredCSS.input}
             required
-            id="meetingRoomId"
+            id="space-name"
           ></input>
         )}
         <div className={meetCredCSS.buttonContainer}>
-          <button
-            className={meetCredCSS.joinButton}
-            onClick={() => {
-              navigateToCall();
-            }}
-          >
-            {meetType === "space" ? "Create" : "Join"}
-          </button>
+          {meetType === "space" ? (
+            <button
+              className={meetCredCSS.joinButton}
+              onClick={() => {
+                createSpace();
+              }}
+            >
+              Create
+            </button>
+          ) : (
+            <button
+              className={meetCredCSS.joinButton}
+              onClick={() => {
+                navigateToCall();
+              }}
+            >
+              Join
+            </button>
+          )}
         </div>
       </div>
     </div>

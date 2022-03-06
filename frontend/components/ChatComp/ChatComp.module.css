@@ -54,10 +54,10 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 45px;
-  width: 45px;
+  height: 42px;
+  width: 42px;
   border-radius: 50%;
-  background-color: black;
+  /* background-color: black; */
   border: 1.2px solid black;
   object-fit: contain;
   overflow: hidden;

@@ -14,12 +14,18 @@ import {
   setCallCompShowState,
   setCallCompShowStateType,
 } from "../../pages/slices/callSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import defaultAvatar from "../../public/static/images/default-profile-photo.png";
 import axios from "axios";
 import { MessageList } from "react-chat-elements";
 import ChatElement from "../ChatElement/ChatElement";
 import io from "socket.io-client";
+import {
+  selectChatCompShowStateType,
+  setChatCompShowStateType,
+  selectChatCompSpaceName,
+} from "../../pages/slices/chatSlice";
+import groupAvatar from "../../public/static/images/group-avatar.png";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -33,9 +39,11 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
     dispatch(setCallCompShowStateType(callType));
   };
   const [previousChats, setPreviousChats] = useState([]);
+  const chatCompShowStateType = useSelector(selectChatCompShowStateType);
+  const chatCompSpaceName = useSelector(selectChatCompSpaceName);
   const [socketId, setSocketId] = useState("");
   const [chatStarted, setChatStarted] = useState(false);
-  var dummy = 0;
+
   useEffect(() => {
     // console.log(receivedChats);
     // console.log(conversationExists);
@@ -144,22 +152,45 @@ function ChatComp({ user, id, sentChats, receivedChats, conversationExists }) {
     <div className={chatCompCSS.container}>
       <div className={chatCompCSS.profileContainer}>
         <div className={chatCompCSS.profile}>
-          <div className={chatCompCSS.profileAvatar}>
-            <Image src={defaultAvatar} alt="profile" />
-          </div>
-          <div className={chatCompCSS.profileName}>{user}</div>
+          {chatCompShowStateType === "space" && (
+            <div className={chatCompCSS.profileAvatar}>
+              <Image src={groupAvatar} alt="profile" />
+            </div>
+          )}
+          {chatCompShowStateType !== "space" && (
+            <div className={chatCompCSS.profileAvatar}>
+              <Image src={defaultAvatar} alt="profile" />
+            </div>
+          )}
+          {chatCompShowStateType === "space" && (
+            <div className={chatCompCSS.profileName}>{chatCompSpaceName}</div>
+          )}
+          {chatCompShowStateType !== "space" && (
+            <div className={chatCompCSS.profileName}>{user}</div>
+          )}
         </div>
         <div className={chatCompCSS.contact}>
-          <div className={chatCompCSS.iconContainer}>
-            <IconButton onClick={() => setCallCompState("voice call")}>
-              <CallIcon />
-            </IconButton>
-          </div>
-          <div className={chatCompCSS.iconContainer}>
-            <IconButton onClick={() => setCallCompState("video call")}>
-              <VideocamIcon />
-            </IconButton>
-          </div>
+          {chatCompShowStateType !== "space" && (
+            <div className={chatCompCSS.iconContainer}>
+              <IconButton onClick={() => setCallCompState("voice call")}>
+                <CallIcon />
+              </IconButton>
+            </div>
+          )}
+          {chatCompShowStateType === "space" && (
+            <div className={chatCompCSS.iconContainer}>
+              <IconButton onClick={() => setCallCompState("video call")}>
+                <VideocamIcon />
+              </IconButton>
+            </div>
+          )}
+          {chatCompShowStateType !== "space" && (
+            <div className={chatCompCSS.iconContainer}>
+              <IconButton onClick={() => setCallCompState("video call")}>
+                <VideocamIcon />
+              </IconButton>
+            </div>
+          )}
         </div>
       </div>
       {previousChats.length === 0 && (

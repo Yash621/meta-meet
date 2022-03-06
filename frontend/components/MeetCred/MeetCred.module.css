@@ -119,3 +119,9 @@
   padding-right: 5px;
   color: #282a2c;
 }
+.warningContainer {
+  color: red;
+  /* background-color: green; */
+  width: 90%;
+  /* height: auto; */
+}

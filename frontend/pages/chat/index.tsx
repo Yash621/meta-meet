@@ -39,6 +39,11 @@ import defaultProfilePhoto from "../../public/static/images/default-profile-phot
 import axios from "axios";
 import { ChatItem } from "react-chat-elements";
 import PreChatComp from "../../components/PreChatComp/PreChatComp";
+import {
+  selectChatCompShowState,
+  setChatCompShowState,
+  setChatCompShowStateType,
+} from "../slices/chatSlice";
 
 function index() {
   const meetCredentialPageShowState = useSelector(
@@ -64,6 +69,7 @@ function index() {
   const [conversationExists, setConversationExists] = useState(false);
   const [previousChats, setPreviousChats] = useState([]);
   const [contactsExist, setContactsExist] = useState(false);
+  const chatCompShowState = useSelector(selectChatCompShowState);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -159,7 +165,9 @@ function index() {
                 document.getElementById("search-bar").value = "";
                 setSearchBarHighlight(false);
                 // getChats(element.innerHTML);
-                setChatComp(true);
+                dispatch(setChatCompShowState(true));
+                dispatch(setChatCompShowStateType("chat"));
+                // setChatComp(true);
                 document.getElementById("search-results-container").innerHTML =
                   "";
                 setUserName(element.innerHTML);
@@ -192,7 +200,9 @@ function index() {
     }
   };
   const displayChat = (user) => {
-    setChatComp(true);
+    dispatch(setChatCompShowState(true));
+    dispatch(setChatCompShowStateType("chat"));
+    // setChatComp(true);
     setUserName(user);
     getChats(user);
   };
@@ -344,7 +354,7 @@ function index() {
             </div>
           </div>
         </div>
-        {chatComp ? (
+        {chatCompShowState ? (
           <div
             className={chatPageCSS.chatComponentContainer}
             onClick={() => setSearchBarHighlight(false)}
