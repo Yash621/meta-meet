@@ -41,9 +41,7 @@ function MeetCred({ meetType, meetingId, userId }) {
       <div className={meetCredCSS.meetDetailsContainer}></div>
       <div className={meetCredCSS.meetDetails}>
         <div className={meetCredCSS.meetDetailsheading}>
-          {meetType === "new_meeting"
-            ? "Invite more people to meeting"
-            : "Got a meeting code?"}
+          {meetType === "space" ? "Create Space" : "Got a meeting code?"}
           <IconButton>
             <ClearIcon
               className={meetCredCSS.clearIcon}
@@ -52,11 +50,11 @@ function MeetCred({ meetType, meetingId, userId }) {
           </IconButton>
         </div>
         <div className={meetCredCSS.meetDetailsSubHeading}>
-          {meetType === "new_meeting"
-            ? "Copy this code and share it with people you want to meet with"
+          {meetType === "space"
+            ? "Give your space a preferred name"
             : "To join a meeting, enter the meeting code provided by the organizer"}
         </div>
-        {meetType !== "new_meeting" ? (
+        {meetType !== "space" ? (
           <input
             type="text"
             placeholder="Enter meeting id"
@@ -65,14 +63,13 @@ function MeetCred({ meetType, meetingId, userId }) {
             id="meetingRoomId"
           ></input>
         ) : (
-          <div className={meetCredCSS.meetIdContainer}>
-            {meetingId}
-            <CopyToClipboard text={meetingId}>
-              <IconButton>
-                <ContentCopyIcon />
-              </IconButton>
-            </CopyToClipboard>
-          </div>
+          <input
+            type="text"
+            placeholder="Enter space name"
+            className={meetCredCSS.input}
+            required
+            id="meetingRoomId"
+          ></input>
         )}
         <div className={meetCredCSS.buttonContainer}>
           <button
@@ -81,7 +78,7 @@ function MeetCred({ meetType, meetingId, userId }) {
               navigateToCall();
             }}
           >
-            {meetType === "new_meeting" ? "Start now" : "Join"}
+            {meetType === "space" ? "Create" : "Join"}
           </button>
         </div>
       </div>

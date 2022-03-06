@@ -196,6 +196,11 @@ function index() {
     setUserName(user);
     getChats(user);
   };
+
+  const displayCreateSpacePage = () => {
+    setMeetCredProp("space");
+    dispatch(setmeetCredentialPageShowState(true));
+  };
   return (
     <div className={chatPageCSS.container}>
       <Head>
@@ -309,7 +314,7 @@ function index() {
                 <div onClick={() => focusSearchBar("space")}>
                   Find a space to join
                 </div>
-                <div>Create Space</div>
+                <div onClick={() => displayCreateSpacePage()}>Create Space</div>
               </div>
             </div>
           </div>
