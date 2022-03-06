@@ -39,4 +39,15 @@ router.post("/add", async (req, res) => {
   }
 });
 
+router.get("/getSpaces", async (req, res) => {
+  try {
+    console.log(req.query.userId);
+    const spaces = await ChatSpaces.find({ userId: req.query.userId });
+    console.log(spaces + " spaces found");
+    res.status(200).json({ spaces: spaces[0].spaces });
+  } catch {
+    res.status(500).json({ message: "Error fetching spaces" });
+  }
+});
+
 module.exports = router;

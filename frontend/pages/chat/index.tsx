@@ -70,6 +70,7 @@ function index() {
   const [previousChats, setPreviousChats] = useState([]);
   const [contactsExist, setContactsExist] = useState(false);
   const chatCompShowState = useSelector(selectChatCompShowState);
+  const [joinedSpaces, setJoinedSpaces] = useState([]);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -77,7 +78,15 @@ function index() {
       setPhotoUrl(auth.currentUser.photoURL.toString());
     }
     getContacts();
+    getSpaces();
   }, []);
+
+  const getSpaces = async () => {
+    const url = "http://localhost:5000";
+    const response = await axios.get(`${url}/spaces/getSpaces?userId=${id}`);
+    setJoinedSpaces(response.data.spaces);
+    console.log(response.data.spaces.length + " hello124598");
+  };
 
   const getContacts = async () => {
     const url = "http://localhost:5000";
@@ -211,6 +220,10 @@ function index() {
     setMeetCredProp("space");
     dispatch(setmeetCredentialPageShowState(true));
   };
+  const displaySpace = (space) => {
+    dispatch(setChatCompShowState(true));
+    dispatch(setChatCompShowStateType("space"));
+  };
   return (
     <div className={chatPageCSS.container}>
       <Head>
@@ -300,7 +313,7 @@ function index() {
                         onClick={() => displayChat(chat.username)}
                         className={chatPageCSS.contact}
                       >
-                        <PreChatComp username={chat.username} />
+                        <PreChatComp username={chat.username} type="chat" />
                       </div>
                     );
                   })}
@@ -318,14 +331,36 @@ function index() {
           <div className={chatPageCSS.chatOptionContainer}>
             <div className={chatPageCSS.chatOptionHeadContainer}>⯆ Spaces</div>
             <div className={chatPageCSS.chatsSpacesContainer}>
-              <div className={chatPageCSS.nilChatSpacesHeadContainer}>
-                <GroupsIcon className={chatPageCSS.chatIcon} />
-                <p>No spaces yet</p>
-                <div onClick={() => focusSearchBar("space")}>
-                  Find a space to join
+              {joinedSpaces.length > 0 && (
+                <div
+                  className={chatPageCSS.contactsContainer}
+                  id="joined-spaces"
+                >
+                  {joinedSpaces.map((space, index) => {
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => displaySpace(space)}
+                        className={chatPageCSS.contact}
+                      >
+                        <PreChatComp username={space} type="space" />
+                      </div>
+                    );
+                  })}
                 </div>
-                <div onClick={() => displayCreateSpacePage()}>Create Space</div>
-              </div>
+              )}
+              {joinedSpaces.length === 0 && (
+                <div className={chatPageCSS.nilChatSpacesHeadContainer}>
+                  <GroupsIcon className={chatPageCSS.chatIcon} />
+                  <p>No spaces yet</p>
+                  <div onClick={() => focusSearchBar("space")}>
+                    Find a space to join
+                  </div>
+                  <div onClick={() => displayCreateSpacePage()}>
+                    Create Space
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <div className={chatPageCSS.startMeetContainer}>
