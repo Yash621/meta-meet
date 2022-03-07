@@ -50,5 +50,33 @@ router.get("/getSpaces", async (req, res) => {
     res.status(500).json({ message: "Error fetching spaces" });
   }
 });
+router.post("/addmember", async (req, res) => {
+  try {
+    const existingChatSpaces = await ChatSpaces.find({
+      userId: req.body.userId,
+    });
+    const space = await Space.find({ spacename: req.body.spacename });
+    const newMemeberList = space[0].members;
+    newMemeberList.push(req.body.userId);
+    space[0].members = newMemeberList;
+    const newSpace = await space[0].save();
+
+    if (existingChatSpaces.length > 0) {
+      const newSpaceSet = existingChatSpaces[0].spaces;
+      newSpaceSet.push(req.body.spacename);
+      existingChatSpaces[0].spaces = newSpaceSet;
+      await existingChatSpaces[0].save();
+    } else {
+      const chatSpace = new ChatSpaces({
+        userId: req.body.userId,
+        spaces: [req.body.spacename],
+      });
+      const newChatSpace = await chatSpace.save();
+    }
+    res.status(200).json({ message: "member added" });
+  } catch {
+    res.status(500).json({ message: "Error adding member" });
+  }
+});
 
 module.exports = router;

@@ -107,3 +107,13 @@
 .input:focus {
   outline: none;
 }
+.joinSpace {
+  background-color: #1a73e8;
+  font-size: 0.6em;
+  border-radius: 5px;
+  padding: 5px;
+  color: #f1f3f4;
+  padding-left: 15px;
+  padding-right: 15px;
+  cursor: pointer;
+}

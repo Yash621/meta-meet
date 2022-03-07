@@ -242,6 +242,9 @@ function ChatComp({
             </div>
           )}
           {chatCompShowStateType === "space" && (
+            <div className={chatCompCSS.joinSpace}>Join</div>
+          )}
+          {chatCompShowStateType === "space" && (
             <div className={chatCompCSS.iconContainer}>
               <IconButton onClick={() => setCallCompState("video call")}>
                 <VideocamIcon />
