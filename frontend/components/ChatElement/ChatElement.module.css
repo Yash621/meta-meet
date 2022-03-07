@@ -1,11 +1,22 @@
 .container {
   height: auto;
   width: 99%;
-  padding-left: 2vw;
-  padding-right: 2vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
   margin-top: 1vh;
   display: flex;
+  display: flex;
+  align-items: center;
   /* border: 1px solid black; */
+}
+.username {
+  /* font-size: 0.5em; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-left: 10px; */
+  /* background-color: red; */
+  /* height: 40%; */
 }
 .right {
   justify-content: flex-end;
@@ -29,6 +40,7 @@
   padding: 10px;
   font-size: 0.6em;
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   flex-wrap: wrap;
   align-items: center;
@@ -37,11 +49,12 @@
   /* background-color: green; */
 }
 .dateContainer {
-  font-size: 0.35em;
+  font-size: 0.3em;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  flex-direction: column;
   align-items: flex-end;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   margin-right: 5px;
   /* background-color: green; */
 }

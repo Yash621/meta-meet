@@ -88,16 +88,24 @@ function ChatComp({
         }
       });
     } else {
-      groupChat.forEach((chat) => {
-        chat.position = "right";
+      groupChat.sort(function (a, b) {
+        var c = new Date(a.time);
+        var d = new Date(b.time);
+        return c - d;
       });
+      groupChat.forEach((chat) => {
+        if (chat.id !== id) {
+          chat.position = "left";
+        } else {
+          chat.position = "right";
+        }
+      });
+      console.log(groupChat);
       setPreviousGroupChat(groupChat);
       console.log("hello");
-
-      // setPreviousGroupChat(groupChat);
     }
-    // console.log(sentChats.concat(receivedChats));
   }, [sentChats, receivedChats]);
+
   const sendChat = async (e) => {
     if (e.key === "Enter" && e.target.value !== "") {
       if (chatCompShowStateType !== "space") {
@@ -174,6 +182,7 @@ function ChatComp({
           message: message,
           time: new Date().toLocaleString(),
           space: chatCompSpaceName,
+          id: id,
         };
         axios({
           method: "post",
@@ -260,6 +269,8 @@ function ChatComp({
               position={chat.position}
               text={chat.message}
               date={chat.time}
+              type={chatCompShowStateType}
+              user="welcome"
             />
           ))}
         </div>
@@ -278,6 +289,8 @@ function ChatComp({
               position={chat.position}
               text={chat.message}
               date={chat.time}
+              type={chatCompShowStateType}
+              user={chat.username}
             />
           ))}
         </div>

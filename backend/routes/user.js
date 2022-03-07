@@ -80,7 +80,7 @@ router.get("/id", async (req, res) => {
 router.get("/username", async (req, res) => {
   try {
     const user = await User.findById(req.query.id);
-    // console.log(user);
+    console.log(user + " hello ji");
     res.status(200).json(user.username);
   } catch {
     res.status(500).json({ message: "Error getting user" });

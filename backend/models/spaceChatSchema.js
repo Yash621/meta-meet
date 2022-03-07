@@ -17,5 +17,9 @@ const spaceChatSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  id: {
+    type: String,
+    required: true,
+  },
 });
 module.exports = mongoose.model("spacechats", spaceChatSchema);

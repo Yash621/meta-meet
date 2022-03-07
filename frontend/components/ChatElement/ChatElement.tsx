@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import chatElementCSS from "./ChatElement.module.css";
 
-function ChatElement({ position, text, date }) {
+function ChatElement({ position, text, date, type, user }) {
   useEffect(() => {
     console.log(text);
   }, []);
@@ -43,7 +43,13 @@ function ChatElement({ position, text, date }) {
     >
       <div className={chatElementCSS.messageContainer}>
         <div className={chatElementCSS.message}>{text}</div>
-        <div className={chatElementCSS.dateContainer}>{getTime(date)}</div>
+        <div className={chatElementCSS.dateContainer}>
+          {" "}
+          {type === "space" && (
+            <div className={chatElementCSS.username}>{user}</div>
+          )}
+          {getTime(date)}
+        </div>
       </div>
     </div>
   );

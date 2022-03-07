@@ -10,6 +10,7 @@ router.post("/add", async (req, res) => {
       message: req.body.message,
       time: req.body.time,
       space: req.body.space,
+      id: req.body.id,
     });
     console.log(newSpaceChat + " added");
     await newSpaceChat.save();
