@@ -44,6 +44,7 @@ import {
   setChatCompShowState,
   setChatCompShowStateType,
   setChatCompSpaceName,
+  setChatCompGroupChat,
 } from "../slices/chatSlice";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
@@ -73,6 +74,7 @@ function index() {
   const [contactsExist, setContactsExist] = useState(false);
   const chatCompShowState = useSelector(selectChatCompShowState);
   const [joinedSpaces, setJoinedSpaces] = useState([]);
+  const [previousGroupChat, setPreviousGroupChat] = useState([]);
 
   useEffect(() => {
     setMeetingId(uid());
@@ -83,6 +85,19 @@ function index() {
     getSpaces();
   }, []);
 
+  const getPreviousGroupChat = async (space) => {
+    const url = "http://localhost:5000";
+    try {
+      const response = await axios.get(
+        `${url}/spacechats/chats?space=${space}`
+      );
+      const groupChat = response.data;
+      setPreviousGroupChat(groupChat);
+      console.log(groupChat);
+    } catch {
+      console.log("error");
+    }
+  };
   const getSpaces = async () => {
     const url = "http://localhost:5000";
     try {
@@ -217,7 +232,6 @@ function index() {
   const displayChat = (user) => {
     dispatch(setChatCompShowState(true));
     dispatch(setChatCompShowStateType("chat"));
-    // setChatComp(true);
     setUserName(user);
     getChats(user);
   };
@@ -226,10 +240,16 @@ function index() {
     setMeetCredProp("space");
     dispatch(setmeetCredentialPageShowState(true));
   };
-  const displaySpace = (space) => {
-    dispatch(setChatCompShowState(true));
+  const displaySpace = async (space) => {
+    const url = "http://localhost:5000";
+    const response = await axios.get(`${url}/spacechats/chats?space=${space}`);
+    const groupChat = response.data;
+    setPreviousGroupChat(groupChat);
+    console.log(groupChat);
+    // getPreviousGroupChat(space);
     dispatch(setChatCompShowStateType("space"));
     dispatch(setChatCompSpaceName(space));
+    dispatch(setChatCompShowState(true));
   };
   return (
     <div className={chatPageCSS.container}>
@@ -412,6 +432,7 @@ function index() {
               sentChats={sentChats}
               receivedChats={receivedChats}
               conversationExists={conversationExists}
+              groupChat={previousGroupChat}
             />
           </div>
         ) : (

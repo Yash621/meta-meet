@@ -12,6 +12,7 @@ const userRoutes = require("./routes/user");
 const chatRoutes = require("./routes/chat");
 const contactRoutes = require("./routes/contact");
 const spaceRoutes = require("./routes/space");
+const spaceChatRoutes = require("./routes/spaceChat");
 var cors = require("cors");
 app.use(cors());
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use("/users", userRoutes);
 app.use("/chats", chatRoutes);
 app.use("/contacts", contactRoutes);
 app.use("/spaces", spaceRoutes);
+app.use("/spacechats", spaceChatRoutes);
 
 io.on("connection", (socket) => {
   socket.on("chatJoin", (data) => {

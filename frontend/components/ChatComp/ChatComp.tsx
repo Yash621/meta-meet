@@ -24,6 +24,7 @@ import {
   selectChatCompShowStateType,
   setChatCompShowStateType,
   selectChatCompSpaceName,
+  selectChatCompGroupChat,
 } from "../../pages/slices/chatSlice";
 import groupAvatar from "../../public/static/images/group-avatar.png";
 
@@ -51,41 +52,50 @@ function ChatComp({
   const [socketId, setSocketId] = useState("");
   const [chatStarted, setChatStarted] = useState(false);
   const [previousGroupChat, setPreviousGroupChat] = useState([]);
+  // const groupChat = useSelector(selectChatCompGroupChat);
 
   useEffect(() => {
-    // console.log(receivedChats);
-    // console.log(conversationExists);
-    socket.on("me", (data) => {
-      setSocketId(data.id);
-    });
-    socket.emit("chatJoin", { room: user, id: id });
-    sentChats.forEach((chat) => {
-      chat.position = "right";
-    });
-    receivedChats.forEach((chat) => {
-      chat.position = "left";
-    });
-    const previousChats = sentChats.concat(receivedChats);
-    previousChats.sort(function (a, b) {
-      var c = new Date(a.time);
-      var d = new Date(b.time);
-      return c - d;
-    });
-    setPreviousChats(previousChats);
-    socket.on("chatMessage", (chat) => {
-      console.log("hello");
-      if (chat.id !== id) {
+    if (chatCompShowStateType !== "space") {
+      socket.on("me", (data) => {
+        setSocketId(data.id);
+      });
+      socket.emit("chatJoin", { room: user, id: id });
+      sentChats.forEach((chat) => {
+        chat.position = "right";
+      });
+      receivedChats.forEach((chat) => {
         chat.position = "left";
-        setPreviousChats([
-          ...previousChats,
-          {
-            position: "left",
-            message: chat.message,
-            time: chat.time,
-          },
-        ]);
-      }
-    });
+      });
+      const previousChats = sentChats.concat(receivedChats);
+      previousChats.sort(function (a, b) {
+        var c = new Date(a.time);
+        var d = new Date(b.time);
+        return c - d;
+      });
+      setPreviousChats(previousChats);
+      socket.on("chatMessage", (chat) => {
+        console.log("hello");
+        if (chat.id !== id) {
+          chat.position = "left";
+          setPreviousChats([
+            ...previousChats,
+            {
+              position: "left",
+              message: chat.message,
+              time: chat.time,
+            },
+          ]);
+        }
+      });
+    } else {
+      groupChat.forEach((chat) => {
+        chat.position = "right";
+      });
+      setPreviousGroupChat(groupChat);
+      console.log("hello");
+
+      // setPreviousGroupChat(groupChat);
+    }
     // console.log(sentChats.concat(receivedChats));
   }, [sentChats, receivedChats]);
   const sendChat = async (e) => {
@@ -156,27 +166,36 @@ function ChatComp({
         ]);
         console.log(text);
       } else {
-        // const url = "http://localhost:5000";
-        // const data = {
-        //   sender: id,
-        //   readstatus: "unread",
-        //   message: e.target.value,
-        //   reciever: user,
-        // };
-        // const text = e.target.value;
-        // axios({
-        //   method: "post",
-        //   url: `${url}/chats/add`,
-        //   data: data,
-        //   headers: { "content-type": "application/json" },
-        // })
-        //   .then((res) => {
-        //     console.log(res);
-        //     document.getElementById("chat-input").value = "";
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
+        const url = "http://localhost:5000";
+        const myUserName = await axios.get(`${url}/users/username?id=${id}`);
+        const message = e.target.value;
+        const data = {
+          username: myUserName.data,
+          message: message,
+          time: new Date().toLocaleString(),
+          space: chatCompSpaceName,
+        };
+        axios({
+          method: "post",
+          url: `${url}/spacechats/add`,
+          data: data,
+          headers: { "content-type": "application/json" },
+        })
+          .then((res) => {
+            console.log(res);
+            document.getElementById("chat-input").value = "";
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        setPreviousGroupChat([
+          ...previousGroupChat,
+          {
+            position: "right",
+            message: message,
+            time: new Date().toLocaleString(),
+          },
+        ]);
       }
     }
   };
@@ -251,7 +270,7 @@ function ChatComp({
           Start a conversation
         </div>
       )}
-      {chatCompShowStateType !== "space" && previousGroupChat.length !== 0 && (
+      {chatCompShowStateType === "space" && previousGroupChat.length !== 0 && (
         <div className={chatCompCSS.chatboxContainer}>
           {previousGroupChat.map((chat, index) => (
             <ChatElement
