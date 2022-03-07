@@ -20,12 +20,17 @@ import {
   setChatCompShowStateType,
   setChatCompSpaceName,
 } from "../../pages/slices/chatSlice";
+import {
+  setJoinedGroups,
+  selectJoinedGroups,
+} from "../../pages/slices/landingSlice";
 
 function MeetCred({ meetType, meetingId, userId }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [meetingRoomId, setMeetingRoomId] = useState("");
   const [spaceAlreadyExists, setSpaceAlreadyExists] = useState(false);
+  const joinedGroups = useSelector(selectJoinedGroups);
 
   const navigateToCall = () => {
     if (meetType === "new_meeting") {
@@ -63,6 +68,8 @@ function MeetCred({ meetType, meetingId, userId }) {
           dispatch(setChatCompShowState(true));
           dispatch(setChatCompShowStateType("space"));
           dispatch(setChatCompSpaceName(spacename));
+          const newJoinedGroups = [...joinedGroups, spacename];
+          dispatch(setJoinedGroups(newJoinedGroups));
         }
       })
       .catch((err) => {

@@ -55,6 +55,7 @@ function ChatComp({
   // const groupChat = useSelector(selectChatCompGroupChat);
 
   useEffect(() => {
+    console.log("hello12345");
     if (chatCompShowStateType !== "space") {
       socket.on("me", (data) => {
         setSocketId(data.id);
@@ -104,7 +105,7 @@ function ChatComp({
       setPreviousGroupChat(groupChat);
       console.log("hello");
     }
-  }, [sentChats, receivedChats]);
+  }, [sentChats, receivedChats, groupChat]);
 
   const sendChat = async (e) => {
     if (e.key === "Enter" && e.target.value !== "") {
@@ -203,6 +204,7 @@ function ChatComp({
             position: "right",
             message: message,
             time: new Date().toLocaleString(),
+            username: myUserName.data,
           },
         ]);
       }
@@ -210,7 +212,7 @@ function ChatComp({
   };
   return (
     <div className={chatCompCSS.container}>
-      <div className={chatCompCSS.profileContainer}>
+      <div className={chatCompCSS.profileContainer} id="container">
         <div className={chatCompCSS.profile}>
           {chatCompShowStateType === "space" && (
             <div className={chatCompCSS.profileAvatar}>

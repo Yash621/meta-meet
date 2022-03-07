@@ -34,7 +34,12 @@ import ChatComp from "../../components/ChatComp/ChatComp";
 import { tabScrollButtonClasses } from "@mui/material";
 import CallComp from "../../components/CallComp/CallComp";
 import { selectCallCompShowState } from "../slices/callSlice";
-import { selectAcessToken, selectAuthMethod } from "../slices/landingSlice";
+import {
+  selectAcessToken,
+  selectAuthMethod,
+  selectJoinedGroups,
+  setJoinedGroups,
+} from "../slices/landingSlice";
 import defaultProfilePhoto from "../../public/static/images/default-profile-photo.png";
 import axios from "axios";
 import { ChatItem } from "react-chat-elements";
@@ -73,7 +78,8 @@ function index() {
   const [previousChats, setPreviousChats] = useState([]);
   const [contactsExist, setContactsExist] = useState(false);
   const chatCompShowState = useSelector(selectChatCompShowState);
-  const [joinedSpaces, setJoinedSpaces] = useState([]);
+  // const [joinedSpaces, setJoinedSpaces] = useState([]);
+  const joinedSpaces = useSelector(selectJoinedGroups);
   const [previousGroupChat, setPreviousGroupChat] = useState([]);
 
   useEffect(() => {
@@ -102,7 +108,8 @@ function index() {
     const url = "http://localhost:5000";
     try {
       const response = await axios.get(`${url}/spaces/getSpaces?userId=${id}`);
-      setJoinedSpaces(response.data.spaces);
+      dispatch(setJoinedGroups(response.data.spaces));
+      // setJoinedSpaces(response.data.spaces);
       console.log(response.data.spaces.length + " hello124598");
     } catch {
       console.log("error");
