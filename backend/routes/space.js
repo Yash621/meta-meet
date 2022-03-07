@@ -60,7 +60,6 @@ router.post("/addmember", async (req, res) => {
     newMemeberList.push(req.body.userId);
     space[0].members = newMemeberList;
     const newSpace = await space[0].save();
-
     if (existingChatSpaces.length > 0) {
       const newSpaceSet = existingChatSpaces[0].spaces;
       newSpaceSet.push(req.body.spacename);

@@ -39,6 +39,7 @@ function ChatComp({
   receivedChats,
   conversationExists,
   groupChat,
+  spaceJoined,
 }) {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ function ChatComp({
   const [socketId, setSocketId] = useState("");
   const [chatStarted, setChatStarted] = useState(false);
   const [previousGroupChat, setPreviousGroupChat] = useState([]);
+  const [spaceJoinedGroupChat, setSpaceJoinedGroupChat] = useState(spaceJoined);
   // const groupChat = useSelector(selectChatCompGroupChat);
 
   useEffect(() => {
@@ -210,6 +212,26 @@ function ChatComp({
       }
     }
   };
+  const joinSpace = () => {
+    const url = "http://localhost:5000";
+    const data = {
+      userId: id,
+      spacename: chatCompSpaceName,
+    };
+    axios({
+      method: "post",
+      url: `${url}/spaces/addmember`,
+      data: data,
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        console.log(res);
+        setSpaceJoinedGroupChat(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className={chatCompCSS.container}>
       <div className={chatCompCSS.profileContainer} id="container">
@@ -241,8 +263,10 @@ function ChatComp({
               </IconButton>
             </div>
           )}
-          {chatCompShowStateType === "space" && (
-            <div className={chatCompCSS.joinSpace}>Join</div>
+          {chatCompShowStateType === "space" && !spaceJoinedGroupChat && (
+            <div className={chatCompCSS.joinSpace} onClick={() => joinSpace()}>
+              Join
+            </div>
           )}
           {chatCompShowStateType === "space" && (
             <div className={chatCompCSS.iconContainer}>
