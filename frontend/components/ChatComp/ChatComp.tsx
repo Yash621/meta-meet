@@ -43,6 +43,7 @@ function ChatComp({
   receivedChats,
   conversationExists,
   groupChat,
+  meetingId,
 }) {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -215,6 +216,9 @@ function ChatComp({
       }
     }
   };
+  const startVideoMeeting = () => {
+    router.push(`/video?host=true&meetingId=${meetingId}&userId=${id}`);
+  };
   const joinSpace = async () => {
     const url = "http://localhost:5000";
     const data = {
@@ -275,7 +279,7 @@ function ChatComp({
           )}
           {chatCompShowStateType === "space" && (
             <div className={chatCompCSS.iconContainer}>
-              <IconButton onClick={() => setCallCompState("video call")}>
+              <IconButton onClick={() => startVideoMeeting()}>
                 <VideocamIcon />
               </IconButton>
             </div>

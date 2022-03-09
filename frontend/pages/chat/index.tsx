@@ -496,6 +496,7 @@ function index() {
               receivedChats={receivedChats}
               conversationExists={conversationExists}
               groupChat={previousGroupChat}
+              meetingId={meetingId}
             />
           </div>
         ) : (
