@@ -229,19 +229,36 @@ function index() {
                   dispatch(setChatCompShowStateType("chat"));
                   setUserName(element.innerHTML);
                   getChats(element.innerHTML);
-                  setPreviousChats([
-                    ...previousChats,
-                    {
-                      username: element.innerHTML,
-                    },
-                  ]);
+                  var checkDuplicate = false;
+                  previousChats.forEach((chat) => {
+                    if (chat.username === element.innerHTML) {
+                      checkDuplicate = true;
+                    }
+                  });
+                  if (!checkDuplicate) {
+                    setPreviousChats([
+                      ...previousChats,
+                      {
+                        username: element.innerHTML,
+                      },
+                    ]);
+                  }
                   setContactsExist(true);
                   document.getElementById("search-results-container").click();
                 } else {
                   displaySpace(element.innerHTML);
-                  dispatch(
-                    setJoinedGroups([...joinedSpaces, element.innerHTML])
-                  );
+                  var checkDuplicate = false;
+                  joinedSpaces.forEach((space) => {
+                    if (space === element.innerHTML) {
+                      checkDuplicate = true;
+                    }
+                  });
+                  if (!checkDuplicate) {
+                    console.log("hello");
+                    dispatch(
+                      setJoinedGroups([...joinedSpaces, element.innerHTML])
+                    );
+                  }
                 }
                 document.getElementById("search-results-container").innerHTML =
                   "";
