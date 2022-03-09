@@ -5,6 +5,7 @@ const initialState = {
   accessToken: null,
   authMethod: null,
   joinedGroups: [],
+  spaceJoined: false,
 };
 
 export const landingSlice = createSlice({
@@ -23,6 +24,9 @@ export const landingSlice = createSlice({
     setJoinedGroups: (state, action) => {
       state.joinedGroups = action.payload;
     },
+    setSpaceJoined: (state, action) => {
+      state.spaceJoined = action.payload;
+    },
   },
 });
 
@@ -31,6 +35,7 @@ export const {
   setAccessToken,
   setAuthMethod,
   setJoinedGroups,
+  setSpaceJoined,
 } = landingSlice.actions;
 
 export const selectlandingPageVisit = (state) =>
@@ -38,4 +43,5 @@ export const selectlandingPageVisit = (state) =>
 export const selectAcessToken = (state) => state.landingPage.accessToken;
 export const selectAuthMethod = (state) => state.landingPage.authMethod;
 export const selectJoinedGroups = (state) => state.landingPage.joinedGroups;
+export const selectSpaceJoined = (state) => state.landingPage.spaceJoined;
 export default landingSlice.reducer;

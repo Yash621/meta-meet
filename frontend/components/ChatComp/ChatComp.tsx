@@ -27,6 +27,10 @@ import {
   selectChatCompGroupChat,
 } from "../../pages/slices/chatSlice";
 import groupAvatar from "../../public/static/images/group-avatar.png";
+import {
+  selectSpaceJoined,
+  setSpaceJoined,
+} from "../../pages/slices/landingSlice";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -39,7 +43,6 @@ function ChatComp({
   receivedChats,
   conversationExists,
   groupChat,
-  spaceJoined,
 }) {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -53,7 +56,7 @@ function ChatComp({
   const [socketId, setSocketId] = useState("");
   const [chatStarted, setChatStarted] = useState(false);
   const [previousGroupChat, setPreviousGroupChat] = useState([]);
-  const [spaceJoinedGroupChat, setSpaceJoinedGroupChat] = useState(spaceJoined);
+  const spaceJoinedGroupChat = useSelector(selectSpaceJoined);
   // const groupChat = useSelector(selectChatCompGroupChat);
 
   useEffect(() => {
@@ -212,12 +215,14 @@ function ChatComp({
       }
     }
   };
-  const joinSpace = () => {
+  const joinSpace = async () => {
     const url = "http://localhost:5000";
     const data = {
       userId: id,
       spacename: chatCompSpaceName,
     };
+    console.log(data);
+    // setSpaceJoinedGroupChat(true);
     axios({
       method: "post",
       url: `${url}/spaces/addmember`,
@@ -226,7 +231,7 @@ function ChatComp({
     })
       .then((res) => {
         console.log(res);
-        setSpaceJoinedGroupChat(true);
+        dispatch(setSpaceJoined(true));
       })
       .catch((err) => {
         console.log(err);

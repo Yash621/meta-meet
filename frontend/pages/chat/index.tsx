@@ -39,6 +39,8 @@ import {
   selectAuthMethod,
   selectJoinedGroups,
   setJoinedGroups,
+  selectSpaceJoined,
+  setSpaceJoined,
 } from "../slices/landingSlice";
 import defaultProfilePhoto from "../../public/static/images/default-profile-photo.png";
 import axios from "axios";
@@ -188,35 +190,61 @@ function index() {
     if (filter === "") {
       document.getElementById("search-results-container").innerHTML = "";
     } else {
+      console.log("hello");
       await axios
         .get(`${url}/users/search?filter=${filter}&id=${id}`)
-        .then((response) => {
-          setFilteredResults(response.data);
+        .then(async (response) => {
+          console.log("hello");
+          const spaces = await axios.get(`${url}/spaces/`);
+          console.log("hello");
+          const filteredUsers = response.data;
+          filteredUsers.forEach((user) => {
+            user.type = "user";
+          });
+          const filteredSpaces = spaces.data.spaces.filter((space) => {
+            return space.spacename.includes(filter);
+          });
+          filteredSpaces.forEach((space) => {
+            space.type = "space";
+          });
+          const filteredResults = filteredUsers.concat(filteredSpaces);
+          console.log("hello");
+          console.log(filteredResults);
+          setFilteredResults(filteredResults);
           document.getElementById("search-results-container").innerHTML = "";
-          if (response.data.length > 0) {
-            response.data.forEach((user) => {
+          if (filteredResults.length > 0) {
+            filteredResults.forEach((result) => {
               const element = document.createElement("div");
               element.className = chatPageCSS.searchResults;
-              element.innerHTML = user.username;
+              if (result.type === "user") {
+                element.innerHTML = result.username;
+              } else {
+                element.innerHTML = result.spacename;
+              }
               element.addEventListener("click", async () => {
                 document.getElementById("search-bar").value = "";
                 setSearchBarHighlight(false);
-                // getChats(element.innerHTML);
                 dispatch(setChatCompShowState(true));
-                dispatch(setChatCompShowStateType("chat"));
-                // setChatComp(true);
+                if (result.type === "user") {
+                  dispatch(setChatCompShowStateType("chat"));
+                  setUserName(element.innerHTML);
+                  getChats(element.innerHTML);
+                  setPreviousChats([
+                    ...previousChats,
+                    {
+                      username: element.innerHTML,
+                    },
+                  ]);
+                  setContactsExist(true);
+                  document.getElementById("search-results-container").click();
+                } else {
+                  displaySpace(element.innerHTML);
+                  dispatch(
+                    setJoinedGroups([...joinedSpaces, element.innerHTML])
+                  );
+                }
                 document.getElementById("search-results-container").innerHTML =
                   "";
-                setUserName(element.innerHTML);
-                getChats(element.innerHTML);
-                setPreviousChats([
-                  ...previousChats,
-                  {
-                    username: element.innerHTML,
-                  },
-                ]);
-                setContactsExist(true);
-                document.getElementById("search-results-container").click();
               });
               document
                 .getElementById("search-results-container")
@@ -247,8 +275,19 @@ function index() {
     setMeetCredProp("space");
     dispatch(setmeetCredentialPageShowState(true));
   };
+
   const displaySpace = async (space) => {
     const url = "http://localhost:5000";
+    const res = await axios.get(
+      `${url}/spaces/memberExist?userId=${id}&space=${space}`
+    );
+    if (res.data.message == "member exists") {
+      dispatch(setSpaceJoined(true));
+    }
+    console.log(res.data.message);
+    if (res.data.message == "member does not exists") {
+      dispatch(setSpaceJoined(false));
+    }
     const response = await axios.get(`${url}/spacechats/chats?space=${space}`);
     const groupChat = response.data;
     setPreviousGroupChat(groupChat);
