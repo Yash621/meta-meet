@@ -36,6 +36,14 @@ app.use("/spaces", spaceRoutes);
 app.use("/spacechats", spaceChatRoutes);
 
 io.on("connection", (socket) => {
+  socket.on("joinSpace", (data) => {
+    console.log("joinSpace");
+    socket.join(data.space);
+  });
+  socket.on("sendSpaceChat", (data) => {
+    console.log("sendSpaceChat");
+    io.to(data.space).emit("spaceChat", data);
+  });
   socket.on("chatJoin", (data) => {
     socket.join(data.room);
     socket.join(data.id);

@@ -324,7 +324,6 @@ function index() {
         <MeetCred meetType={meetCredProp} meetingId={meetingId} userId={id} />
       )}
       {callComp && <CallComp authMethod={authMethod} />}
-
       <div className={chatPageCSS.headerContainer}>
         <div className={chatPageCSS.chatIconContainer}>
           <DehazeIcon className={chatPageCSS.slideIcon} />

@@ -95,6 +95,8 @@ function ChatComp({
         }
       });
     } else {
+      socket.emit("joinSpace", { space: chatCompSpaceName, id: id });
+      console.log("how are you");
       groupChat.sort(function (a, b) {
         var c = new Date(a.time);
         var d = new Date(b.time);
@@ -110,6 +112,21 @@ function ChatComp({
       console.log(groupChat);
       setPreviousGroupChat(groupChat);
       console.log("hello");
+      socket.on("spaceChat", (data) => {
+        console.log("mera naam yash");
+        if (data.id !== id) {
+          console.log(previousGroupChat);
+          setPreviousGroupChat([
+            ...groupChat,
+            {
+              position: "left",
+              message: data.message,
+              time: data.time,
+              username: data.user,
+            },
+          ]);
+        }
+      });
     }
   }, [sentChats, receivedChats, groupChat]);
 
@@ -200,10 +217,19 @@ function ChatComp({
           .then((res) => {
             console.log(res);
             document.getElementById("chat-input").value = "";
+            console.log("mera namm yash hai");
+            socket.emit("sendSpaceChat", {
+              message: message,
+              space: chatCompSpaceName,
+              time: new Date().toLocaleString(),
+              user: myUserName.data,
+              id: id,
+            });
           })
           .catch((err) => {
             console.log(err);
           });
+
         setPreviousGroupChat([
           ...previousGroupChat,
           {

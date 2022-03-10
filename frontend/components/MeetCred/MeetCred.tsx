@@ -60,6 +60,7 @@ function MeetCred({ meetType, meetingId, userId }) {
     })
       .then((res) => {
         console.log(res);
+
         if (res.data.message === "Space already exists") {
           setSpaceAlreadyExists(true);
         }
