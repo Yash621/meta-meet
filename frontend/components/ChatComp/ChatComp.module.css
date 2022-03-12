@@ -45,7 +45,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px -1.95px 2.6px;
 }
@@ -94,13 +94,15 @@
 }
 .input {
   height: 70%;
-  width: 95%;
+  width: 92%;
   font-size: 0.6em;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
   background-color: #f1f3f4;
+
+  /* background-color: #1a73e8; */
   border: none;
   padding-left: 15px;
 }
@@ -116,4 +118,58 @@
   padding-left: 15px;
   padding-right: 15px;
   cursor: pointer;
+}
+.disabledInput {
+  cursor: no-drop;
+  /* background-color: black; */
+}
+.fileInput {
+  height: 30px;
+  width: 30px;
+  margin-left: 10px;
+  margin-top: 10px;
+  position: fixed;
+  z-index: 100;
+  opacity: 0;
+  cursor: pointer;
+}
+.mic {
+  height: 40px;
+  width: 40px;
+  animation-name: micanimation;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes micanimation {
+  10% {
+    box-shadow: 0px 0px 1px 10px #e3e3e3;
+  }
+  20% {
+    box-shadow: 0px 0px 1px 5px #e3e3e3;
+  }
+  30% {
+    box-shadow: (0px 0px 1px 10px #e3e3e3);
+  }
+  40% {
+    box-shadow: (0px 0px 1px 15px #e3e3e3);
+  }
+  50% {
+    box-shadow: (0px 0px 1px 10px #e3e3e3);
+  }
+  60% {
+    box-shadow: (0px 0px 1px 15px #e3e3e3);
+  }
+  70% {
+    box-shadow: (0px 0px 1px 10px #e3e3e3);
+  }
+  80% {
+    box-shadow: (0px 0px 1px 5px #e3e3e3);
+  }
+  90% {
+    box-shadow: (0px 0px 1px 10px #e3e3e3);
+  }
+  100% {
+    box-shadow: (0px 0px 1px 5px #e3e3e3);
+  }
 }

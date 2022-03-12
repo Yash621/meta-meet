@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import chatElementCSS from "./ChatElement.module.css";
 
-function ChatElement({ position, text, date, type, user }) {
+function ChatElement({ position, text, date, type, user, inputType }) {
   useEffect(() => {
     console.log(text);
   }, []);
@@ -41,16 +41,20 @@ function ChatElement({ position, text, date, type, user }) {
         position == "right" && `${chatElementCSS.right}`
       } ${position == "left" && `${chatElementCSS.left}`}`}
     >
-      <div className={chatElementCSS.messageContainer}>
-        <div className={chatElementCSS.message}>{text}</div>
-        <div className={chatElementCSS.dateContainer}>
-          {" "}
-          {type === "space" && (
-            <div className={chatElementCSS.username}>{user}</div>
-          )}
-          {getTime(date)}
+      {inputType === "text" ? (
+        <div className={chatElementCSS.messageContainer}>
+          <div className={chatElementCSS.message}>{text}</div>
+          <div className={chatElementCSS.dateContainer}>
+            {" "}
+            {type === "space" && (
+              <div className={chatElementCSS.username}>{user}</div>
+            )}
+            {getTime(date)}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>hello</div>
+      )}
     </div>
   );
 }

@@ -31,6 +31,10 @@ import {
   selectSpaceJoined,
   setSpaceJoined,
 } from "../../pages/slices/landingSlice";
+// import useSpeechToText from "react-hook-speech-to-text";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -58,6 +62,13 @@ function ChatComp({
   const [chatStarted, setChatStarted] = useState(false);
   const [previousGroupChat, setPreviousGroupChat] = useState([]);
   const spaceJoinedGroupChat = useSelector(selectSpaceJoined);
+  var {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+  // const [message, setMessage] = useState("");
   // const groupChat = useSelector(selectChatCompGroupChat);
 
   useEffect(() => {
@@ -240,6 +251,8 @@ function ChatComp({
           },
         ]);
       }
+      resetTranscript();
+      document.getElementById("chat-input").removeAttribute("value");
     }
   };
   const startVideoMeeting = () => {
@@ -267,6 +280,18 @@ function ChatComp({
         console.log(err);
       });
   };
+  const startRecording = () => {
+    if (listening) {
+      document.getElementById("chat-input").value = transcript;
+      SpeechRecognition.stopListening();
+    } else {
+      console.log("start");
+      resetTranscript();
+      // document.getElementById("chat-input").setAttribute("value", transcript);
+      SpeechRecognition.startListening({ continuous: true });
+    }
+  };
+
   return (
     <div className={chatCompCSS.container}>
       <div className={chatCompCSS.profileContainer} id="container">
@@ -335,6 +360,7 @@ function ChatComp({
               date={chat.time}
               type={chatCompShowStateType}
               user="welcome"
+              inputType="text"
             />
           ))}
         </div>
@@ -355,45 +381,54 @@ function ChatComp({
               date={chat.time}
               type={chatCompShowStateType}
               user={chat.username}
+              inputType="text"
             />
           ))}
         </div>
       )}
-      {/* {previousChats.length === 0 && (
-        <div className={chatCompCSS.emptyChatboxContainer}>
-          <Image src={chatGraphic} alt="chat" />
-          Start a conversation
-        </div>
-      )} */}
-      {/* {previousChats.length !== 0 && (
-        <div className={chatCompCSS.chatboxContainer}>
-          {previousChats.map((chat, index) => (
-            <ChatElement
-              key={index}
-              position={chat.position}
-              text={chat.message}
-              date={chat.time}
-            />
-          ))}
-        </div>
-      )} */}
       <div className={chatCompCSS.chatInputContainer}>
-        <div className={chatCompCSS.fileAttachContainer}>
-          <IconButton>
-            <AttachFileIcon />
-          </IconButton>
-        </div>
-        <input
-          className={chatCompCSS.input}
-          placeholder="Type a message"
-          type="text"
-          id="chat-input"
-          onKeyUp={(e) => {
-            sendChat(e);
-          }}
-        ></input>
-        <div className={chatCompCSS.micIconContainer}>
-          <IconButton>
+        {chatCompShowStateType === "space" && !spaceJoinedGroupChat && (
+          <input
+            className={`${chatCompCSS.input} ${chatCompCSS.disabledInput}`}
+            placeholder="Type a message"
+            type="text"
+            id="chat-input"
+            // value={transcript}
+            disabled
+            onKeyUp={(e) => {
+              sendChat(e);
+            }}
+          ></input>
+        )}
+        {chatCompShowStateType === "space" && spaceJoinedGroupChat && (
+          <input
+            className={chatCompCSS.input}
+            placeholder="Type a message"
+            type="text"
+            id="chat-input"
+            value={listening ? transcript : null}
+            onKeyUp={(e) => {
+              sendChat(e);
+            }}
+          ></input>
+        )}
+        {chatCompShowStateType !== "space" && (
+          <input
+            className={chatCompCSS.input}
+            placeholder="Type a message"
+            type="text"
+            id="chat-input"
+            // value={transcript}
+            onKeyUp={(e) => {
+              sendChat(e);
+            }}
+          ></input>
+        )}
+        <div
+          className={`${chatCompCSS.micIconContainer} `}
+          onClick={() => startRecording()}
+        >
+          <IconButton className={`${listening && chatCompCSS.mic}`}>
             <MicIcon />
           </IconButton>
         </div>
