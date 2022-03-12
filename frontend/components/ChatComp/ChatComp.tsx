@@ -391,7 +391,7 @@ function ChatComp({
             placeholder="Type a message"
             type="text"
             id="chat-input"
-            // value={transcript}
+            value={listening ? transcript : null}
             disabled
             onKeyUp={(e) => {
               sendChat(e);
@@ -416,7 +416,7 @@ function ChatComp({
             placeholder="Type a message"
             type="text"
             id="chat-input"
-            // value={transcript}
+            value={listening ? transcript : null}
             onKeyUp={(e) => {
               sendChat(e);
             }}
