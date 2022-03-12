@@ -285,9 +285,7 @@ function ChatComp({
       document.getElementById("chat-input").value = transcript;
       SpeechRecognition.stopListening();
     } else {
-      console.log("start");
       resetTranscript();
-      // document.getElementById("chat-input").setAttribute("value", transcript);
       SpeechRecognition.startListening({ continuous: true });
     }
   };
