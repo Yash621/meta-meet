@@ -40,8 +40,10 @@ import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import victory from "../../public/static/images/victory.png";
 import thumbs_up from "../../public/static/images/thumbs_up.png";
+import good_bye from "../../public/static/images/good_bye.png";
 import Webcam from "react-webcam";
 import Image from "next/image";
+import rock from "../../public/static/images/rock.png";
 import { auth } from "../../firebase";
 import defaultAvatar from "../../public/static/images/default-profile-photo.png";
 import { selectAuthMethod } from "../../pages/slices/landingSlice";
@@ -76,7 +78,7 @@ function index() {
   const idRef = useRef(null);
   const [peerData, setPeerData] = useState(null);
   const canvasRef = useRef(null);
-  const images = { thumbs_up: thumbs_up, victory: victory };
+  const images = { thumbs_up: thumbs_up, victory: victory, good_bye: good_bye };
   const [emoji, setEmoji] = useState(null);
   const webcamRef = useRef(null);
   const [shareScreenState, setShareScreenState] = useState(false);
@@ -364,11 +366,18 @@ function index() {
       // Make Detections
       const hand = await net.estimateHands(video);
       // console.log(hand);
-
+      // create new gesture with id "rock"
+      const PaperGesture = new fp.GestureDescription("good_bye");
+      PaperGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
+      PaperGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.NoCurl);
+      PaperGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.NoCurl);
+      PaperGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.NoCurl);
+      PaperGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
       if (hand.length > 0) {
         const GE = new fp.GestureEstimator([
           fp.Gestures.VictoryGesture,
           fp.Gestures.ThumbsUpGesture,
+          PaperGesture,
         ]);
         const gesture = await GE.estimate(hand[0].landmarks, 4);
         if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
@@ -382,6 +391,7 @@ function index() {
             Math.max.apply(null, confidence)
           );
           // console.log(maxConfidence + "I am the best");
+          console.log(gesture.gestures[maxConfidence].name);
           console.log(gesture.gestures[maxConfidence].name + "  I am the best");
           if (gesture.gestures[maxConfidence].name === "victory") {
             console.log("hello ji");
@@ -389,6 +399,10 @@ function index() {
           }
           if (gesture.gestures[maxConfidence].name === "thumbs_up") {
             document.getElementById("unmute").click();
+          }
+          if (gesture.gestures[maxConfidence].name === "good_bye") {
+            document.getElementById("end-btn").click();
+            console.log("hello ji");
           }
           setEmoji(gesture.gestures[maxConfidence].name);
           console.log(emoji);
@@ -477,7 +491,6 @@ function index() {
           <Image src={images[emoji]} alt="" className={videoPageCSS.handSign} />
         </div>
       )}
-
       {/* NEW STUFF */}
       <div className={videoPageCSS.container}>
         <div className={videoPageCSS.videoContainer}>
@@ -580,6 +593,7 @@ function index() {
               style={{
                 backgroundColor: "#EB4334",
               }}
+              id="end-btn"
               onClick={() => endCall()}
             >
               <IconButton>
