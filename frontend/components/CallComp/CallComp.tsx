@@ -27,7 +27,7 @@ function CallComp({ authMethod }) {
     <div className={callCompCSS.container}>
       <div className={callCompCSS.backgroundContainer}></div>
       <div className={callCompCSS.callContainer}>
-        {authMethod === "google" && (
+        {/* {authMethod === "google" && (
           <img
             src={photoUrl}
             className={callCompCSS.avatarContainer}
@@ -38,21 +38,20 @@ function CallComp({ authMethod }) {
           <div className={callCompCSS.avatarContainer}>
             <Image src={defaultAvatar} alt="profile-photo" />
           </div>
-        )}
+        )} */}
+        <div className={callCompCSS.warningContainer}> Warning !</div>
         {/* <div className={callCompCSS.avatarContainer}>Y</div> */}
         <div className={callCompCSS.h1}>
-          Someone is Inviting you for a {callType}
+          It is detected that you are using hate speech which is not acceptable
+          according to our policies, If you do not stop using it, your account
+          could be permanently deleted.
         </div>
         <div className={callCompCSS.acceptRejectContainer}>
           <div
             className={callCompCSS.acceptReject}
             onClick={() => dispatch(setCallCompShowState(false))}
           >
-            RejectCall <CallEndIcon className={callCompCSS.icon} />
-          </div>
-          <div className={`${callCompCSS.acceptReject} ${callCompCSS.accept}`}>
-            Accept Call
-            <CallIcon className={callCompCSS.icon} />
+            Ok
           </div>
         </div>
       </div>

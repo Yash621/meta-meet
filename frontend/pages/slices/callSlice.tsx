@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  callCompShowState: true,
+  callCompShowState: false,
   callCompShowStateType: "",
 };
 

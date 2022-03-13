@@ -137,10 +137,21 @@ function ChatComp({
 
   const sendChat = async (e) => {
     if (e.key === "Enter" && e.target.value !== "") {
-      toxicity.load(0.8).then((model) => {
-        const sentences = ["you suck"];
+      const sentence = e.target.value;
+      toxicity.load(0.6).then((model) => {
+        const sentences = [sentence];
+        console.log(sentence);
         model.classify(sentences).then((predictions) => {
-          console.log(predictions);
+          for (
+            var predictionsIndex = 0;
+            predictionsIndex < predictions.length;
+            predictionsIndex++
+          ) {
+            if (predictions[predictionsIndex].results[0].match) {
+              dispatch(setCallCompShowState(true));
+              break;
+            }
+          }
         });
       });
       if (chatCompShowStateType !== "space") {

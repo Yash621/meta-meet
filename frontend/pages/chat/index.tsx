@@ -111,7 +111,6 @@ function index() {
     try {
       const response = await axios.get(`${url}/spaces/getSpaces?userId=${id}`);
       dispatch(setJoinedGroups(response.data.spaces));
-      // setJoinedSpaces(response.data.spaces);
       console.log(response.data.spaces.length + " hello124598");
     } catch {
       console.log("error");
