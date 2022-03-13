@@ -310,6 +310,7 @@ function index() {
     setPreviousGroupChat(groupChat);
     console.log(groupChat);
     // getPreviousGroupChat(space);
+
     dispatch(setChatCompShowStateType("space"));
     dispatch(setChatCompSpaceName(space));
     dispatch(setChatCompShowState(true));
@@ -325,9 +326,6 @@ function index() {
       )}
       {callComp && <CallComp authMethod={authMethod} />}
       <div className={chatPageCSS.headerContainer}>
-        <div className={chatPageCSS.chatIconContainer}>
-          <DehazeIcon className={chatPageCSS.slideIcon} />
-        </div>
         <div className={chatPageCSS.companyNameLogo}>
           <Image src={logo} />
           MetaMeet.io
@@ -356,7 +354,6 @@ function index() {
             }}
           ></input>
         </div>
-
         {authMethod === "google" && (
           <img
             src={photoUrl}

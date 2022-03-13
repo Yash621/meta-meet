@@ -35,6 +35,7 @@ import {
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+// import toxicity from "@tensorflow-models/toxicity";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -62,14 +63,7 @@ function ChatComp({
   const [chatStarted, setChatStarted] = useState(false);
   const [previousGroupChat, setPreviousGroupChat] = useState([]);
   const spaceJoinedGroupChat = useSelector(selectSpaceJoined);
-  var {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition,
-  } = useSpeechRecognition();
-  // const [message, setMessage] = useState("");
-  // const groupChat = useSelector(selectChatCompGroupChat);
+  var { transcript, listening, resetTranscript } = useSpeechRecognition();
 
   useEffect(() => {
     console.log("hello12345");
@@ -143,6 +137,12 @@ function ChatComp({
 
   const sendChat = async (e) => {
     if (e.key === "Enter" && e.target.value !== "") {
+      toxicity.load(0.8).then((model) => {
+        const sentences = ["you suck"];
+        model.classify(sentences).then((predictions) => {
+          console.log(predictions);
+        });
+      });
       if (chatCompShowStateType !== "space") {
         const url = "http://localhost:5000";
         const data = {
@@ -265,7 +265,6 @@ function ChatComp({
       spacename: chatCompSpaceName,
     };
     console.log(data);
-    // setSpaceJoinedGroupChat(true);
     axios({
       method: "post",
       url: `${url}/spaces/addmember`,
@@ -314,19 +313,12 @@ function ChatComp({
           )}
         </div>
         <div className={chatCompCSS.contact}>
-          {chatCompShowStateType !== "space" && (
-            <div className={chatCompCSS.iconContainer}>
-              <IconButton onClick={() => setCallCompState("voice call")}>
-                <CallIcon />
-              </IconButton>
-            </div>
-          )}
           {chatCompShowStateType === "space" && !spaceJoinedGroupChat && (
             <div className={chatCompCSS.joinSpace} onClick={() => joinSpace()}>
               Join
             </div>
           )}
-          {chatCompShowStateType === "space" && (
+          {chatCompShowStateType === "space" && spaceJoinedGroupChat && (
             <div className={chatCompCSS.iconContainer}>
               <IconButton onClick={() => startVideoMeeting()}>
                 <VideocamIcon />
@@ -335,7 +327,7 @@ function ChatComp({
           )}
           {chatCompShowStateType !== "space" && (
             <div className={chatCompCSS.iconContainer}>
-              <IconButton onClick={() => setCallCompState("video call")}>
+              <IconButton onClick={() => startVideoMeeting()}>
                 <VideocamIcon />
               </IconButton>
             </div>
