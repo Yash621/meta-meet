@@ -23,6 +23,10 @@
   border-radius: 5px 0 0 5px;
   border: 1px solid #fff;
   object-fit: contain;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
 }
 .myVideo {
   width: 100%;
@@ -206,10 +210,12 @@
   font-size: 6em;
 }
 .participantsVideo {
-  height: 40vh;
+  /* height: 40vh;
   width: 100%;
   object-fit: cover;
-  border: 1px solid white;
+  border: 1px solid white; */
+  height: 100%;
+  width: 100%;
 }
 .participantVideoContainer {
   width: 28%;
@@ -238,4 +244,40 @@
   position: fixed;
   height: 5vh;
   width: 5vh;
+}
+.myVideoOverlay {
+  position: absolute;
+  z-index: 1;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  font-size: 1.3em;
+}
+.myVideoOffOverlay {
+  position: absolute;
+  z-index: 1;
+  margin-left: -67%;
+  margin-bottom: -39%;
+  font-size: 1.3em;
+  color: #ffffff;
+}
+.otherVideoContainer {
+  height: 40vh;
+  width: 100%;
+  object-fit: contain;
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  color: #ffffff;
+}
+.nameContainer {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* background-color: red; */
+  width: 26%;
+  margin-bottom: 5px;
+  /* margin-left: 10px; */
 }

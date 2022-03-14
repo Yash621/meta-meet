@@ -47,6 +47,7 @@ import rock from "../../public/static/images/rock.png";
 import { auth } from "../../firebase";
 import defaultAvatar from "../../public/static/images/default-profile-photo.png";
 import { selectAuthMethod } from "../../pages/slices/landingSlice";
+import axios from "axios";
 
 const socket = io.connect("http://localhost:5000", {
   transports: ["websocket"],
@@ -84,6 +85,7 @@ function index() {
   const [shareScreenState, setShareScreenState] = useState(false);
   const authMethod = useSelector(selectAuthMethod);
   const { userId } = router.query;
+  const [userName, setUserName] = useState(null);
 
   // const globalStatePeer = useSelector(selectGlobalStatePeer);
 
@@ -142,6 +144,7 @@ function index() {
       console.log(data.guestId + "userid");
       setGuestId(data.guestId);
       setTpeer(data.peer);
+      setUserName(data.username);
       var localVideoData = videoData;
       localVideoData.push(data.signal);
       setVideoData(localVideoData);
@@ -162,9 +165,11 @@ function index() {
     }
 
     socket.on("callAccepted", (data) => {
+      setUserName(data.username);
       var localVideoData = joinedParticipantsVideo;
       localVideoData.push(data.signal);
       setJoinedParticipantsVideo(localVideoData);
+      console.log(data.username + "hahaha");
       console.log("connectionRef");
       console.log(data.id + "  yobrohowareyou");
       console.log("call accepted");
@@ -183,13 +188,22 @@ function index() {
     runHandpose();
   }, []);
 
-  const createVideoElement = (guestId) => {
+  const createVideoElement = async (guestId) => {
     const video = document.createElement("video");
+    const container = document.createElement("div");
+    const nameContainer = document.createElement("div");
+    nameContainer.innerHTML = userName;
+    console.log(userName + " element created");
+    nameContainer.className = videoPageCSS.nameContainer;
+    container.className = videoPageCSS.otherVideoContainer;
+    container.setAttribute("id", guestId);
+    container.appendChild(video);
+    container.appendChild(nameContainer);
     video.playsInline = true;
     video.autoplay = true;
     video.className = videoPageCSS.participantsVideo;
-    video.id = guestId;
-    document.getElementById("participants-video").appendChild(video);
+    // video.id = guestId;
+    document.getElementById("participants-video").appendChild(container);
     return video;
   };
   const shareScreen = async () => {
@@ -236,8 +250,12 @@ function index() {
     setGlobalPeer(peerArr);
     callerPeer.current = peer;
 
-    peer.on("signal", (data) => {
+    peer.on("signal", async (data) => {
       console.log(data);
+      const url = "http://localhost:5000";
+      const username = await axios.get(`${url}/users/username?id=${userId}`);
+      // await axios.get(`${url}/users/username?id=${userId}`);
+      console.log(username.data + "hahaha ");
       console.log(meetingId);
       socket.emit("joinMeeting", {
         id: socketId,
@@ -245,12 +263,14 @@ function index() {
         host: participantIde,
         roomId: meetingId,
         peer: peer,
+        username: username.data,
       });
     });
 
-    peer.on("stream", (stream) => {
+    peer.on("stream", async (stream) => {
       console.log("jadoo");
-      const video = createVideoElement(participantIde);
+      console.log(userName + " stream");
+      const video = await createVideoElement(participantIde);
       video.srcObject = stream;
       console.log("hello world");
     });
@@ -269,20 +289,25 @@ function index() {
     setGlobalPeer(peerArr);
 
     console.log("hello");
-    peer.on("signal", (data) => {
+    peer.on("signal", async (data) => {
       console.log(data + "yobro12345");
+      const url = "http://localhost:5000";
+      const username = await axios.get(`${url}/users/username?id=${userId}`);
+      // await axios.get(`${url}/users/username?id=${userId}`);
+      console.log(username.data + "hahaha ");
       socket.emit("acceptCall", {
         signal: data,
         guestId: guestId,
         id: socketId,
         peer: tPeer,
+        username: username.data,
       });
     });
     console.log(videoData.length);
     peer.signal(videoData[videoData.length - 1]);
-    peer.on("stream", (stream) => {
+    peer.on("stream", async (stream) => {
       console.log("yo123");
-      const video = createVideoElement(guestId);
+      const video = await createVideoElement(guestId);
       video.srcObject = stream;
     });
     connectionRef.current = peer;
@@ -331,9 +356,9 @@ function index() {
     acceptCall(guestId, videoData);
   };
   const setPeerSignal = (globalPeer, peerData) => {
+    console.log(userName + "userName");
     globalPeer.signal(peerData);
   };
-
   const runHandpose = async () => {
     const net = await handpose.load();
     console.log("Handpose model loaded.");
@@ -386,15 +411,15 @@ function index() {
           const confidence = gesture.gestures.map(
             (prediction) => prediction.score
           );
-          console.log(confidence + "I am the best");
+          // console.log(confidence + "I am the best");
           const maxConfidence = confidence.indexOf(
             Math.max.apply(null, confidence)
           );
           // console.log(maxConfidence + "I am the best");
-          console.log(gesture.gestures[maxConfidence].name);
-          console.log(gesture.gestures[maxConfidence].name + "  I am the best");
+          // console.log(gesture.gestures[maxConfidence].name);
+          // console.log(gesture.gestures[maxConfidence].name + "  I am the best");
           if (gesture.gestures[maxConfidence].name === "victory") {
-            console.log("hello ji");
+            // console.log("hello ji");
             document.getElementById("mute").click();
           }
           if (gesture.gestures[maxConfidence].name === "thumbs_up") {
@@ -402,13 +427,12 @@ function index() {
           }
           if (gesture.gestures[maxConfidence].name === "good_bye") {
             document.getElementById("end-btn").click();
-            console.log("hello ji");
+            // console.log("hello ji");
           }
           setEmoji(gesture.gestures[maxConfidence].name);
-          console.log(emoji);
+          // console.log(emoji);
         }
       }
-
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
       drawHand(hand, ctx);
@@ -514,6 +538,7 @@ function index() {
                   id="my-video"
                 />
               )}
+              <div className={videoPageCSS.myVideoOverlay}>You</div>
             </div>
           ) : (
             <div className={videoPageCSS.userProfileContainer}>
@@ -529,6 +554,7 @@ function index() {
                   className={videoPageCSS.userProfile}
                 />
               )}
+              <div className={videoPageCSS.myVideoOffOverlay}>You</div>
             </div>
           )}
           {/* canvas */}

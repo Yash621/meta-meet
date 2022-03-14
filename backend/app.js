@@ -76,6 +76,7 @@ io.on("connection", (socket) => {
       signal: data.signal,
       guestId: data.id,
       peer: data.peer,
+      username: data.username,
     });
     console.log(data.roomId + " hello bro");
     if (
@@ -93,6 +94,7 @@ io.on("connection", (socket) => {
       signal: data.signal,
       id: data.id,
       peer: data.peer,
+      username: data.username,
     });
   });
 });
