@@ -9,7 +9,6 @@
   <img alt="License" src="https://img.shields.io/github/license/arpitBhalla/meta-meet?style=flat-square">
   <img alt="Github stars" src="https://img.shields.io/github/stars/arpitBhalla/meta-meet?style=flat-square" />
 </p>
-
 <br>
 
 
