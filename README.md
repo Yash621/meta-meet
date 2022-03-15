@@ -6,6 +6,7 @@
 
 <p align="center">
   <img alt="Github top language" src="https://img.shields.io/github/languages/top/Yash621/meta-meet?style=flat-square">
+   <img alt="License" src="https://img.shields.io/github/license/Yash621/meta-meet?style=flat-square">
   <img alt="Github stars" src="https://img.shields.io/github/stars/Yash621/meta-meet?style=flat-square" />
 </p>
 
