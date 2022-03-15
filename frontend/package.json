@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "start": "next start",
+    "lint": "next lint",
     "format": "prettier --write \"**/*.{js, jsx}\""
   },
   "dependencies": {
