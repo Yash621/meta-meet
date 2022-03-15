@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -103,4 +103,5 @@ app.get("/", (req, res) => {
   res.send("Hello friend");
 });
 
-server.listen(5000, () => console.log("server is running on port 5000"));
+const port = process.env.PORT || 9000;
+server.listen(port, () => console.log("server is running on port 5000"));
