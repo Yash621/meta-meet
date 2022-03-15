@@ -82,7 +82,7 @@ function ChatComp({
       previousChats.sort(function (a, b) {
         var c = new Date(a.time);
         var d = new Date(b.time);
-        return c - d;
+        return Number(c) - Number(d);
       });
       setPreviousChats(previousChats);
       socket.on("chatMessage", (chat) => {
@@ -105,7 +105,7 @@ function ChatComp({
       groupChat.sort(function (a, b) {
         var c = new Date(a.time);
         var d = new Date(b.time);
-        return c - d;
+        return Number(c) - Number(d);
       });
       groupChat.forEach((chat) => {
         if (chat.id !== id) {
@@ -155,7 +155,7 @@ function ChatComp({
         });
       });
       if (chatCompShowStateType !== "space") {
-        const url = "http://localhost:5000";
+        const url = "https://metameetio.herokuapp.com";
         const data = {
           sender: id,
           readstatus: "unread",
@@ -220,7 +220,7 @@ function ChatComp({
         ]);
         console.log(text);
       } else {
-        const url = "http://localhost:5000";
+        const url = "https://metameetio.herokuapp.com";
         const myUserName = await axios.get(`${url}/users/username?id=${id}`);
         const message = e.target.value;
         const data = {
@@ -270,7 +270,7 @@ function ChatComp({
     router.push(`/video?host=true&meetingId=${meetingId}&userId=${id}`);
   };
   const joinSpace = async () => {
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     const data = {
       userId: id,
       spacename: chatCompSpaceName,

@@ -97,7 +97,7 @@ function index() {
   }, []);
 
   const getPreviousGroupChat = async (space) => {
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     try {
       const response = await axios.get(
         `${url}/spacechats/chats?space=${space}`
@@ -110,7 +110,7 @@ function index() {
     }
   };
   const getSpaces = async () => {
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     try {
       const response = await axios.get(`${url}/spaces/getSpaces?userId=${id}`);
       dispatch(setJoinedGroups(response.data.spaces));
@@ -121,7 +121,7 @@ function index() {
   };
 
   const getContacts = async () => {
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     const contacts = await axios.get(`${url}/contacts/contact?id=${id}`);
     setPreviousChats(contacts.data);
     if (contacts.data.length > 0) {
@@ -160,7 +160,7 @@ function index() {
     router.push("/");
   };
   const getChats = async (user) => {
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     const senderId = await axios.get(`${url}/users/id?username=${user}`);
     const myUsername = await axios.get(`${url}/users/username?id=${id}`);
     console.log(myUsername.data);
@@ -187,7 +187,7 @@ function index() {
   };
   const filterInput = async (e) => {
     console.log("helo");
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     const filter = document.getElementById("search-bar").value;
     if (filter === "") {
       document.getElementById("search-results-container").innerHTML = "";
@@ -296,7 +296,7 @@ function index() {
   };
 
   const displaySpace = async (space) => {
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     const res = await axios.get(
       `${url}/spaces/memberExist?userId=${id}&space=${space}`
     );

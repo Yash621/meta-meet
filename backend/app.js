@@ -4,7 +4,10 @@ const app = express();
 require("dotenv").config();
 const server = http.createServer(app);
 const mongoose = require("mongoose");
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
+mongoose.connect(
+  "mongodb+srv://yash621:HOkYE3VwcfY0IdRy@cluster0.jnqnm.mongodb.net/meta_meet?retryWrites=true&w=majority",
+  { useNewUrlParser: true }
+);
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));

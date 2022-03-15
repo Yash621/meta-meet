@@ -19,7 +19,10 @@ router.post("/register", async (req, res) => {
   if (checkUsers.length > 0) {
     res.status(200).json({ message: "User already exists" });
   } else {
-    const token = jwt.sign(req.body, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      req.body,
+      "3396C4506F0EBBD37679396EA5554A02B23A6AA4C775ABCF68CDF45FC915A555"
+    );
     console.log(req.body);
     const encryptedPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
@@ -38,7 +41,10 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.find({ username: req.body.username });
     const validPass = await bcrypt.compare(req.body.password, user[0].password);
-    const token = await jwt.sign(req.body, process.env.JWT_SECRET);
+    const token = await jwt.sign(
+      req.body,
+      "3396C4506F0EBBD37679396EA5554A02B23A6AA4C775ABCF68CDF45FC915A555"
+    );
     if (validPass) {
       res.status(200).json({
         message: "authenticated",

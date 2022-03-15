@@ -46,7 +46,7 @@ function MeetCred({ meetType, meetingId, userId }) {
   };
 
   const createSpace = () => {
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     const spacename = document.getElementById("space-name").value;
     const data = {
       spacename: spacename,

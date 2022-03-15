@@ -31,7 +31,7 @@ function Login({ authState }) {
   };
 
   const authUser = () => {
-    const url = "http://localhost:5000";
+    const url = "https://metameetio.herokuapp.com";
     const userName = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     const data = {

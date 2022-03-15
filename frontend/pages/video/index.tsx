@@ -259,7 +259,7 @@ function index() {
 
     peer.on("signal", async (data) => {
       console.log(data);
-      const url = "http://localhost:5000";
+      const url = "https://metameetio.herokuapp.com";
       const username = await axios.get(`${url}/users/username?id=${userId}`);
       // await axios.get(`${url}/users/username?id=${userId}`);
       console.log(username.data + "hahaha ");
@@ -298,7 +298,7 @@ function index() {
     console.log("hello");
     peer.on("signal", async (data) => {
       console.log(data + "yobro12345");
-      const url = "http://localhost:5000";
+      const url = "https://metameetio.herokuapp.com";
       const username = await axios.get(`${url}/users/username?id=${userId}`);
       // await axios.get(`${url}/users/username?id=${userId}`);
       console.log(username.data + "hahaha ");
