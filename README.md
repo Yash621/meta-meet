@@ -33,4 +33,6 @@
   - Auth using secure **JWT** authentication.
   - Auth check in meet to **prevent unauthorized** users from entering.
 <br></br>
+## :eyes: [Preview](https://meta-meet.vercel.app)
+![meta meet preview](./frontend/public/meta-meet-demo.gif)
 
