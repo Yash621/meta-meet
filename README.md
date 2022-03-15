@@ -54,7 +54,7 @@ $ npm run dev
 
 # The server will start at <http://localhost:3000>
 
-# Run server for frontend
+# Run server for backend
 $ npm run start
 
 # The server will start at <http://localhost:9000>
