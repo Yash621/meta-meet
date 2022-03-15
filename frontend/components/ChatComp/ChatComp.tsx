@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import chat from "../../pages/chat";
-import chatCompCSS from "./chatComp.module.css";
+import chatCompCSS from "./ChatComp.module.css";
 import CallIcon from "@mui/icons-material/Call";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import MicIcon from "@mui/icons-material/Mic";
