@@ -69,9 +69,15 @@ io.on("connection", (socket) => {
   });
   socket.on("meetingData", (data) => {
     console.log(data.roomId);
-    socket.emit("Participants", {
-      Participants: Object.keys(io.sockets.adapter.rooms[data.roomId].sockets),
-    });
+    try {
+      socket.emit("Participants", {
+        Participants: Object.keys(
+          io.sockets.adapter.rooms[data.roomId].sockets
+        ),
+      });
+    } catch {
+      console.log("error");
+    }
   });
   socket.on("joinMeeting", (data) => {
     console.log(data.host);
@@ -82,13 +88,17 @@ io.on("connection", (socket) => {
       username: data.username,
     });
     console.log(data.roomId + " hello bro");
-    if (
-      !Object.keys(io.sockets.adapter.rooms[data.roomId].sockets).includes(
-        data.id
-      )
-    ) {
-      console.log("hello bro  " + data.id);
-      socket.join(data.roomId);
+    try {
+      if (
+        !Object.keys(io.sockets.adapter.rooms[data.roomId].sockets).includes(
+          data.id
+        )
+      ) {
+        console.log("hello bro  " + data.id);
+        socket.join(data.roomId);
+      }
+    } catch {
+      console.log("error");
     }
   });
   socket.on("acceptCall", (data) => {
