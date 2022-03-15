@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import {
   setCallCompShowState,
   setCallCompShowStateType,
-} from "../../pages/slices/callSlice";
+} from "../../store/slices/callSlice";
 import { useDispatch, useSelector } from "react-redux";
 import defaultAvatar from "../../public/static/images/default-profile-photo.png";
 import axios from "axios";
@@ -25,12 +25,12 @@ import {
   setChatCompShowStateType,
   selectChatCompSpaceName,
   selectChatCompGroupChat,
-} from "../../pages/slices/chatSlice";
+} from "../../store/slices/chatSlice";
 import groupAvatar from "../../public/static/images/group-avatar.png";
 import {
   selectSpaceJoined,
   setSpaceJoined,
-} from "../../pages/slices/landingSlice";
+} from "../../store/slices/landingSlice";
 // import useSpeechToText from "react-hook-speech-to-text";
 import SpeechRecognition, {
   useSpeechRecognition,

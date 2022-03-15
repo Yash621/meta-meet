@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useRef, useState } from "react";
 // import { Jutsu } from "react-jutsu";
-import { setStreamStatus, selectStream } from "../slices/videoSlice";
+import { setStreamStatus, selectStream } from "../../store/slices/videoSlice";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import videoPageCSS from "./videoPage.module.css";
@@ -22,7 +22,7 @@ import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import CallEndIcon from "@mui/icons-material/CallEnd";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import MicIcon from "@mui/icons-material/Mic";
-import { selectSocket } from "../../pages/slices/videoSlice";
+import { selectSocket } from "../../store/slices/videoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import {
@@ -30,8 +30,8 @@ import {
   setMainUserId,
   selectGlobalStatePeer,
   setGlobalStatePeer,
-} from "../../pages/slices/videoSlice";
-import { setmeetCredentialPageShowState } from "../slices/meetCredentialSlice";
+} from "../../store/slices/videoSlice";
+import { setmeetCredentialPageShowState } from "../../store/slices/meetCredentialSlice";
 import { uid } from "../../utils/uid";
 import { drawHand } from "../../utils/detectionUtils";
 import * as tf from "@tensorflow/tfjs";
@@ -49,7 +49,7 @@ import defaultAvatar from "../../public/static/images/default-profile-photo.png"
 import {
   selectAcessToken,
   selectAuthMethod,
-} from "../../pages/slices/landingSlice";
+} from "../../store/slices/landingSlice";
 import axios from "axios";
 
 const socket = io.connect("https://metameetio.herokuapp.com", {

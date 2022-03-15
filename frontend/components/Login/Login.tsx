@@ -10,7 +10,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setAccessToken, setAuthMethod } from "../../pages/slices/landingSlice";
+import { setAccessToken, setAuthMethod } from "../../store/slices/landingSlice";
 
 function Login({ authState }) {
   const [user] = useAuthState(auth);

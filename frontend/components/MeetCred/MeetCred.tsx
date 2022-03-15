@@ -4,7 +4,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import {
   selectmeetCredentialPageShowState,
   setmeetCredentialPageShowState,
-} from "../../pages/slices/meetCredentialSlice";
+} from "../../store/slices/meetCredentialSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import IconButton from "@material-ui/core/IconButton";
@@ -13,17 +13,17 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import { route } from "next/dist/server/router";
-import { setSocket } from "../../pages/slices/videoSlice";
+import { setSocket } from "../../store/slices/videoSlice";
 import axios from "axios";
 import {
   setChatCompShowState,
   setChatCompShowStateType,
   setChatCompSpaceName,
-} from "../../pages/slices/chatSlice";
+} from "../../store/slices/chatSlice";
 import {
   setJoinedGroups,
   selectJoinedGroups,
-} from "../../pages/slices/landingSlice";
+} from "../../store/slices/landingSlice";
 
 function MeetCred({ meetType, meetingId, userId }) {
   const dispatch = useDispatch();

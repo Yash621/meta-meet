@@ -24,7 +24,7 @@ import { auth } from "../../firebase";
 import {
   selectmeetCredentialPageShowState,
   setmeetCredentialPageShowState,
-} from "../../pages/slices/meetCredentialSlice";
+} from "../../store/slices/meetCredentialSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useMeeting } from "@videosdk.live/react-sdk";
 import io from "socket.io-client";
@@ -33,7 +33,7 @@ import { useRouter } from "next/router";
 import ChatComp from "../../components/ChatComp/ChatComp";
 import { tabScrollButtonClasses } from "@mui/material";
 import CallComp from "../../components/CallComp/CallComp";
-import { selectCallCompShowState } from "../slices/callSlice";
+import { selectCallCompShowState } from "../../store/slices/callSlice";
 import {
   selectAcessToken,
   selectAuthMethod,
@@ -41,7 +41,7 @@ import {
   setJoinedGroups,
   selectSpaceJoined,
   setSpaceJoined,
-} from "../slices/landingSlice";
+} from "../../store/slices/landingSlice";
 import defaultProfilePhoto from "../../public/static/images/default-profile-photo.png";
 import axios from "axios";
 import { ChatItem } from "react-chat-elements";
@@ -52,7 +52,7 @@ import {
   setChatCompShowStateType,
   setChatCompSpaceName,
   setChatCompGroupChat,
-} from "../slices/chatSlice";
+} from "../../store/slices/chatSlice";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 function index() {

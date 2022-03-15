@@ -6,7 +6,7 @@ import CallIcon from "@mui/icons-material/Call";
 import {
   setCallCompShowState,
   selectCallCompShowStateType,
-} from "../../pages/slices/callSlice";
+} from "../../store/slices/callSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../firebase";
 import defaultAvatar from "../../public/static/images/default-profile-photo.png";

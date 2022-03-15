@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectlandingPageVisit,
   setLandingPageVisit,
-} from "../slices/landingSlice";
+} from "../../store/slices/landingSlice";
 
 function LandingPage() {
   const landingPageVisit = useSelector(selectlandingPageVisit);
