@@ -52,7 +52,7 @@ import {
 } from "../../pages/slices/landingSlice";
 import axios from "axios";
 
-const socket = io.connect("http://localhost:5000", {
+const socket = io.connect("https://metameetio.herokuapp.com", {
   transports: ["websocket"],
 });
 

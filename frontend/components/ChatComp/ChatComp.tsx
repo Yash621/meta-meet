@@ -37,7 +37,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 // import toxicity from "@tensorflow-models/toxicity";
 
-const socket = io.connect("http://localhost:5000", {
+const socket = io.connect("https://metameetio.herokuapp.com", {
   transports: ["websocket"],
 });
 
