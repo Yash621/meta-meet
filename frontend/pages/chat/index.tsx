@@ -85,6 +85,9 @@ function index() {
   const [previousGroupChat, setPreviousGroupChat] = useState([]);
 
   useEffect(() => {
+    if (accessToken === null) {
+      router.push("/");
+    }
     setMeetingId(uid());
     if (authMethod === "google") {
       setPhotoUrl(auth.currentUser.photoURL.toString());
@@ -216,9 +219,9 @@ function index() {
               const element = document.createElement("div");
               element.className = chatPageCSS.searchResults;
               if (result.type === "user") {
-                element.innerHTML = result.username;
+                element.innerHTML = result.username + " (user)";
               } else {
-                element.innerHTML = result.spacename;
+                element.innerHTML = result.spacename + " (space)";
               }
               element.addEventListener("click", async () => {
                 document.getElementById("search-bar").value = "";
@@ -226,11 +229,11 @@ function index() {
                 dispatch(setChatCompShowState(true));
                 if (result.type === "user") {
                   dispatch(setChatCompShowStateType("chat"));
-                  setUserName(element.innerHTML);
-                  getChats(element.innerHTML);
+                  setUserName(result.username);
+                  getChats(result.username);
                   var checkDuplicate = false;
                   previousChats.forEach((chat) => {
-                    if (chat.username === element.innerHTML) {
+                    if (chat.username === result.username) {
                       checkDuplicate = true;
                     }
                   });
@@ -238,24 +241,24 @@ function index() {
                     setPreviousChats([
                       ...previousChats,
                       {
-                        username: element.innerHTML,
+                        username: result.username,
                       },
                     ]);
                   }
                   setContactsExist(true);
                   document.getElementById("search-results-container").click();
                 } else {
-                  displaySpace(element.innerHTML);
+                  displaySpace(result.spacename);
                   var checkDuplicate = false;
                   joinedSpaces.forEach((space) => {
-                    if (space === element.innerHTML) {
+                    if (space === result.spacename) {
                       checkDuplicate = true;
                     }
                   });
                   if (!checkDuplicate) {
                     console.log("hello");
                     dispatch(
-                      setJoinedGroups([...joinedSpaces, element.innerHTML])
+                      setJoinedGroups([...joinedSpaces, result.spacename])
                     );
                   }
                 }
@@ -275,11 +278,11 @@ function index() {
               .getElementById("search-results-container")
               .appendChild(element);
           }
-
           console.log(filteredResults);
         });
     }
   };
+
   const displayChat = (user) => {
     dispatch(setChatCompShowState(true));
     dispatch(setChatCompShowStateType("chat"));

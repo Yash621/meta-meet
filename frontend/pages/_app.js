@@ -2,6 +2,8 @@ import "../styles/globals.css";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { useEffect } from "react";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {

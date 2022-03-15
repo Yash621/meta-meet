@@ -46,7 +46,10 @@ import Image from "next/image";
 import rock from "../../public/static/images/rock.png";
 import { auth } from "../../firebase";
 import defaultAvatar from "../../public/static/images/default-profile-photo.png";
-import { selectAuthMethod } from "../../pages/slices/landingSlice";
+import {
+  selectAcessToken,
+  selectAuthMethod,
+} from "../../pages/slices/landingSlice";
 import axios from "axios";
 
 const socket = io.connect("http://localhost:5000", {
@@ -86,6 +89,7 @@ function index() {
   const authMethod = useSelector(selectAuthMethod);
   const { userId } = router.query;
   const [userName, setUserName] = useState(null);
+  const authToken = useSelector(selectAcessToken);
 
   // const globalStatePeer = useSelector(selectGlobalStatePeer);
 
@@ -96,6 +100,9 @@ function index() {
   };
 
   useEffect(() => {
+    if (authToken === null) {
+      router.push("/");
+    }
     socket.on("helloworld", (data) => {
       console.log(data.message);
     });

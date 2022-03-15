@@ -256,7 +256,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 92vw;
+  margin-left: 91vw;
   margin-top: 11vh;
   cursor: pointer;
 }
@@ -274,7 +274,7 @@
   /* margin-top: 10vh; */
   width: 60%;
   height: auto;
-  margin-left: 23.5vw;
+  margin-left: 17.2vw;
   z-index: 10;
   /* height: auto; */
   /* background-color: red; */

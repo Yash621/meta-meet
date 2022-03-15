@@ -140,7 +140,7 @@ function Login({ authState }) {
               </p>
             </Link>
           )}
-          <p onClick={signIn}>{authState} with Google</p>
+          {/* <p onClick={signIn}>{authState} with Google</p> */}
           {authState !== "Sign In" && (
             <Link href="/auth/login">
               <p onClick={() => refreshStates()}>
