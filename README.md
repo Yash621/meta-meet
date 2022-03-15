@@ -36,3 +36,33 @@
 ## :eyes: [Preview](https://meta-meet.vercel.app)
 ![meta meet preview](./frontend/public/meta-meet-demo.gif)
 
+## :tada: Local setup
+
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+
+```bash
+# Clone this project
+$ https://github.com/Yash621/meta-meet.git
+
+$ cd meta-meet
+
+# Install all the dependencies
+$ npm install
+
+# Run server for frontend
+$ npm run dev
+
+# The server will start at <http://localhost:3000>
+
+# Run server for frontend
+$ npm run start
+
+# The server will start at <http://localhost:9000>
+```
+Made with :heart: by <a href="https://github.com/Yash621" target="_blank">Yash Goel</a>
+
+&#xa0;
+
+<a href="#top">Back to top</a>
+
+
