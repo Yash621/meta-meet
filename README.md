@@ -25,7 +25,7 @@
   - Screen Sharing
 - **Gesture Control (X-factor / Flagship)**
   - **Physically thumbs up** (palm) in front of camera to turn **MIc on**
-  - Victory sign to **Mic on**
+  - Victory sign to **Mic off**
   - **Raise hand** to cut the call.
 - **Offensive Text Detection**
   - **Flags and prompts** in case of offensive text messages to help create a safer in-app environment.
