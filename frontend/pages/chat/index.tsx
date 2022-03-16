@@ -106,7 +106,6 @@ function index() {
       );
       const groupChat = response.data;
       setPreviousGroupChat(groupChat);
-      console.log(groupChat);
     } catch {
       console.log("error");
     }
@@ -116,7 +115,6 @@ function index() {
     try {
       const response = await axios.get(`${url}/spaces/getSpaces?userId=${id}`);
       dispatch(setJoinedGroups(response.data.spaces));
-      console.log(response.data.spaces.length + " hello124598");
     } catch {
       console.log("error");
     }
@@ -129,7 +127,6 @@ function index() {
     if (contacts.data.length > 0) {
       setContactsExist(true);
     }
-    console.log(contacts.data);
   };
 
   const dispatch = useDispatch();
@@ -165,14 +162,12 @@ function index() {
     const url = "https://metameetio.herokuapp.com";
     const senderId = await axios.get(`${url}/users/id?username=${user}`);
     const myUsername = await axios.get(`${url}/users/username?id=${id}`);
-    console.log(myUsername.data);
-    console.log(senderId.data);
+
     await axios
       .get(
         `${url}/chats/chat?userId=${id}&senderId=${senderId.data}&user=${myUsername.data}&reciever=${user}`
       )
       .then((res) => {
-        console.log(res.data);
         if (
           res.data.recievedChats.length === 0 &&
           res.data.sentChats.length === 0
@@ -188,19 +183,16 @@ function index() {
       });
   };
   const filterInput = async (e) => {
-    console.log("helo");
     const url = "https://metameetio.herokuapp.com";
     const filter = document.getElementById("search-bar").value;
     if (filter === "") {
       document.getElementById("search-results-container").innerHTML = "";
     } else {
-      console.log("hello");
       await axios
         .get(`${url}/users/search?filter=${filter}&id=${id}`)
         .then(async (response) => {
-          console.log("hello");
           const spaces = await axios.get(`${url}/spaces/`);
-          console.log("hello");
+
           const filteredUsers = response.data;
           filteredUsers.forEach((user) => {
             user.type = "user";
@@ -212,8 +204,7 @@ function index() {
             space.type = "space";
           });
           const filteredResults = filteredUsers.concat(filteredSpaces);
-          console.log("hello");
-          console.log(filteredResults);
+
           setFilteredResults(filteredResults);
           document.getElementById("search-results-container").innerHTML = "";
           if (filteredResults.length > 0) {
@@ -258,7 +249,6 @@ function index() {
                     }
                   });
                   if (!checkDuplicate) {
-                    console.log("hello");
                     dispatch(
                       setJoinedGroups([...joinedSpaces, result.spacename])
                     );
@@ -280,7 +270,6 @@ function index() {
               .getElementById("search-results-container")
               .appendChild(element);
           }
-          console.log(filteredResults);
         });
     }
   };
@@ -305,14 +294,14 @@ function index() {
     if (res.data.message == "member exists") {
       dispatch(setSpaceJoined(true));
     }
-    console.log(res.data.message);
+
     if (res.data.message == "member does not exists") {
       dispatch(setSpaceJoined(false));
     }
     const response = await axios.get(`${url}/spacechats/chats?space=${space}`);
     const groupChat = response.data;
     setPreviousGroupChat(groupChat);
-    console.log(groupChat);
+
     // getPreviousGroupChat(space);
 
     dispatch(setChatCompShowStateType("space"));

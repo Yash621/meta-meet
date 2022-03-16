@@ -112,13 +112,11 @@ function ChatComp({
           chat.position = "right";
         }
       });
-      console.log(groupChat);
+
       setPreviousGroupChat(groupChat);
-      console.log("hello");
+
       socket.on("spaceChat", (data) => {
-        console.log("mera naam yash");
         if (data.id !== id) {
-          console.log(previousGroupChat);
           setPreviousGroupChat([
             ...groupChat,
             {
@@ -138,7 +136,7 @@ function ChatComp({
       const sentence = e.target.value;
       toxicity.load(0.6).then((model) => {
         const sentences = [sentence];
-        console.log(sentence);
+
         model.classify(sentences).then((predictions) => {
           for (
             var predictionsIndex = 0;
@@ -168,7 +166,6 @@ function ChatComp({
           headers: { "content-type": "application/json" },
         })
           .then((res) => {
-            console.log(res);
             document.getElementById("chat-input").value = "";
           })
           .catch((err) => {
@@ -200,7 +197,7 @@ function ChatComp({
             headers: { "content-type": "application/json" },
           })
             .then((res) => {
-              console.log(res);
+              console.log("recieved");
             })
             .catch((err) => {
               console.log(err);
@@ -216,7 +213,6 @@ function ChatComp({
             time: new Date().toLocaleString(),
           },
         ]);
-        console.log(text);
       } else {
         const url = "https://metameetio.herokuapp.com";
         const myUserName = await axios.get(`${url}/users/username?id=${id}`);
@@ -235,9 +231,8 @@ function ChatComp({
           headers: { "content-type": "application/json" },
         })
           .then((res) => {
-            console.log(res);
             document.getElementById("chat-input").value = "";
-            console.log("mera namm yash hai");
+
             socket.emit("sendSpaceChat", {
               message: message,
               space: chatCompSpaceName,
@@ -273,7 +268,7 @@ function ChatComp({
       userId: id,
       spacename: chatCompSpaceName,
     };
-    console.log(data);
+
     axios({
       method: "post",
       url: `${url}/spaces/addmember`,
@@ -281,7 +276,7 @@ function ChatComp({
       headers: { "content-type": "application/json" },
     })
       .then((res) => {
-        console.log(res);
+      
         dispatch(setSpaceJoined(true));
       })
       .catch((err) => {

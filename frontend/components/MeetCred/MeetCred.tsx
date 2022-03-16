@@ -61,8 +61,6 @@ function MeetCred({ meetType, meetingId, userId }) {
       headers: { "content-type": "application/json" },
     })
       .then((res) => {
-        console.log(res);
-
         if (res.data.message === "Space already exists") {
           setSpaceAlreadyExists(true);
         }
@@ -80,9 +78,6 @@ function MeetCred({ meetType, meetingId, userId }) {
       });
   };
 
-  useEffect(() => {
-    console.log(meetType);
-  });
   return (
     <div className={meetCredCSS.container}>
       <div className={meetCredCSS.meetDetailsContainer}></div>

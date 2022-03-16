@@ -97,7 +97,6 @@ function index() {
   const callAllParticipants = (participantId) => {
     setParticipantIde(participantId);
     document.getElementById(videoPageCSS.dummy).click();
-    console.log("I love you nitya");
   };
 
   useEffect(() => {
@@ -105,32 +104,26 @@ function index() {
       router.push("/");
     }
     socket.on("helloworld", (data) => {
-      console.log(data.message);
+      console.log("recieved");
     });
     socket.on("leftCall", (data) => {
-      console.log(document.getElementById(data.id));
-      console.log(document.getElementById("participants-video"));
       document
         .getElementById("participants-video")
         .removeChild(document.getElementById(data.id));
-      console.log("element removed  " + data.id);
     });
     socket.on("me", (data) => {
-      console.log(data.id + " meid");
       ide = data.id;
       idRef.current = data.id;
       setSocketId(data.id);
-      console.log(ide + "ide");
     });
     socket.on("Participants", (data) => {
       setParticipants(data.Participants);
       setTimeout(() => {
-        console.log(data.Participants);
         var dum = 0;
         const interval = window.setInterval(() => {
           if (dum < data.Participants.length) {
             callAllParticipants(data.Participants[dum]);
-            console.log(dum);
+
             dum++;
           }
           if (dum === data.Participants.length) {
@@ -149,7 +142,6 @@ function index() {
         // myVideo.current.srcObject = stream;
       });
     socket.on("newJoin", (data) => {
-      console.log(data.guestId + "userid");
       setGuestId(data.guestId);
       setTpeer(data.peer);
       setUserName(data.username);
@@ -157,7 +149,6 @@ function index() {
       localVideoData.push(data.signal);
       setVideoData(localVideoData);
       setTimeout(() => {
-        console.log("click");
         document.getElementById(videoPageCSS.dummyb).click();
       }, 800);
     });
@@ -165,9 +156,8 @@ function index() {
     if (host === "true") {
       dispatch(setMainUserId(uid()));
       setTimeout(() => {
-        console.log(meetingId);
         setMeetCredShow(true);
-        console.log(ide + " ide is the best");
+
         socket.emit("createRoom", { roomId: meetingId });
       }, 1200);
     }
@@ -177,20 +167,12 @@ function index() {
       var localVideoData = joinedParticipantsVideo;
       localVideoData.push(data.signal);
       setJoinedParticipantsVideo(localVideoData);
-      console.log(data.username + "hahaha");
-      console.log("connectionRef");
-      console.log(data.id + "  yobrohowareyou");
-      console.log("call accepted");
-      console.log(data.signal + " yobro1234");
-      console.log(joinedParticipantsVideo.length - 1);
-      console.log(joinedParticipantsVideo);
+
       setPeerData(data.signal);
       setTimeout(() => {
-        console.log("click yash");
         document.getElementById("peer-click").click();
       }, 800);
       // peer.signal(joinedParticipantsVideo[joinedParticipantsVideo.length - 1]);
-      console.log("my name is yash");
     });
 
     runHandpose();
@@ -201,7 +183,7 @@ function index() {
     const container = document.createElement("div");
     const nameContainer = document.createElement("div");
     nameContainer.innerHTML = userName;
-    console.log(userName + " element created");
+
     nameContainer.className = videoPageCSS.nameContainer;
     container.className = videoPageCSS.otherVideoContainer;
     container.setAttribute("id", guestId);
@@ -241,13 +223,12 @@ function index() {
         stream
       );
     });
-    // console.log(stream);
+
     setEmoji(null);
     setShareScreenState(true);
     myVideo.current.srcObject = screenStream;
   };
   const callUser = (pid) => {
-    console.log(participantIde + "participantIde to be called");
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -259,12 +240,10 @@ function index() {
     callerPeer.current = peer;
 
     peer.on("signal", async (data) => {
-      console.log(data);
       const url = "https://metameetio.herokuapp.com";
       const username = await axios.get(`${url}/users/username?id=${userId}`);
       // await axios.get(`${url}/users/username?id=${userId}`);
-      console.log(username.data + "hahaha ");
-      console.log(meetingId);
+
       socket.emit("joinMeeting", {
         id: socketId,
         signal: data,
@@ -276,11 +255,8 @@ function index() {
     });
 
     peer.on("stream", async (stream) => {
-      console.log("jadoo");
-      console.log(userName + " stream");
       const video = await createVideoElement(participantIde);
       video.srcObject = stream;
-      console.log("hello world");
     });
     connectionRef.current = peer;
   };
@@ -296,13 +272,11 @@ function index() {
     peerArr.push(peer);
     setGlobalPeer(peerArr);
 
-    console.log("hello");
     peer.on("signal", async (data) => {
-      console.log(data + "yobro12345");
       const url = "https://metameetio.herokuapp.com";
       const username = await axios.get(`${url}/users/username?id=${userId}`);
       // await axios.get(`${url}/users/username?id=${userId}`);
-      console.log(username.data + "hahaha ");
+
       socket.emit("acceptCall", {
         signal: data,
         guestId: guestId,
@@ -311,10 +285,9 @@ function index() {
         username: username.data,
       });
     });
-    console.log(videoData.length);
+
     peer.signal(videoData[videoData.length - 1]);
     peer.on("stream", async (stream) => {
-      console.log("yo123");
       const video = await createVideoElement(guestId);
       video.srcObject = stream;
     });
@@ -334,9 +307,6 @@ function index() {
           videoPageCSS.myVideo
         )[0];
         myVideo.current.srcObject = stream;
-        console.log(
-          document.getElementsByClassName(videoPageCSS.myVideo).length
-        );
       }, 10);
     }
   };
@@ -359,17 +329,13 @@ function index() {
     router.push(`/chat?id=${userId}`);
   };
   const acceptUserCall = (guestId, videoData) => {
-    console.log(guestId + "guestid");
-    console.log(videoData + "videoData");
     acceptCall(guestId, videoData);
   };
   const setPeerSignal = (globalPeer, peerData) => {
-    console.log(userName + "userName");
     globalPeer.signal(peerData);
   };
   const runHandpose = async () => {
     const net = await handpose.load();
-    console.log("Handpose model loaded.");
     //  Loop and detect hands
     setInterval(() => {
       detect(net);
@@ -398,7 +364,7 @@ function index() {
 
       // Make Detections
       const hand = await net.estimateHands(video);
-      // console.log(hand);
+
       // create new gesture with id "rock"
       const PaperGesture = new fp.GestureDescription("good_bye");
       PaperGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
@@ -414,20 +380,15 @@ function index() {
         ]);
         const gesture = await GE.estimate(hand[0].landmarks, 4);
         if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
-          // console.log(gesture.gestures + "I am the best");
-          // console.log(gesture.gestures[0]);
           const confidence = gesture.gestures.map(
             (prediction) => prediction.score
           );
-          // console.log(confidence + "I am the best");
+
           const maxConfidence = confidence.indexOf(
             Math.max.apply(null, confidence)
           );
-          // console.log(maxConfidence + "I am the best");
-          // console.log(gesture.gestures[maxConfidence].name);
-          // console.log(gesture.gestures[maxConfidence].name + "  I am the best");
+
           if (gesture.gestures[maxConfidence].name === "victory") {
-            // console.log("hello ji");
             document.getElementById("mute").click();
           }
           if (gesture.gestures[maxConfidence].name === "thumbs_up") {
@@ -435,10 +396,8 @@ function index() {
           }
           if (gesture.gestures[maxConfidence].name === "good_bye") {
             document.getElementById("end-btn").click();
-            // console.log("hello ji");
           }
           setEmoji(gesture.gestures[maxConfidence].name);
-          // console.log(emoji);
         }
       }
       // Draw mesh
@@ -447,12 +406,10 @@ function index() {
     }
   };
   const mute = () => {
-    console.log("hello ji");
     setMicIconState(false);
     stream.getTracks().find((track) => track.kind === "audio").enabled = false;
   };
   const unMute = () => {
-    console.log("hello ji");
     setMicIconState(true);
     stream.getTracks().find((track) => track.kind === "audio").enabled = true;
   };

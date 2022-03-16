@@ -47,7 +47,7 @@ function Login({ authState }) {
       })
         .then(async function (response) {
           //handle success
-          console.log("hello");
+
           if (response.data.message === "authenticated") {
             dispatch(setAccessToken(response.data.accessToken));
             dispatch(setAuthMethod("inputCredentials"));
@@ -59,7 +59,7 @@ function Login({ authState }) {
         })
         .catch(function (response) {
           //handle error
-          console.log(response);
+          console.log("error");
         });
     } else {
       axios({
