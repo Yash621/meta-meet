@@ -18,7 +18,7 @@
   - Instant text messaging
   - **Read receipts**
   - Instant user and room search by name
-  - *Voice Recognition*
+  - **Voice Recognition**
 - **Video conferencing**
   - One to One and group calls
   - In Meet messaging
