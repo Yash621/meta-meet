@@ -11,15 +11,17 @@
   position: fixed;
   padding-left: 2vw;
   font-family: "Lato";
+  z-index: 1;
 }
 .navBarlogo {
   cursor: pointer;
-  width: 20%;
+  width: auto;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-color: red; */
+  padding-top: 15px;
+  /* background-color: blue; */
   /* border: 2px solid black; */
 }
 
@@ -32,6 +34,7 @@
   width: 30%;
   /* font-weight: bold; */
   font-size: 1.5em;
+  /* background-color: black; */
   /* background-color: #e5e5e3; */
 }
 .signInSignUpContainer div {
@@ -49,4 +52,12 @@
 .signInSignUpContainer div:hover {
   background-color: #1a73e8;
   color: white;
+}
+.authOption {
+  /* background-color: blue; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-size: 0.7em;
 }

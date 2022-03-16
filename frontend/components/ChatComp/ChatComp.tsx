@@ -66,7 +66,6 @@ function ChatComp({
   var { transcript, listening, resetTranscript } = useSpeechRecognition();
 
   useEffect(() => {
-    console.log("hello12345");
     if (chatCompShowStateType !== "space") {
       socket.on("me", (data) => {
         setSocketId(data.id);
@@ -86,7 +85,6 @@ function ChatComp({
       });
       setPreviousChats(previousChats);
       socket.on("chatMessage", (chat) => {
-        console.log("hello");
         if (chat.id !== id) {
           chat.position = "left";
           setPreviousChats([
@@ -101,7 +99,7 @@ function ChatComp({
       });
     } else {
       socket.emit("joinSpace", { space: chatCompSpaceName, id: id });
-      console.log("how are you");
+
       groupChat.sort(function (a, b) {
         var c = new Date(a.time);
         var d = new Date(b.time);

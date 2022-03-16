@@ -51,6 +51,7 @@ import {
   selectAuthMethod,
 } from "../../store/slices/landingSlice";
 import axios from "axios";
+import { useMediaQuery } from "@material-ui/core";
 
 const socket = io.connect("https://metameetio.herokuapp.com", {
   transports: ["websocket"],
@@ -90,7 +91,7 @@ function index() {
   const { userId } = router.query;
   const [userName, setUserName] = useState(null);
   const authToken = useSelector(selectAcessToken);
-
+  const mobileScreen = useMediaQuery("(max-width: 800px)");
   // const globalStatePeer = useSelector(selectGlobalStatePeer);
 
   const callAllParticipants = (participantId) => {
@@ -493,7 +494,11 @@ function index() {
         </div>
       )}
       {meetCredShow && (
-        <div className={videoPageCSS.meetDetails}>
+        <div
+          className={`${videoPageCSS.meetDetails} ${
+            mobileScreen && videoPageCSS.mobileMeetDetails
+          }`}
+        >
           <div className={videoPageCSS.meetDetailsheading}>
             Invite more people to meeting
             <IconButton>
@@ -518,7 +523,11 @@ function index() {
       )}
       {/* NEW STUFF */}
       {emoji && (
-        <div className={videoPageCSS.handSignContainer}>
+        <div
+          className={`${videoPageCSS.handSignContainer} ${
+            mobileScreen && videoPageCSS.mobileHandSign
+          }`}
+        >
           <Image src={images[emoji]} alt="" className={videoPageCSS.handSign} />
         </div>
       )}
@@ -575,7 +584,7 @@ function index() {
               right: 0,
               textAlign: "center",
               zIndex: 9,
-              width: 640,
+              width: 440,
               height: 480,
             }}
           />

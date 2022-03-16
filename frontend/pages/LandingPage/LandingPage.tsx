@@ -11,27 +11,44 @@ import {
   selectlandingPageVisit,
   setLandingPageVisit,
 } from "../../store/slices/landingSlice";
+import { useMediaQuery } from "@material-ui/core";
 
 function LandingPage() {
   const landingPageVisit = useSelector(selectlandingPageVisit);
   const dispatch = useDispatch();
+  const destopScreen = useMediaQuery("(min-width: 1100px)");
+  const mobileScreen = useMediaQuery("(max-width: 600px)");
 
   useEffect(() => {
-    setTimeout(() => {
+    if (mobileScreen === true) {
       dispatch(setLandingPageVisit(true));
-    }, 3000);
+    } else {
+      setTimeout(() => {
+        dispatch(setLandingPageVisit(true));
+      }, 3000);
+    }
   }, []);
   return (
     <div className={LandingPageCSS.landingPage}>
       <NavBar />
-      <div className={LandingPageCSS.landingPageContainer}>
-        {landingPageVisit && (
-          <div className={LandingPageCSS.landingPageTagline}>
+      <div
+        className={`${LandingPageCSS.landingPageContainer} ${
+          mobileScreen && LandingPageCSS.changeFlex
+        }`}
+      >
+        {(landingPageVisit || mobileScreen) && (
+          <div
+            className={`${LandingPageCSS.landingPageTagline} ${
+              mobileScreen && LandingPageCSS.mobileTagline
+            }`}
+          >
             <div className={LandingPageCSS.company}>
               <div className={LandingPageCSS.companyName}>MetaMeet.io</div>
-              <div className={LandingPageCSS.companyLogo}>
-                <Image src={logo} alt="welcome to meta-meet.io" />
-              </div>
+              {destopScreen && (
+                <div className={LandingPageCSS.companyLogo}>
+                  <Image src={logo} alt="welcome to meta-meet.io" />
+                </div>
+              )}
             </div>
             <div className={LandingPageCSS.tagline}>
               Bring your Offices and Schools to your homes through MetaMeet.io
@@ -45,9 +62,15 @@ function LandingPage() {
             </Link>
           </div>
         )}
-        <div className={`${!landingPageVisit && LandingPageCSS.logo} `}>
+        {/* {destopScreen && ( */}
+        <div
+          className={`${
+            !landingPageVisit && !mobileScreen && LandingPageCSS.logo
+          } `}
+        >
           <Image src={Logo} alt="welcome to meta-meet.io" />
         </div>
+        {/* )} */}
       </div>
     </div>
   );

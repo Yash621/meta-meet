@@ -24,6 +24,7 @@ import {
   setJoinedGroups,
   selectJoinedGroups,
 } from "../../store/slices/landingSlice";
+import { useMediaQuery } from "@material-ui/core";
 
 function MeetCred({ meetType, meetingId, userId }) {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function MeetCred({ meetType, meetingId, userId }) {
   const [meetingRoomId, setMeetingRoomId] = useState("");
   const [spaceAlreadyExists, setSpaceAlreadyExists] = useState(false);
   const joinedGroups = useSelector(selectJoinedGroups);
+  const mobileScreen = useMediaQuery("(max-width: 800px)");
 
   const navigateToCall = () => {
     if (meetType === "new_meeting") {
@@ -84,8 +86,16 @@ function MeetCred({ meetType, meetingId, userId }) {
   return (
     <div className={meetCredCSS.container}>
       <div className={meetCredCSS.meetDetailsContainer}></div>
-      <div className={meetCredCSS.meetDetails}>
-        <div className={meetCredCSS.meetDetailsheading}>
+      <div
+        className={`${meetCredCSS.meetDetails} ${
+          mobileScreen && meetCredCSS.mobileMeetDetails
+        }`}
+      >
+        <div
+          className={`${meetCredCSS.meetDetailsheading} ${
+            mobileScreen && meetCredCSS.mobileMeetDetailHeading
+          }`}
+        >
           {meetType === "space" ? "Create Space" : "Got a meeting code?"}
           <IconButton>
             <ClearIcon

@@ -54,6 +54,7 @@ import {
   setChatCompGroupChat,
 } from "../../store/slices/chatSlice";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { useMediaQuery } from "@material-ui/core";
 
 function index() {
   const meetCredentialPageShowState = useSelector(
@@ -83,6 +84,7 @@ function index() {
   // const [joinedSpaces, setJoinedSpaces] = useState([]);
   const joinedSpaces = useSelector(selectJoinedGroups);
   const [previousGroupChat, setPreviousGroupChat] = useState([]);
+  const mobileScreen = useMediaQuery("(max-width: 800px)");
 
   useEffect(() => {
     if (accessToken === null) {
@@ -328,10 +330,12 @@ function index() {
       )}
       {callComp && <CallComp authMethod={authMethod} />}
       <div className={chatPageCSS.headerContainer}>
-        <div className={chatPageCSS.companyNameLogo}>
-          <Image src={logo} />
-          MetaMeet.io
-        </div>
+        {!mobileScreen && (
+          <div className={chatPageCSS.companyNameLogo}>
+            <Image src={logo} />
+            MetaMeet.io
+          </div>
+        )}
         <div
           className={`${chatPageCSS.inputContainer} ${
             searchBarHighlight && chatPageCSS.highlight
@@ -380,7 +384,9 @@ function index() {
         )}
       </div>
       <div
-        className={chatPageCSS.searchResultsContainer}
+        className={`${chatPageCSS.searchResultsContainer} ${
+          mobileScreen && chatPageCSS.mobileSearchResultsContainer
+        }`}
         id="search-results-container"
       >
         {/* {filteredResults.map((user) => {
@@ -502,7 +508,7 @@ function index() {
             className={chatPageCSS.startAChatContainer}
             onClick={() => setSearchBarHighlight(false)}
           >
-            <Image src={graphic} />
+            <Image src={graphic} className={chatPageCSS.graphic} />
             <p> Start a conversation now </p>
           </div>
         )}

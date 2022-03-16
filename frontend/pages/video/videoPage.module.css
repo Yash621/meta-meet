@@ -133,6 +133,11 @@
   margin-left: 20px;
   margin-top: 20px;
 }
+.mobileMeetDetails {
+  height: auto;
+  width: 65%;
+  padding: 10px;
+}
 .meetDetailsheading {
   /* background-color: red; */
   width: 85%;
@@ -237,8 +242,11 @@
   /* background-color: red; */
   object-fit: contain;
   width: 5vh;
-  margin-left: 67vw;
+  margin-left: 68vw;
   margin-top: 5vh;
+}
+.mobileHandSign {
+  margin-left: 64vw;
 }
 .handSign {
   position: fixed;
