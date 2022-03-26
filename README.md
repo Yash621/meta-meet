@@ -37,7 +37,7 @@
 ## :eyes: [Preview](https://meta-meet.vercel.app)
 ![meta meet preview](./frontend/public/meta-meet-demo.gif)
 
-## :star2: TechStack
+## :dizzy: TechStack
 
 1. Front End / Client Side
    - NextJS
