@@ -97,6 +97,8 @@ function index() {
     getContacts();
     getSpaces();
   }, []);
+  
+  // getting previous group chat
 
   const getPreviousGroupChat = async (space) => {
     const url = "https://metameetio.herokuapp.com";
@@ -110,6 +112,9 @@ function index() {
       console.log("error");
     }
   };
+  
+  // getting user spaces
+
   const getSpaces = async () => {
     const url = "https://metameetio.herokuapp.com";
     try {
@@ -119,6 +124,8 @@ function index() {
       console.log("error");
     }
   };
+
+  // getting user contacts
 
   const getContacts = async () => {
     const url = "https://metameetio.herokuapp.com";
@@ -130,6 +137,9 @@ function index() {
   };
 
   const dispatch = useDispatch();
+
+  // setting state for meet cred
+
   const setMeetTypeClickAndmeetCredentialShowState = (meetType) => {
     if (meetType === "new_meeting") {
       setMeetCredProp("new_meeting");
@@ -139,6 +149,8 @@ function index() {
       dispatch(setmeetCredentialPageShowState(true));
     }
   };
+
+  // search bar focus function
 
   const focusSearchBar = (kind) => {
     if (
@@ -155,9 +167,15 @@ function index() {
     }
     setSearchBarHighlightType(kind);
   };
+
+  // logout function 
+
   const logOut = () => {
     router.push("/");
   };
+
+  // getting user chats
+
   const getChats = async (user) => {
     const url = "https://metameetio.herokuapp.com";
     const senderId = await axios.get(`${url}/users/id?username=${user}`);
@@ -182,6 +200,8 @@ function index() {
         }
       });
   };
+  // filtering search input 
+  
   const filterInput = async (e) => {
     const url = "https://metameetio.herokuapp.com";
     const filter = document.getElementById("search-bar").value;
