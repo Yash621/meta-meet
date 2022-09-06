@@ -93,12 +93,14 @@ function index() {
   const authToken = useSelector(selectAcessToken);
   const mobileScreen = useMediaQuery("(max-width: 800px)");
   // const globalStatePeer = useSelector(selectGlobalStatePeer);
+  
+  // call all user function
 
   const callAllParticipants = (participantId) => {
     setParticipantIde(participantId);
     document.getElementById(videoPageCSS.dummy).click();
   };
-
+  
   useEffect(() => {
     if (authToken === null) {
       router.push("/");
@@ -177,7 +179,8 @@ function index() {
 
     runHandpose();
   }, []);
-
+  
+  // create video element
   const createVideoElement = async (guestId) => {
     const video = document.createElement("video");
     const container = document.createElement("div");
@@ -196,6 +199,8 @@ function index() {
     document.getElementById("participants-video").appendChild(container);
     return video;
   };
+
+  // share screen function
   const shareScreen = async () => {
     setEmoji(null);
     var displayMediaStreamConstraints = {
@@ -261,6 +266,8 @@ function index() {
     connectionRef.current = peer;
   };
 
+
+// accept call function
   const acceptCall = (guestId, videoData) => {
     const peer = new Peer({
       initiator: false,
@@ -342,6 +349,8 @@ function index() {
     }, 100);
   };
 
+
+// detect function for gesture recognition
   const detect = async (net) => {
     // Check data is available
     if (
@@ -405,10 +414,14 @@ function index() {
       drawHand(hand, ctx);
     }
   };
+
+  // mute function
   const mute = () => {
     setMicIconState(false);
     stream.getTracks().find((track) => track.kind === "audio").enabled = false;
   };
+
+  // unmute function
   const unMute = () => {
     setMicIconState(true);
     stream.getTracks().find((track) => track.kind === "audio").enabled = true;
