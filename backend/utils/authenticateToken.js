@@ -4,7 +4,7 @@ function authenticateToken(req, res, next) {
   if (!token) return res.sendStatus(401);
   jwt.verify(
     token,
-    "3396C4506F0EBBD37679396EA5554A02B23A6AA4C775ABCF68CDF45FC915A555",
+    process.env.ACCESS_TOKEN_SECRET,
     (err, user) => {
       if (err) return res.sendStatus(403);
       req.user = user;

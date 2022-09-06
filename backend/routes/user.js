@@ -20,7 +20,7 @@ router.post("/register", async (req, res) => {
   } else {
     const token = jwt.sign(
       req.body,
-      "3396C4506F0EBBD37679396EA5554A02B23A6AA4C775ABCF68CDF45FC915A555"
+      process.env.ACCESS_TOKEN_SECRET,
     );
     const encryptedPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
@@ -41,7 +41,7 @@ router.post("/login", async (req, res) => {
     const validPass = await bcrypt.compare(req.body.password, user[0].password);
     const token = await jwt.sign(
       req.body,
-      "3396C4506F0EBBD37679396EA5554A02B23A6AA4C775ABCF68CDF45FC915A555"
+      process.env.ACCESS_TOKEN_SECRET,
     );
     if (validPass) {
       res.status(200).json({
