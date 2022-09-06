@@ -13,7 +13,6 @@ router.post("/add", async (req, res) => {
     });
     const newChat = await chat.save();
     res.status(201).json(newChat);
-    console.log(req.body);
   } catch {
     res.status(500).json({ message: "Error creating chat" });
   }
@@ -30,8 +29,6 @@ router.get("/chat", async (req, res) => {
     });
 
     res.status(200).json({ recievedChats, sentChats });
-    // console.log(recievedChats);
-    // console.log(sentChats);
   } catch {
     res.status(500).json({ message: "Error getting chats" });
   }

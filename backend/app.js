@@ -37,11 +37,9 @@ app.use("/spacechats", spaceChatRoutes);
 
 io.on("connection", (socket) => {
   socket.on("joinSpace", (data) => {
-    console.log("joinSpace");
     socket.join(data.space);
   });
   socket.on("sendSpaceChat", (data) => {
-    console.log("sendSpaceChat");
     io.to(data.space).emit("spaceChat", data);
   });
   socket.on("chatJoin", (data) => {
@@ -58,14 +56,12 @@ io.on("connection", (socket) => {
     });
   });
   socket.on("createRoom", (data) => {
-    console.log(data.roomId);
     socket.join(data.roomId);
   });
   socket.emit("me", {
     id: socket.id,
   });
   socket.on("meetingData", (data) => {
-    console.log(data.roomId);
     try {
       socket.emit("Participants", {
         Participants: Object.keys(
@@ -77,21 +73,18 @@ io.on("connection", (socket) => {
     }
   });
   socket.on("joinMeeting", (data) => {
-    console.log(data.host);
     socket.broadcast.to(data.host).emit("newJoin", {
       signal: data.signal,
       guestId: data.id,
       peer: data.peer,
       username: data.username,
     });
-    console.log(data.roomId + " hello bro");
     try {
       if (
         !Object.keys(io.sockets.adapter.rooms[data.roomId].sockets).includes(
           data.id
         )
       ) {
-        console.log("hello bro  " + data.id);
         socket.join(data.roomId);
       }
     } catch {
@@ -99,7 +92,6 @@ io.on("connection", (socket) => {
     }
   });
   socket.on("acceptCall", (data) => {
-    console.log(data.id + " call accepted");
     socket.broadcast.to(data.guestId).emit("callAccepted", {
       signal: data.signal,
       id: data.id,

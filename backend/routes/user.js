@@ -14,7 +14,6 @@ router.get("/", async (req, res) => {
 const authenticateToken = require("../utils/authenticateToken");
 
 router.post("/register", async (req, res) => {
-  // console.log(req);
   const checkUsers = await User.find({ username: req.body.username });
   if (checkUsers.length > 0) {
     res.status(200).json({ message: "User already exists" });
@@ -23,7 +22,6 @@ router.post("/register", async (req, res) => {
       req.body,
       "3396C4506F0EBBD37679396EA5554A02B23A6AA4C775ABCF68CDF45FC915A555"
     );
-    console.log(req.body);
     const encryptedPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
       username: req.body.username,
@@ -77,7 +75,6 @@ router.get("/search", async (req, res) => {
 router.get("/id", async (req, res) => {
   try {
     const user = await User.find({ username: req.query.username });
-    // console.log(user[0]);
     res.status(200).json(user[0].id);
   } catch {
     res.status(500).json({ message: "Error getting user" });
@@ -86,7 +83,6 @@ router.get("/id", async (req, res) => {
 router.get("/username", async (req, res) => {
   try {
     const user = await User.findById(req.query.id);
-    console.log(user + " hello ji");
     res.status(200).json(user.username);
   } catch {
     res.status(500).json({ message: "Error getting user" });

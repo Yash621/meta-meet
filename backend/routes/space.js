@@ -5,13 +5,10 @@ const ChatSpaces = require("../models/chatSpacesSchema");
 
 router.post("/add", async (req, res) => {
   try {
-    console.log(req.body);
     const spaces = await Space.find({ spacename: req.body.spacename });
     if (spaces.length > 0) {
-      console.log(spaces + " already exists");
       res.status(200).json({ message: "Space already exists" });
     } else {
-      console.log(spaces + " does not exist");
       const space = new Space({
         spacename: req.body.spacename,
         members: req.body.members,
@@ -42,9 +39,7 @@ router.post("/add", async (req, res) => {
 
 router.get("/getSpaces", async (req, res) => {
   try {
-    console.log(req.query.userId);
     const spaces = await ChatSpaces.find({ userId: req.query.userId });
-    console.log(spaces[0] + " spaces found");
     res.status(200).json({ spaces: spaces[0].spaces });
   } catch {
     res.status(500).json({ message: "Error fetching spaces" });
@@ -80,7 +75,6 @@ router.post("/addmember", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const spaces = await Space.find({});
-    console.log(spaces + " spaces found");
     res.status(200).json({ spaces });
   } catch {
     res.status(500).json({ message: "Error fetching spaces" });
